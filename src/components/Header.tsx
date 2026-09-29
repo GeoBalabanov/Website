@@ -9,10 +9,18 @@ export function Header() {
   const pathname = usePathname();
   const gradient = useGradient();
 
-  const toggle = (active: boolean) => `nav-link ${active ? "text-ink" : "text-ink/80 hover:text-ink"}`;
+  // Project pages have their own colors: the header floats over them in difference mode.
+  const overlay = pathname.startsWith("/projects/");
+
+  const toggle = (active: boolean) =>
+    overlay ? "nav-link" : `nav-link ${active ? "text-ink" : "text-ink/80 hover:text-ink"}`;
 
   return (
-    <header className="fixed inset-x-0 top-0 z-30 bg-linear-to-b from-paper via-paper/90 to-paper/0 px-4 pt-4 pb-6 text-[15px] font-medium tracking-[-0.01em] md:px-6 md:pt-5">
+    <header
+      className={`fixed inset-x-0 top-0 z-30 px-4 pt-4 pb-6 text-[15px] font-medium tracking-[-0.01em] md:px-6 md:pt-5 ${
+        overlay ? "text-white mix-blend-difference" : "bg-linear-to-b from-paper via-paper/90 to-paper/0"
+      }`}
+    >
       <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center">
         <Link href="/" className="nav-link justify-self-start">
           {site.name}
@@ -23,7 +31,7 @@ export function Header() {
             <button type="button" className={toggle(!gradient)} aria-pressed={!gradient} onClick={() => setGradient(false)}>
               Plain
             </button>
-            <span aria-hidden="true" className="text-mute">/</span>
+            <span aria-hidden="true" className={overlay ? "opacity-60" : "text-mute"}>/</span>
             <button type="button" className={toggle(gradient)} aria-pressed={gradient} onClick={() => setGradient(true)}>
               Gradient
             </button>
@@ -33,7 +41,7 @@ export function Header() {
             <Link href="/" className={toggle(pathname === "/")} aria-current={pathname === "/" ? "page" : undefined}>
               Slider
             </Link>
-            <span aria-hidden="true" className="text-mute">/</span>
+            <span aria-hidden="true" className={overlay ? "opacity-60" : "text-mute"}>/</span>
             <Link href="/grid" className={toggle(pathname === "/grid")} aria-current={pathname === "/grid" ? "page" : undefined}>
               Grid
             </Link>

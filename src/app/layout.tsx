@@ -3,6 +3,7 @@ import { EB_Garamond, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google
 import { GradientBackdrop } from "@/components/GradientBackdrop";
 import { Header } from "@/components/Header";
 import { SmoothScroll } from "@/components/SmoothScroll";
+import { ProjectTransitionProvider } from "@/components/transition/ProjectTransition";
 import { site } from "@/data/site";
 import "./globals.css";
 
@@ -29,10 +30,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         >
           Skip to content
         </a>
-        <SmoothScroll />
-        <GradientBackdrop />
-        <Header />
-        {children}
+        <ProjectTransitionProvider>
+          <SmoothScroll />
+          <GradientBackdrop />
+          <Header />
+          {children}
+        </ProjectTransitionProvider>
       </body>
     </html>
   );

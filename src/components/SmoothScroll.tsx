@@ -11,6 +11,17 @@ gsap.registerPlugin(ScrollTrigger);
 
 let lenis: Lenis | null = null;
 
+/** The active Lenis instance, or null when smooth scrolling is off (reduced motion). */
+export function getLenis() {
+  return lenis;
+}
+
+/** Jump to a scroll position without smoothing, through Lenis when it's active. */
+export function scrollToImmediate(y: number) {
+  if (lenis) lenis.scrollTo(y, { immediate: true, force: true });
+  else window.scrollTo(0, y);
+}
+
 /** Lenis smooth scrolling, driven by GSAP's ticker so ScrollTrigger stays in sync. Off for reduced motion. */
 export function SmoothScroll() {
   const pathname = usePathname();
@@ -30,7 +41,7 @@ export function SmoothScroll() {
   }, []);
 
   useEffect(() => {
-    lenis?.scrollTo(0, { immediate: true });
+    lenis?.scrollTo(0, { immediate: true, force: true });
     ScrollTrigger.refresh();
   }, [pathname]);
 

@@ -5,6 +5,7 @@ import { gsap } from "gsap";
 import type { Project } from "@/data/projects";
 import { prefersReducedMotion } from "@/lib/motion";
 import { ProjectImage } from "./ProjectImage";
+import { OpenProjectLink } from "./transition/OpenProjectLink";
 
 const MINOR_TICKS = 5;
 const WHEEL_THRESHOLD = 30;
@@ -22,6 +23,8 @@ export function ProjectSlider({ projects }: Props) {
   const shown = useRef(0);
   const timeline = useRef<gsap.core.Timeline | null>(null);
   const scrollTarget = useRef<number | null>(null);
+  // Set when the index comes from the URL: show that project immediately, no transition.
+  const jump = useRef(false);
 
   const go = useCallback((next: number) => setIndex(Math.max(0, Math.min(count - 1, next))), [count]);
 
@@ -29,9 +32,12 @@ export function ProjectSlider({ projects }: Props) {
   useEffect(() => {
     const slug = decodeURIComponent(window.location.hash.slice(1));
     const found = projects.findIndex((p) => p.slug === slug);
-    // The hash only exists in the browser, so it has to be read after hydration.
-    // eslint-disable-next-line react-hooks/set-state-in-effect
-    if (found > 0) setIndex(found);
+    if (found > 0) {
+      jump.current = true;
+      // The hash only exists in the browser, so it has to be read after hydration.
+      // eslint-disable-next-line react-hooks/set-state-in-effect
+      setIndex(found);
+    }
   }, [projects]);
 
   // Keep the URL in sync so the current project can be shared.
@@ -54,7 +60,7 @@ export function ProjectSlider({ projects }: Props) {
     const toImg = toEl.firstElementChild;
     const dir = index > from ? 1 : -1;
 
-    if (prefersReducedMotion()) {
+    if (prefersReducedMotion() || jump.current) {
       gsap.set(fromEl, { autoAlpha: 0 });
       gsap.set(toEl, { autoAlpha: 1, clipPath: "inset(0% 0% 0% 0%)" });
       return;
@@ -135,12 +141,14 @@ export function ProjectSlider({ projects }: Props) {
     const slide = el.children[index] as HTMLElement | undefined;
     if (!slide) return;
     const target = slide.offsetLeft - (el.clientWidth - slide.clientWidth) / 2;
+    const instant = jump.current;
+    jump.current = false;
     if (Math.abs(el.scrollLeft - target) > 4) {
       scrollTarget.current = index;
       window.setTimeout(() => {
         if (scrollTarget.current === index) scrollTarget.current = null;
       }, 900);
-      el.scrollTo({ left: target, behavior: prefersReducedMotion() ? "auto" : "smooth" });
+      el.scrollTo({ left: target, behavior: prefersReducedMotion() || instant ? "auto" : "smooth" });
     }
   }, [index]);
 
@@ -179,8 +187,11 @@ export function ProjectSlider({ projects }: Props) {
       <div className="hidden h-full items-center justify-center px-6 md:flex">
         <div className="relative">
           <div className="relative">
-            <ProjectLink project={current}>
-              <div className="relative aspect-[3/4] h-[min(62dvh,calc((100vw-14rem)*4/3))] overflow-hidden bg-ink/5">
+            <OpenProjectLink project={current}>
+              <div
+                data-flip-id={current.slug}
+                className="relative aspect-[3/4] h-[min(62dvh,calc((100vw-14rem)*4/3))] overflow-hidden bg-ink/5"
+              >
                 {projects.map((p, i) => (
                   <div
                     key={p.slug}
@@ -197,7 +208,7 @@ export function ProjectSlider({ projects }: Props) {
                   </div>
                 ))}
               </div>
-            </ProjectLink>
+            </OpenProjectLink>
 
             <VerticalIndex projects={projects} index={index} onSelect={go} />
           </div>
@@ -236,11 +247,11 @@ export function ProjectSlider({ projects }: Props) {
               aria-roledescription="slide"
               aria-label={`${p.number}: ${p.title}`}
             >
-              <ProjectLink project={p} tabbable={i === index}>
-                <div className="relative aspect-[3/4] w-full overflow-hidden bg-ink/5">
+              <OpenProjectLink project={p} tabIndex={i === index ? undefined : -1}>
+                <div data-flip-id={p.slug} className="relative aspect-[3/4] w-full overflow-hidden bg-ink/5">
                   <ProjectImage image={p.images[0]} sizes="78vw" priority={i === 0} />
                 </div>
-              </ProjectLink>
+              </OpenProjectLink>
               <div className="mt-3 text-[15px] leading-snug">
                 <h2 className="font-semibold">{p.title}</h2>
                 <p className="text-mute-ink">{p.subtitle}</p>
@@ -270,22 +281,6 @@ export function ProjectSlider({ projects }: Props) {
         </ol>
       </div>
     </section>
-  );
-}
-
-function ProjectLink({ project, tabbable = true, children }: { project: Project; tabbable?: boolean; children: React.ReactNode }) {
-  if (!project.link) return <>{children}</>;
-  return (
-    <a
-      href={project.link}
-      target="_blank"
-      rel="noreferrer"
-      tabIndex={tabbable ? undefined : -1}
-      aria-label={`${project.title} (opens in a new tab)`}
-      className="block"
-    >
-      {children}
-    </a>
   );
 }
 

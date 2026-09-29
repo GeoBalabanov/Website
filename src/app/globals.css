@@ -114,3 +114,22 @@
     scroll-behavior: auto !important;
   }
 }
+
+/* Project pages: the display face chosen in the project's theme. */
+@utility font-display {
+  font-family: var(--p-display, var(--font-serif));
+}
+
+/* Bloom garden: flowers sway gently around their base. */
+@keyframes bloom-sway {
+  0%,
+  100% {
+    transform: rotate(-1.6deg);
+  }
+  50% {
+    transform: rotate(1.6deg);
+  }
+}
+.bloom-sway {
+  animation: bloom-sway 5s ease-in-out infinite;
+}

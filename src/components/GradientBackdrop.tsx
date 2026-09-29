@@ -1,10 +1,14 @@
 "use client";
 
+import { usePathname } from "next/navigation";
 import { useGradient } from "@/lib/gradient-store";
 
 /** Soft warm gradient rising from the bottom of the page. Fades with the Plain / Gradient toggle. */
 export function GradientBackdrop() {
-  const on = useGradient();
+  const gradient = useGradient();
+  const pathname = usePathname();
+  // Project pages have their own colors.
+  const on = gradient && !pathname.startsWith("/projects/");
   return (
     <div
       aria-hidden="true"

@@ -9,7 +9,8 @@ export default function Template({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null);
 
   useLayoutEffect(() => {
-    if (!ref.current || prefersReducedMotion()) return;
+    // Skip while a shared-element transition covers the screen: the overlay handles the reveal.
+    if (!ref.current || prefersReducedMotion() || document.documentElement.dataset.flip === "on") return;
     const tween = gsap.fromTo(ref.current, { autoAlpha: 0 }, { autoAlpha: 1, duration: 0.6, ease: "power2.out" });
     return () => {
       tween.kill();
