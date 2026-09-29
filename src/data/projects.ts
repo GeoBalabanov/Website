@@ -143,7 +143,7 @@ export const projects: Project[] = [
       distanceKm: 42.195,
       // The course map is a ~21.1 km loop (km markers 1–21), run twice for the marathon.
       laps: 2,
-      raceDate: { label: "[Race date]", iso: "" }, // PLACEHOLDER: set iso to start the live countdown
+      raceDate: { label: "18 April 2027", iso: "2027-04-18T08:00:00+03:00" }, // start time assumed 08:00 local (EEST)
     },
     gallery: [
       {
