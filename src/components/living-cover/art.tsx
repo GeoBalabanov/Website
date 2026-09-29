@@ -147,8 +147,9 @@ export function TypingCover() {
 }
 
 /* ---------------- 04 Dating App: a voice note playing ---------------- */
+// Rounded: Math.sin can differ in the last digits between server and browser, which breaks hydration.
 const BARS = Array.from({ length: 29 }, (_, i) => {
-  const h = 30 + Math.abs(Math.sin(i * 0.7) * Math.cos(i * 0.23)) * 260;
+  const h = Math.round((30 + Math.abs(Math.sin(i * 0.7) * Math.cos(i * 0.23)) * 260) * 100) / 100;
   return { x: 150 + i * 21, h };
 });
 

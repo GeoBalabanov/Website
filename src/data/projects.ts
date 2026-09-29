@@ -144,10 +144,22 @@ export const projects: Project[] = [
       raceDate: { label: "[Race date]", iso: "" }, // PLACEHOLDER: set iso to start the live countdown
     },
     gallery: [
-      img("plovdiv-marathon", "wide-1", "Placeholder: evening light over the start area", true),
+      {
+        kind: "video",
+        src: "/projects/plovdiv-marathon-video-1.mp4",
+        poster: "/projects/plovdiv-marathon-video-1.jpg",
+        alt: "A runner in black jogging on the red track of an empty stadium",
+        wide: true,
+      },
       img("plovdiv-marathon", "2", "Placeholder: route sketch"),
       img("plovdiv-marathon", "3", "Placeholder: runners at dusk"),
-      img("plovdiv-marathon", "wide-2", "Placeholder: course map study", true),
+      {
+        kind: "video",
+        src: "/projects/plovdiv-marathon-video-2.mp4",
+        poster: "/projects/plovdiv-marathon-video-2.jpg",
+        alt: "Black and white: a runner resting on the stadium stands, checking a phone",
+        wide: true,
+      },
     ],
     // PLACEHOLDER numbers
     facts: [
