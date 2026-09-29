@@ -7,10 +7,11 @@ import { prefersReducedMotion } from "@/lib/motion";
 import { ProjectImage } from "./ProjectImage";
 import { OpenProjectLink } from "./transition/OpenProjectLink";
 import { LivingCover } from "./living-cover/LivingCover";
+import { SliderStrip } from "./slider-strip";
 
 const MINOR_TICKS = 5;
 const WHEEL_THRESHOLD = 30;
-const WHEEL_COOLDOWN = 1000;
+const WHEEL_COOLDOWN = 850;
 
 type Props = { projects: Project[] };
 
@@ -35,6 +36,30 @@ export function ProjectSlider({ projects }: Props) {
   const scrollTarget = useRef<number | null>(null);
   // Set when the index comes from the URL: show that project immediately, no transition.
   const jump = useRef(false);
+  // WebGL strip for the bending transition (desktop). `null` until its textures are loaded.
+  const canvas = useRef<HTMLCanvasElement>(null);
+  const frame = useRef<HTMLDivElement>(null);
+  const strip = useRef<SliderStrip | null>(null);
+  const stripPos = useRef({ pos: 0, tween: null as gsap.core.Tween | null });
+
+  // Set up the strip once; if WebGL or any cover fails, the CSS transition is used instead.
+  useEffect(() => {
+    if (!canvas.current || prefersReducedMotion()) return;
+    const s = SliderStrip.create(canvas.current);
+    if (!s) return;
+    let alive = true;
+    s.load(projects.map((p) => p.images[0].src)).then((ok) => {
+      if (alive && ok) strip.current = s;
+    });
+    const onResize = () => s.resize();
+    window.addEventListener("resize", onResize);
+    return () => {
+      alive = false;
+      window.removeEventListener("resize", onResize);
+      strip.current = null;
+      s.destroy();
+    };
+  }, [projects]);
 
   const go = useCallback((next: number) => setIndex(Math.max(0, Math.min(count - 1, next))), [count]);
 
@@ -73,8 +98,61 @@ export function ProjectSlider({ projects }: Props) {
     if (prefersReducedMotion() || jump.current) {
       gsap.set(fromEl, { autoAlpha: 0 });
       gsap.set(toEl, { autoAlpha: 1, clipPath: "inset(0% 0% 0% 0%)" });
+      stripPos.current.pos = index;
       return;
     }
+
+    const captionIn = () => {
+      if (!caption.current) return;
+      gsap.fromTo(
+        caption.current.querySelectorAll("[data-line]"),
+        { yPercent: 110 * dir },
+        { yPercent: 0, duration: 0.8, ease: "power3.out", stagger: 0.06, delay: 0.25, overwrite: true },
+      );
+    };
+
+    // WebGL: the covers slide as one strip and bend with the scroll speed.
+    const s = strip.current;
+    if (s && canvas.current && frame.current && canvas.current.offsetParent !== null) {
+      const st = stripPos.current;
+      st.tween?.kill();
+      const cv = canvas.current;
+      const fr = frame.current;
+      gsap.set(fromEl, { autoAlpha: 0, zIndex: 0 });
+      gsap.set(toEl, { autoAlpha: 1, zIndex: 1, clipPath: "inset(0% 0% 0% 0%)" });
+      gsap.set(fr, { opacity: 0 });
+      gsap.killTweensOf(cv);
+      gsap.set(cv, { opacity: 1 });
+      s.resize();
+      const frameW = fr.getBoundingClientRect().width;
+      let lastPos = st.pos;
+      let lastT = performance.now();
+      let vel = 0;
+      const distance = Math.abs(index - st.pos);
+      st.tween = gsap.to(st, {
+        pos: index,
+        duration: 0.95 + Math.min(distance, 4) * 0.15,
+        ease: "power3.inOut",
+        onUpdate: () => {
+          const now = performance.now();
+          const dt = Math.max(1, now - lastT) / 1000;
+          // Smoothed velocity in slides per second drives the bend.
+          vel += ((st.pos - lastPos) / dt - vel) * 0.35;
+          lastPos = st.pos;
+          lastT = now;
+          s.render(st.pos, vel, frameW);
+        },
+        onComplete: () => {
+          s.render(index, 0, frameW);
+          gsap.set(fr, { opacity: 1 });
+          gsap.to(cv, { opacity: 0, duration: 0.2, onComplete: () => s.clear() });
+          st.tween = null;
+        },
+      });
+      captionIn();
+      return;
+    }
+    stripPos.current.pos = index;
 
     const tl = gsap.timeline({
       defaults: { ease: "power3.inOut" },
@@ -93,14 +171,7 @@ export function ProjectSlider({ projects }: Props) {
       .fromTo(toImg, { scale: 1.12, yPercent: 6 * dir }, { scale: 1, yPercent: 0, duration: 1.2, ease: "power3.out" }, 0)
       .to(fromImg, { yPercent: -8 * dir, scale: 1.04, duration: 1 }, 0);
 
-    if (caption.current) {
-      tl.fromTo(
-        caption.current.querySelectorAll("[data-line]"),
-        { yPercent: 110 * dir },
-        { yPercent: 0, duration: 0.8, ease: "power3.out", stagger: 0.06 },
-        0.25,
-      );
-    }
+    captionIn();
     timeline.current = tl;
   }, [index]);
 
@@ -116,7 +187,9 @@ export function ProjectSlider({ projects }: Props) {
       acc += delta;
       if (Math.abs(acc) >= WHEEL_THRESHOLD) {
         last = now;
-        setIndex((i) => Math.max(0, Math.min(count - 1, i + Math.sign(acc))));
+        // Read the direction now: the state updater may run later, after acc is reset.
+        const step = Math.sign(acc);
+        setIndex((i) => Math.max(0, Math.min(count - 1, i + step)));
         acc = 0;
       }
     };
@@ -199,6 +272,7 @@ export function ProjectSlider({ projects }: Props) {
           <div className="relative">
             <OpenProjectLink project={current}>
               <div
+                ref={frame}
                 data-flip-id={current.slug}
                 className="relative aspect-[3/4] h-[min(62dvh,calc((100vw-14rem)*4/3))] overflow-hidden bg-ink/5"
               >
@@ -220,6 +294,8 @@ export function ProjectSlider({ projects }: Props) {
                 ))}
               </div>
             </OpenProjectLink>
+            {/* The bending strip, drawn only while moving between projects. Wider than the frame so bulges aren't clipped. */}
+            <canvas ref={canvas} aria-hidden="true" className="pointer-events-none absolute top-0 -left-[12%] h-full w-[124%] opacity-0" />
 
             <VerticalIndex projects={projects} index={index} onSelect={go} />
           </div>
