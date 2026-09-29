@@ -328,9 +328,9 @@ export const projects: Project[] = [
     number: "05",
     title: "Corsa Car Audio",
     subtitle: "A voice-controlled music interface designed for safer driving",
-    coverMotion: "ripple",
+    coverMotion: "drift",
     images: [
-      { src: "/projects/corsa-car-audio-1.svg", alt: "Concentric speaker rings glowing teal on black" },
+      { src: "/projects/corsa-car-audio-cover.jpg", alt: "Glossy dark figure lit by an iridescent streak of light on violet" },
       { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background" },
       { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon" },
     ],
