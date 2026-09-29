@@ -17,16 +17,16 @@ export function Header() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-30 px-4 pt-4 pb-6 text-[15px] font-medium tracking-[-0.01em] md:px-6 md:pt-5 ${
+      className={`fixed inset-x-0 top-0 z-30 px-4 pt-4 pb-6 text-[14px] font-medium md:text-[15px] tracking-[-0.01em] md:px-6 md:pt-5 ${
         overlay ? "text-white mix-blend-difference" : "bg-linear-to-b from-paper via-paper/90 to-paper/0"
       }`}
     >
-      <div className="flex flex-wrap items-start justify-between gap-x-6 gap-y-3 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center">
+      <div className="flex items-center justify-between gap-x-4 md:grid md:grid-cols-[1fr_auto_1fr] md:items-center">
         <Link href="/" className="nav-link justify-self-start">
           {site.name}
         </Link>
 
-        <nav aria-label="Main" className="order-last flex w-full flex-wrap items-center justify-center gap-x-6 gap-y-2 md:order-none md:w-auto">
+        <nav aria-label="Main" className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 md:justify-center md:gap-x-6">
           <div role="group" aria-label="Background" className="flex items-center gap-1.5">
             <button type="button" className={toggle(!gradient)} aria-pressed={!gradient} onClick={() => setGradient(false)}>
               Plain
@@ -52,7 +52,7 @@ export function Header() {
           </Link>
         </nav>
 
-        <p className="max-w-[14rem] text-right leading-snug md:max-w-none md:justify-self-end">{site.tagline}</p>
+        <p className="hidden leading-snug md:block md:justify-self-end">{site.tagline}</p>
       </div>
     </header>
   );
