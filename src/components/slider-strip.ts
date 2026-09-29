@@ -4,8 +4,7 @@
  * While the slider moves between projects, the covers are drawn as one
  * vertical strip on a canvas. Each cover is a finely subdivided plane whose
  * vertices are pushed out (scrolling down: bulge) or pulled in (scrolling
- * up: pinch) in proportion to the scroll velocity, so the edges curve like
- * paper under speed. At rest the canvas is hidden and the normal DOM cover
+ * up: pinch) with the scroll speed, so the edges curve in soft arcs. At rest the canvas is hidden and the normal DOM cover
  * (with its living animation) shows instead.
  *
  * Plain WebGL, no library: one shader, one grid mesh, one texture per cover.
@@ -16,18 +15,19 @@ attribute vec2 aPos;          // 0..1 over the cover, y down
 uniform vec2 uCanvas;         // canvas size (CSS px)
 uniform vec2 uSize;           // cover size (CSS px)
 uniform float uOffsetY;       // cover centre relative to the frame centre (px, y down)
-uniform float uVel;           // signed scroll velocity (covers per second)
+uniform float uBend;          // -1..1: + bulge (scrolling down), - pinch (scrolling up)
 varying vec2 vUv;
+const float HALF_PI = 1.5707963;
 void main() {
   vUv = aPos;
   vec2 p = vec2((aPos.x - 0.5) * uSize.x, (aPos.y - 0.5) * uSize.y + uOffsetY);
-  // Distance from the frame centre, normalised to the frame (0 at centre, 1 at the edge).
-  float nx = clamp(p.x / (uSize.x * 0.5), -1.0, 1.0);
-  float ny = clamp(p.y / (uSize.y * 0.5), -1.0, 1.0);
-  // Velocity lens: widen (down) or pinch (up) most across the middle of the frame…
-  p.x *= 1.0 + uVel * 0.16 * (1.0 - ny * ny);
-  // …and curve the horizontal edges the same way.
-  p.y *= 1.0 + uVel * 0.05 * (1.0 - nx * nx);
+  // Both factors depend only on the screen position, so neighbouring covers stay seamless.
+  float nx = (aPos.x - 0.5) * 2.0;                       // -1..1 across the frame
+  float ny = clamp(p.y / (uCanvas.y * 0.5), -1.0, 1.0);  // -1..1 over the visible frame
+  // Sides: widest (or narrowest) across the middle, easing smoothly to the top and bottom.
+  p.x *= 1.0 + uBend * 0.08 * cos(ny * HALF_PI);
+  // Top and bottom edges bow outwards (or inwards) in a soft arc.
+  p.y *= 1.0 + uBend * 0.035 * cos(nx * HALF_PI);
   gl_Position = vec4(p.x / (uCanvas.x * 0.5), -p.y / (uCanvas.y * 0.5), 0.0, 1.0);
 }`;
 
@@ -102,7 +102,7 @@ export class SliderStrip {
     gl.enableVertexAttribArray(aPos);
     gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
 
-    for (const u of ["uCanvas", "uSize", "uOffsetY", "uVel", "uTex", "uCover"]) this.loc[u] = gl.getUniformLocation(prog, u);
+    for (const u of ["uCanvas", "uSize", "uOffsetY", "uBend", "uTex", "uCover"]) this.loc[u] = gl.getUniformLocation(prog, u);
     gl.enable(gl.BLEND);
     gl.blendFunc(gl.ONE, gl.ONE_MINUS_SRC_ALPHA);
   }
@@ -156,9 +156,9 @@ export class SliderStrip {
 
   /**
    * Draw the strip. `pos` is the (fractional) slide index at the frame centre,
-   * `vel` its velocity in slides per second, `frameW` the cover width in CSS px.
+   * `bend` the deformation (-1..1, from the scroll speed), `frameW` the cover width in CSS px.
    */
-  render(pos: number, vel: number, frameW: number) {
+  render(pos: number, bend: number, frameW: number) {
     const gl = this.gl;
     if (!this.cssW) this.resize();
     gl.clearColor(0, 0, 0, 0);
@@ -166,7 +166,7 @@ export class SliderStrip {
     const frameH = this.cssH;
     gl.uniform2f(this.loc.uCanvas, this.cssW, this.cssH);
     gl.uniform2f(this.loc.uSize, frameW, frameH);
-    gl.uniform1f(this.loc.uVel, Math.max(-2.5, Math.min(2.5, vel)));
+    gl.uniform1f(this.loc.uBend, Math.max(-1, Math.min(1, bend)));
     const first = Math.max(0, Math.floor(pos) - 1);
     const last = Math.min(this.textures.length - 1, Math.ceil(pos) + 1);
     for (let i = first; i <= last; i++) {
