@@ -1,14 +1,19 @@
 "use client";
 
+import { useState } from "react";
 import dynamic from "next/dynamic";
 
 const CorsaHead = dynamic(() => import("./CorsaHead"), { ssr: false });
 
-/** The 3D bust with its violet studio, filling its (positioned) parent. */
-export function CorsaStage({ paused, still, onReady }: { paused?: boolean; still?: boolean; onReady?: () => void }) {
+/**
+ * The live 3D bust, filling its (positioned) parent. It fades in once its first
+ * frame is drawn, over the still cover beneath it (a render of that same frame).
+ */
+export function CorsaStage({ paused, still }: { paused?: boolean; still?: boolean }) {
+  const [ready, setReady] = useState(!!still);
   return (
-    <div className="absolute inset-0 bg-[#1a0c44]">
-      <CorsaHead paused={paused} still={still} onReady={onReady} />
+    <div className={`absolute inset-0 transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}>
+      <CorsaHead paused={paused} still={still} onReady={() => setReady(true)} />
     </div>
   );
 }

@@ -20,7 +20,7 @@ export function Hero({ project }: { project: Project }) {
 
   // Live 3D hero (if the project has one): mounts after hydration, fades in over the
   // still (a render of its first frame) and only runs while the hero is on screen.
-  const [scene, setScene] = useState<{ on: boolean; ready: boolean; visible: boolean }>({ on: false, ready: false, visible: true });
+  const [scene, setScene] = useState({ on: false, visible: true });
   useEffect(() => {
     if (!project.heroScene || prefersReducedMotion()) return;
     const el = root.current!;
@@ -84,11 +84,7 @@ export function Hero({ project }: { project: Project }) {
             className="object-cover"
             onLoad={() => heroReady(project.slug)}
           />
-          {scene.on && project.heroScene === "corsa-head" && (
-            <div className={`absolute inset-0 transition-opacity duration-1000 ${scene.ready ? "opacity-100" : "opacity-0"}`}>
-              <CorsaStage paused={!scene.visible} onReady={() => setScene((s) => ({ ...s, ready: true }))} />
-            </div>
-          )}
+          {scene.on && project.heroScene === "corsa-head" && <CorsaStage paused={!scene.visible} />}
         </div>
       </div>
       <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />

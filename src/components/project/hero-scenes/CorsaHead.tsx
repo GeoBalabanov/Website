@@ -247,11 +247,11 @@ function Bust({ still }: { still: boolean }) {
     p.sx += (p.x - p.sx) * Math.min(1, delta * 2);
     p.sy += (p.y - p.sy) * Math.min(1, delta * 2);
     // A slow turn carries the streak across the face; the light itself drifts too.
-    g.rotation.y = -0.45 + Math.sin(t * 0.22) * 0.32 + p.sx * 0.12;
-    g.rotation.x = Math.sin(t * 0.17) * 0.04 + p.sy * 0.05;
-    g.position.y = Math.sin(t * 0.5) * 0.03;
-    state.scene.environmentRotation.y = Math.sin(t * 0.13) * 0.35;
-    state.scene.environmentRotation.x = Math.sin(t * 0.09) * 0.12;
+    g.rotation.y = -0.45 + Math.sin(t * 0.5) * 0.42 + p.sx * 0.12;
+    g.rotation.x = Math.sin(t * 0.37) * 0.05 + p.sy * 0.05;
+    g.position.y = Math.sin(t * 0.9) * 0.03;
+    state.scene.environmentRotation.y = Math.sin(t * 0.3) * 0.4;
+    state.scene.environmentRotation.x = Math.sin(t * 0.21) * 0.14;
   });
 
   return (
@@ -268,6 +268,8 @@ export default function CorsaHead({ paused = false, still = false, onReady }: { 
   return (
     <Canvas
       dpr={[1, 1.75]}
+      // Measure the untransformed size: the next-project preview is scaled with CSS.
+      resize={{ offsetSize: true }}
       frameloop={paused ? "never" : "always"}
       camera={{ fov: FOV_V, near: 0.1, far: 50, position: CAMERA.toArray() }}
       gl={{ antialias: true, preserveDrawingBuffer: still, toneMapping: THREE.ACESFilmicToneMapping, toneMappingExposure: 1.15 }}

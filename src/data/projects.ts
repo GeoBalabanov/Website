@@ -89,7 +89,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d";
 
 export type Project = {
   slug: string;
@@ -330,10 +330,10 @@ export const projects: Project[] = [
     number: "05",
     title: "Corsa Car Audio",
     subtitle: "A voice-controlled music interface designed for safer driving",
-    coverMotion: "drift",
+    coverMotion: "head3d",
     heroScene: "corsa-head",
     images: [
-      { src: "/projects/corsa-car-audio-cover.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
+      { src: "/projects/corsa-car-audio-3d.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
       { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background" },
       { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon" },
     ],

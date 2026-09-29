@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import type { Project } from "@/data/projects";
 import { useScene } from "@/lib/use-scene";
 import { OpenProjectLink } from "@/components/transition/OpenProjectLink";
 import { useProjectTransition } from "@/components/transition/ProjectTransition";
+import { prefersReducedMotion } from "@/lib/motion";
+import { CorsaStage } from "./hero-scenes/CorsaStage";
 
 /**
  * The end of the page: the next project's image grows with scroll. When it
@@ -16,6 +18,15 @@ export function NextProject({ next }: { next: Project }) {
   const root = useRef<HTMLElement>(null);
   const preview = useRef<HTMLDivElement>(null);
   const { open } = useProjectTransition();
+
+  // A project with a live 3D hero plays it here too, while this section is on screen.
+  const [live, setLive] = useState(false);
+  useEffect(() => {
+    if (next.heroScene !== "corsa-head" || prefersReducedMotion()) return;
+    const io = new IntersectionObserver(([e]) => setLive(e.isIntersecting), { rootMargin: "200px" });
+    io.observe(root.current!);
+    return () => io.disconnect();
+  }, [next.heroScene]);
 
   useScene(
     root,
@@ -64,6 +75,7 @@ export function NextProject({ next }: { next: Project }) {
                 unoptimized={next.images[0].src.endsWith(".svg")}
                 className="object-cover"
               />
+              {live && <CorsaStage />}
             </div>
           </OpenProjectLink>
         </div>
