@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+<defs>
+<filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="90"/></filter>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
+<radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+</defs>
+<rect width="900" height="1200" fill="#070808"/>
+<g filter="url(#b)"><ellipse cx="450" cy="620" rx="260" ry="260" fill="#14b8a6" opacity="0.6"/><ellipse cx="450" cy="620" rx="110" ry="110" fill="#99f6e4" opacity="0.7"/></g>
+<circle cx="450" cy="620" r="40" fill="none" stroke="#ccfbf1" stroke-width="2" opacity="0.5"/><circle cx="450" cy="620" r="80" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.45"/><circle cx="450" cy="620" r="120" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.4"/><circle cx="450" cy="620" r="160" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.35"/><circle cx="450" cy="620" r="200" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.3"/><circle cx="450" cy="620" r="240" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.25"/><circle cx="450" cy="620" r="280" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.19999999999999996"/><circle cx="450" cy="620" r="320" fill="none" stroke="#ccfbf1" stroke-width="1.2" opacity="0.14999999999999997"/>
+<rect width="900" height="1200" fill="url(#v)"/>
+<rect width="900" height="1200" filter="url(#n)" opacity="0.09" style="mix-blend-mode:overlay"/>
+</svg>

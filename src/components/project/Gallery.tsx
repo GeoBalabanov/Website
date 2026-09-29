@@ -1,0 +1,106 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+import Image from "next/image";
+import { gsap } from "gsap";
+import type { MediaItem, Project } from "@/data/projects";
+import { useScene } from "@/lib/use-scene";
+import { SectionLabel } from "./bits";
+
+/**
+ * Editorial gallery: wide items span the page, portrait items sit in pairs at
+ * staggered heights. Each frame scales up as it enters and its media drifts
+ * inside it (parallax).
+ */
+export function Gallery({ project }: { project: Project }) {
+  const root = useRef<HTMLElement>(null);
+
+  useScene(root, ({ reduced, mobile }) => {
+    const frames = gsap.utils.toArray<HTMLElement>("[data-frame]");
+    frames.forEach((frame) => {
+      const media = frame.querySelector("[data-media]");
+      if (reduced) {
+        gsap.from(frame, { autoAlpha: 0, duration: 0.8, scrollTrigger: { trigger: frame, start: "top 90%" } });
+        return;
+      }
+      gsap.fromTo(
+        frame,
+        { scale: mobile ? 0.94 : 0.84 },
+        { scale: 1, ease: "none", scrollTrigger: { trigger: frame, start: "top bottom", end: "top 35%", scrub: true } },
+      );
+      gsap.fromTo(
+        media,
+        { yPercent: -9 },
+        { yPercent: 9, ease: "none", scrollTrigger: { trigger: frame, start: "top bottom", end: "bottom top", scrub: true } },
+      );
+    });
+  });
+
+  let portrait = 0;
+  return (
+    <section ref={root} className="px-4 py-[14vh] md:px-10">
+      <SectionLabel index="03" placeholder>
+        Gallery
+      </SectionLabel>
+      <div className="mt-10 grid grid-cols-12 gap-x-4 gap-y-[12vh] md:gap-x-8">
+        {project.gallery.map((item) => {
+          const side = item.wide ? 0 : portrait++ % 2;
+          const cls = item.wide
+            ? "col-span-12 aspect-[16/10] md:col-span-10 md:col-start-2"
+            : `col-span-6 aspect-[3/4] md:col-span-4 ${side === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`;
+          return (
+            <figure key={item.src} data-frame className={`relative overflow-hidden will-change-transform ${cls}`}>
+              <div data-media className="absolute -inset-y-[10%] inset-x-0 will-change-transform">
+                <Media item={item} />
+              </div>
+            </figure>
+          );
+        })}
+      </div>
+    </section>
+  );
+}
+
+function Media({ item }: { item: MediaItem }) {
+  const video = useRef<HTMLVideoElement>(null);
+
+  // Videos only load and play while on screen.
+  useEffect(() => {
+    const el = video.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting) {
+        el.preload = "auto";
+        el.play().catch(() => {});
+      } else el.pause();
+    });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
+  if (item.kind === "video") {
+    return (
+      <video
+        ref={video}
+        src={item.src}
+        poster={item.poster}
+        muted
+        loop
+        playsInline
+        preload="none"
+        aria-label={item.alt}
+        className="h-full w-full object-cover"
+      />
+    );
+  }
+  return (
+    <Image
+      src={item.src}
+      alt={item.alt}
+      fill
+      sizes={item.wide ? "(min-width: 768px) 80vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
+      unoptimized={item.src.endsWith(".svg")}
+      className="object-cover"
+    />
+  );
+}

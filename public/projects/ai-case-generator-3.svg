@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+<defs>
+<filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="110"/></filter>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
+<radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+
+</defs>
+<rect width="900" height="1200" fill="#0f1330"/>
+<g filter="url(#b)"><ellipse cx="300" cy="380" rx="280" ry="260" fill="#22d3ee" opacity="0.45"/><ellipse cx="620" cy="820" rx="320" ry="300" fill="#8b5cf6" opacity="0.7"/><ellipse cx="450" cy="600" rx="200" ry="200" fill="#3b4cff" opacity="0.6"/></g>
+<g transform="translate(450 600) scale(1.35) rotate(4) translate(-210 -270)"><g>
+  <rect width="420" height="540" rx="28" fill="#1b1f5a" fill-opacity="0.92" stroke="#ffffff" stroke-opacity="0.35" stroke-width="1.5"/>
+  
+  <circle cx="64" cy="70" r="26" fill="#ffffff" fill-opacity="0.55"/>
+  <rect x="104" y="58" width="150" height="10" rx="5" fill="#ffffff" fill-opacity="0.7"/><rect x="104" y="78" width="96" height="8" rx="4" fill="#ffffff" fill-opacity="0.4"/>
+  <rect x="40" y="150" width="330" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/><rect x="40" y="190" width="330" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/><rect x="40" y="230" width="200" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/><rect x="40" y="270" width="330" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/><rect x="40" y="310" width="330" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/><rect x="40" y="350" width="200" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/><rect x="40" y="390" width="330" height="10" rx="5" fill="#ffffff" fill-opacity="0.5"/>
+  <rect x="40" y="440" width="120" height="44" rx="22" fill="#a5b4fc" fill-opacity="0.9"/>
+</g></g>
+<rect width="900" height="1200" fill="url(#v)"/>
+<rect width="900" height="1200" filter="url(#n)" opacity="0.09" style="mix-blend-mode:overlay"/>
+</svg>
