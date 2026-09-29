@@ -274,35 +274,67 @@ export function RippleCover() {
   );
 }
 
-/* ---------------- 06 Bloom: a flower whose petals swell in a wave while it turns ---------------- */
-// Heavily blurred, the 8 petals read as one round glow, so spinning alone looks static.
-// Each petal is its own layer instead (blurred once, exactly like the still) and swells
-// outward in turn, so the outline ripples while the flower turns.
+/* ---------------- 06 Bloom: a flower that breathes open while it turns ---------------- */
+// Same geometry as public/projects/bloom-1.svg: 8 outer petals, 8 lighter inner petals
+// offset by 22.5°, an amber centre with stamens, over a soft pink halo.
+// Each petal is its own layer (blurred once) that swells outward; the two rings swell
+// in opposite phase, so the flower visibly opens and closes as it turns.
+const FLOWER_ORIGIN = "50% 48.333%"; // (450, 580) in the 900×1200 artwork
+const STAMENS = Array.from({ length: 10 }, (_, i) => {
+  const a = (i / 10) * Math.PI * 2;
+  return { x: Math.round((450 + Math.cos(a) * 34) * 10) / 10, y: Math.round((580 + Math.sin(a) * 34) * 10) / 10 };
+});
+
+function Petal({ angle, delay, children }: { angle: number; delay: number; children: React.ReactNode }) {
+  return (
+    <div className={s.fill} style={{ transform: `rotate(${angle}deg)`, transformOrigin: FLOWER_ORIGIN }}>
+      <div className={`${s.fill} ${s.petal}`} style={{ "--delay": `${delay}s` } as React.CSSProperties}>
+        <svg {...svgProps}>{children}</svg>
+      </div>
+    </div>
+  );
+}
+
 export function BloomCover() {
   // Unique per instance: the slider renders desktop and mobile copies, and a filter
   // referenced from a hidden (display: none) copy would not apply.
-  const blurId = `lc-bloom-${useId().replace(/:/g, "")}`;
+  const id = useId().replace(/:/g, "");
+  const [po, pi, pc] = [`lc-po-${id}`, `lc-pi-${id}`, `lc-pc-${id}`];
   return (
     <Frame bg="#eef0e3" grain={0.06} speed={{ blob: 2, loop: 1.6 }}>
-      {/* The amber centre sits under the petals, as in the still. */}
-      <Blob sigma={60} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 70, ry: 70, color: "#f59e0b", opacity: 0.9 }} drift={{ dx: "10%", dy: "-8%", ds: 1.1, dxDur: 9, dyDur: 11 }} />
+      <Blob sigma={90} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 270, ry: 270, color: "#f472b6", opacity: 0.3 }} drift={{ dx: "4%", dy: "-3%", ds: 1.08, dxDur: 11, dyDur: 13 }} />
       <svg width="0" height="0" className="absolute" aria-hidden="true">
-        <filter id={blurId} x="-100%" y="-60%" width="300%" height="220%">
-          <feGaussianBlur stdDeviation="60" />
+        <filter id={po} x="-60%" y="-30%" width="220%" height="160%">
+          <feGaussianBlur stdDeviation="22" />
+        </filter>
+        <filter id={pi} x="-60%" y="-30%" width="220%" height="160%">
+          <feGaussianBlur stdDeviation="16" />
+        </filter>
+        <filter id={pc} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="10" />
         </filter>
       </svg>
       <div className={`${s.fill} ${s.sway}`} style={{ "--dur": "9s", "--sx": "3%", "--sy": "-2.5%" } as React.CSSProperties}>
         <div className={`${s.fill} ${s.open}`}>
           <div className={`${s.fill} ${s.spin}`}>
             {Array.from({ length: 8 }, (_, i) => (
-              <div key={i} className={s.fill} style={{ transform: `rotate(${45 * i}deg)`, transformOrigin: "50% 48.333%" }}>
-                <div className={`${s.fill} ${s.petal}`} style={{ "--delay": `${i * 0.45}s` } as React.CSSProperties}>
-                  <svg {...svgProps}>
-                    <ellipse cx="450" cy="455" rx="62.5" ry="125" fill="#f472b6" opacity={0.55 * 0.9} filter={`url(#${blurId})`} />
-                  </svg>
-                </div>
-              </div>
+              <Petal key={`o${i}`} angle={45 * i} delay={i * 0.4}>
+                <ellipse cx="450" cy="430" rx="78" ry="150" fill="#f472b6" opacity="0.75" filter={`url(#${po})`} />
+              </Petal>
             ))}
+            {Array.from({ length: 8 }, (_, i) => (
+              <Petal key={`i${i}`} angle={45 * i + 22.5} delay={i * 0.4 + 1.6}>
+                <ellipse cx="450" cy="488" rx="46" ry="92" fill="#fbcfe8" opacity="0.8" filter={`url(#${pi})`} />
+              </Petal>
+            ))}
+            <div className={`${s.fill} ${s.pulse}`} style={{ transformOrigin: FLOWER_ORIGIN }}>
+              <svg {...svgProps}>
+                <circle cx="450" cy="580" r="62" fill="#f59e0b" opacity="0.95" filter={`url(#${pc})`} />
+                {STAMENS.map((d, k) => (
+                  <circle key={k} cx={d.x} cy={d.y} r="6" fill="#b45309" opacity="0.55" />
+                ))}
+              </svg>
+            </div>
           </div>
         </div>
       </div>

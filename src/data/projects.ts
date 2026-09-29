@@ -84,7 +84,7 @@ export type Signature =
  *   typing – fanned case cards, top card writes itself      (ai-case-generator-1)
  *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
  *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
- *   bloom  – a slowly turning, breathing flower              (bloom-1)
+ *   bloom  – a turning flower whose petals breathe open      (bloom-1)
  * They only match those exact covers. With your own cover image, use
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
@@ -371,7 +371,7 @@ export const projects: Project[] = [
     subtitle: "A collective feedback garden designed for art galleries",
     coverMotion: "bloom",
     images: [
-      { src: "/projects/bloom-1.svg", alt: "Blurred pink flower with an amber centre on pale green" },
+      { src: "/projects/bloom-1.svg", alt: "A soft pink flower with an amber centre on pale green" },
       { src: "/projects/bloom-2.svg", alt: "Pale petals over dusk-coloured light on dark green" },
     ],
     year: "2024",
