@@ -40,9 +40,9 @@ export const footer: { title: string; items: FooterItem[] }[] = [
     items: [
       { label: "GitHub", href: "https://github.com/geobalabanov" },
       // TODO: replace with your profile URLs
-      { label: "LinkedIn", href: "https://www.linkedin.com/" },
-      { label: "Instagram", href: "https://www.instagram.com/" },
-      { label: "Strava", href: "https://www.strava.com/" },
+      { label: "LinkedIn", href: "https://www.linkedin.com/in/georgi-balabanov-831310339/" },
+      { label: "Instagram", href: "https://www.instagram.com/georgibalabanov1/" },
+      { label: "Strava", href: "https://www.strava.com/athletes/153229176?_gl=1*m1ogl9*_up*MQ..*_gs*MQ..&gclid=CjwKCAjww-3VBhAcEiwAwUUIu0y6IRzOMuN8D2m5EQBc1iay53ZllApzP917Qh7RBoyh1TntZRkCkRoCDQcQAvD_BwE&gbraid=0AAAAADqMnhDTF2xl8177AeUXJJvil-YJR" },
     ],
   },
   {
