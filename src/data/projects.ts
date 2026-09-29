@@ -181,7 +181,7 @@ export const projects: Project[] = [
     ],
     year: "Ongoing",
     role: "Athlete",
-    location: "Bulgaria & abroad",
+    location: "The Netherlands & abroad",
     // PLACEHOLDER intro
     intro:
       "Running is where the discipline comes from. Early mornings, long Sundays and the quiet maths of pacing: the same patience that goes into building products, measured in kilometres instead of commits.",
