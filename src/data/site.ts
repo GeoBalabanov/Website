@@ -47,7 +47,7 @@ export const footer: { title: string; items: FooterItem[] }[] = [
   },
   {
     title: "Tech Stack",
-    items: [{ label: "Next.js" }, { label: "TypeScript" }, { label: "Tailwind CSS" }, { label: "GSAP" }, { label: "Lenis" }],
+    items: [{ label: "Next.js" }, { label: "Swift Ui" }, { label: "TypeScript" }, { label: "Tailwind CSS" }, { label: "GSAP" }, { label: "Lenis" }],
   },
   {
     title: "Inspiration",
