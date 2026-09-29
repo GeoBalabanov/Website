@@ -1,11 +1,12 @@
 "use client";
 
-import { useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useLayoutEffect, useRef, useState, useSyncExternalStore } from "react";
 import { gsap } from "gsap";
 import type { Project } from "@/data/projects";
 import { prefersReducedMotion } from "@/lib/motion";
 import { ProjectImage } from "./ProjectImage";
 import { OpenProjectLink } from "./transition/OpenProjectLink";
+import { LivingCover } from "./living-cover/LivingCover";
 
 const MINOR_TICKS = 5;
 const WHEEL_THRESHOLD = 30;
@@ -13,8 +14,17 @@ const WHEEL_COOLDOWN = 1000;
 
 type Props = { projects: Project[] };
 
+// Which of the two slider layouts is on screen, so only that one animates its cover.
+const desktopQuery = "(min-width: 768px)";
+function subscribeDesktop(cb: () => void) {
+  const mq = window.matchMedia(desktopQuery);
+  mq.addEventListener("change", cb);
+  return () => mq.removeEventListener("change", cb);
+}
+
 export function ProjectSlider({ projects }: Props) {
   const [index, setIndex] = useState(0);
+  const desktop = useSyncExternalStore(subscribeDesktop, () => window.matchMedia(desktopQuery).matches, () => true);
   const count = projects.length;
 
   const layers = useRef<(HTMLDivElement | null)[]>([]);
@@ -204,6 +214,7 @@ export function ProjectSlider({ projects }: Props) {
                   >
                     <div className="absolute inset-0 will-change-transform">
                       <ProjectImage image={p.images[0]} sizes="(min-width: 768px) 40vw, 80vw" priority={i === 0} />
+                      {p.coverMotion && <LivingCover motion={p.coverMotion} src={p.images[0].src} active={desktop && i === index} />}
                     </div>
                   </div>
                 ))}
@@ -250,6 +261,7 @@ export function ProjectSlider({ projects }: Props) {
               <OpenProjectLink project={p} tabIndex={i === index ? undefined : -1}>
                 <div data-flip-id={p.slug} className="relative aspect-[3/4] w-full overflow-hidden bg-ink/5">
                   <ProjectImage image={p.images[0]} sizes="78vw" priority={i === 0} />
+                  {p.coverMotion && <LivingCover motion={p.coverMotion} src={p.images[0].src} active={!desktop && i === index} />}
                 </div>
               </OpenProjectLink>
               <div className="mt-3 text-[15px] leading-snug">

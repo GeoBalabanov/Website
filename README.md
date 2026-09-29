@@ -21,5 +21,6 @@ npm run build && npm start
 - **Signature sections:** set `signature.type` to reuse a style: `route-map`, `pulse-results`, `horizontal-steps`, `kinetic-type`, `webgl-distort` or `bloom-garden`. Components live in `src/components/project/signatures/`.
 - **Placeholders:** everything marked `PLACEHOLDER` in `projects.ts` (and shown with a small "Placeholder" tag on the page) is sample content. For the marathon, set `raceDate.iso` to start the countdown and `registerUrl` to your registration link.
 - **Images:** put portrait (3:4) images in `public/projects/` and point `images[].src` at them. The current SVGs are placeholders.
+- **Living covers (Slider only):** `coverMotion` picks the looping animation of a project's cover on the homepage slider. `lava`, `tracks`, `typing`, `voice`, `ripple` and `bloom` are code-drawn copies of the six placeholder covers; when you swap in your own image, set `coverMotion: "drift"` (slow zoom and pan) or remove it for a still cover. The grid and project pages always show the still image.
 - **Name, tagline, About text, footer links:** `src/data/site.ts`.
 - **Colors and fonts:** the `@theme` block in `src/app/globals.css` and the font setup in `src/app/layout.tsx`.

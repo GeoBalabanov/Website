@@ -73,6 +73,23 @@ export type Signature =
   | { type: "webgl-distort"; images: ProjectImage[]; caption: string }
   | { type: "bloom-garden"; total: number; notes: string[] };
 
+/**
+ * "Living poster" loop for the cover in the homepage Slider (grid and project
+ * pages always show the still image).
+ *
+ * The first six are code-drawn copies of the placeholder cover artwork, animated:
+ *   lava   – drifting orange/red blobs that breathe          (plovdiv-marathon-1)
+ *   tracks – drifting blobs, flowing track lines + runners   (marathon-running-1)
+ *   typing – floating papers, lines typing in, shifting glow (ai-case-generator-1)
+ *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
+ *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
+ *   bloom  – a slowly turning, breathing flower              (bloom-1)
+ * They only match those exact covers. With your own cover image, use
+ *   drift  – slow zoom and pan over whatever image is set
+ * or leave it out for a still cover.
+ */
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift";
+
 export type Project = {
   slug: string;
   number: string;
@@ -80,6 +97,7 @@ export type Project = {
   subtitle: string;
   images: ProjectImage[];
   link?: string;
+  coverMotion?: CoverMotion;
 
   year: string;
   role: string;
@@ -103,6 +121,7 @@ export const projects: Project[] = [
     number: "01",
     title: "Plovdiv Marathon",
     subtitle: "Organizer · Plovdiv, Bulgaria",
+    coverMotion: "lava",
     images: [
       { src: "/projects/plovdiv-marathon-1.svg", alt: "Warm orange glow on a black poster background" },
       { src: "/projects/plovdiv-marathon-2.svg", alt: "Dotted marathon route drawn across a cream background" },
@@ -140,6 +159,7 @@ export const projects: Project[] = [
     number: "02",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
+    coverMotion: "tracks",
     images: [
       { src: "/projects/marathon-running-1.svg", alt: "Curved running-track lanes over a pale green haze" },
       { src: "/projects/marathon-running-2.svg", alt: "Light track lanes sweeping across a dark green background" },
@@ -214,6 +234,7 @@ export const projects: Project[] = [
     number: "03",
     title: "AI Case Generator",
     subtitle: "Turning real social work documents into educational case scenarios",
+    coverMotion: "typing",
     images: [
       { src: "/projects/ai-case-generator-1.svg", alt: "Stacked paper documents over a soft violet glow" },
       { src: "/projects/ai-case-generator-2.svg", alt: "Blue light on a dark navy grid" },
@@ -256,6 +277,7 @@ export const projects: Project[] = [
     number: "04",
     title: "Dating App",
     subtitle: "A dating concept built around personality, music and voice",
+    coverMotion: "voice",
     images: [
       { src: "/projects/dating-app-1.svg", alt: "Two pink and orange glows above a voice waveform" },
       { src: "/projects/dating-app-2.svg", alt: "Dark voice waveform on a soft pink background" },
@@ -291,6 +313,7 @@ export const projects: Project[] = [
     number: "05",
     title: "Corsa Car Audio",
     subtitle: "A voice-controlled music interface designed for safer driving",
+    coverMotion: "ripple",
     images: [
       { src: "/projects/corsa-car-audio-1.svg", alt: "Concentric speaker rings glowing teal on black" },
       { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background" },
@@ -331,6 +354,7 @@ export const projects: Project[] = [
     number: "06",
     title: "Bloom",
     subtitle: "A collective feedback garden designed for art galleries",
+    coverMotion: "bloom",
     images: [
       { src: "/projects/bloom-1.svg", alt: "Blurred pink flower with an amber centre on pale green" },
       { src: "/projects/bloom-2.svg", alt: "Pale petals over dusk-coloured light on dark green" },
