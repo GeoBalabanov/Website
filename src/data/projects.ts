@@ -64,8 +64,9 @@ export type Signature =
   | {
       type: "route-map";
       distanceKm: number;
+      /** Times the loop on the map is run (the map loop is distanceKm / laps). Default 1. */
+      laps?: number;
       raceDate: { label: string; /** ISO date-time, e.g. "2027-04-18T08:00:00+03:00". Empty = countdown shows dashes. */ iso: string };
-      registerUrl: string;
     }
   | { type: "pulse-results"; restingBpm: number; peakBpm: number; results: RaceResult[] }
   | { type: "horizontal-steps"; steps: { title: string; text: string }[] }
@@ -132,13 +133,15 @@ export const projects: Project[] = [
     location: "Plovdiv, Bulgaria",
     // PLACEHOLDER intro
     intro:
-      "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The route winds from the Old Town across the Maritsa and back, and every kilometre is planned for runners and for the city that hosts them.",
-    theme: { bg: "#efe4d6", fg: "#2a1a12", muted: "#6b4f40", accent: "#b8482a", accent2: "#e9822f", font: "fraunces" },
+      "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The loop runs from the Rowing Canal along the Maritsa and through the centre, and every kilometre is planned for runners and for the city that hosts them.",
+    // Night-blue with gold: the route and numbers in gold, the river and runner in sky blue.
+    theme: { bg: "#0d1b33", fg: "#edf1f7", muted: "#9fb0c9", accent: "#f2b441", accent2: "#6cb8ff", font: "fraunces" },
     signature: {
       type: "route-map",
       distanceKm: 42.195,
+      // The course map is a ~21.1 km loop (km markers 1–21), run twice for the marathon.
+      laps: 2,
       raceDate: { label: "[Race date]", iso: "" }, // PLACEHOLDER: set iso to start the live countdown
-      registerUrl: "[Registration link]", // PLACEHOLDER
     },
     gallery: [
       img("plovdiv-marathon", "wide-1", "Placeholder: evening light over the start area", true),

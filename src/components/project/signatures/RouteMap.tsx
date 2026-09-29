@@ -8,28 +8,47 @@ import { PlaceholderTag, SectionLabel } from "../bits";
 
 type Data = Extract<Signature, { type: "route-map" }>;
 
-// Stylized Plovdiv: the Maritsa, the hills and a loop through the city.
-// PLACEHOLDER: the route is illustrative, not the real course.
-const ROUTE =
-  "M330 250 C 330 210, 320 180, 330 150 S 330 80, 380 70 S 560 50, 620 80 S 680 140, 650 180 S 600 250, 620 320 S 640 430, 560 470 S 400 510, 300 500 S 150 500, 130 450 S 140 350, 190 300 S 290 270, 330 250";
+/*
+ * Map of Plovdiv traced from the official course map (viewBox matches the
+ * source image, 1796×958). The loop starts and finishes by the Rowing Canal.
+ */
+const MAP_W = 1796;
+const MAP_H = 958;
 
-const HILLS = [
-  { name: "Nebet Tepe", x: 392, y: 212, r: 26 },
-  { name: "Dzhambaz Tepe", x: 446, y: 246, r: 22 },
-  { name: "Taksim Tepe", x: 410, y: 288, r: 24 },
-  { name: "Sahat Tepe", x: 520, y: 338, r: 30 },
-  { name: "Bunardzhik", x: 236, y: 310, r: 34 },
-  { name: "Dzhendem Tepe", x: 176, y: 420, r: 40 },
+// Course, in running order, from the start/finish by the Rowing Canal.
+const COURSE: [number, number][] = [
+  [425, 338], [437, 336], [475, 300], [492, 282], [530, 240], [568, 272], [585, 318], [593, 352], [593, 370], [597, 408],
+  [668, 403], [695, 410], [640, 415], [603, 420], [540, 447], [487, 470], [447, 487], [467, 548], [480, 598], [500, 700],
+  [515, 788], [535, 862], [570, 890], [608, 826], [625, 797], [640, 771], [673, 712], [740, 690], [815, 682], [862, 670],
+  [930, 653], [1000, 635], [1033, 622], [1043, 612], [1100, 555], [1195, 465], [1203, 440], [1200, 400], [1198, 357],
+  [1192, 310], [1185, 270], [1178, 205], [1205, 168], [1235, 178], [1258, 183], [1350, 157], [1380, 148], [1415, 147],
+  [1438, 148], [1438, 130], [1438, 116], [1475, 116], [1500, 115], [1550, 103], [1578, 100], [1585, 130], [1690, 105],
+  [1662, 48], [1650, 55], [1637, 65], [1600, 85], [1550, 100], [1500, 112], [1403, 112], [1355, 107], [1225, 112],
+  [1165, 125], [1063, 148], [1030, 155], [983, 157], [950, 158], [922, 157], [855, 157], [823, 155], [784, 156],
+  [741, 156], [672, 156], [634, 157], [553, 167], [510, 185], [503, 208], [478, 233], [320, 368], [283, 400], [135, 527],
+  [95, 563], [118, 588], [228, 492], [425, 338],
 ];
+const ROUTE = COURSE.map(([x, y], i) => `${i ? "L" : "M"}${x} ${y}`).join(" ");
 
-// PLACEHOLDER elevation profile (metres), sampled evenly along the route.
+const RIVER = "M-20 470 C 100 410, 250 330, 400 225 S 540 150, 640 138 S 900 128, 1100 118 S 1400 96, 1550 84 S 1720 60, 1820 48";
+const CANAL = "M92 566 L478 226 L512 210 L524 236 L126 594 Z";
+
+// Label offsets keep names clear of the course.
+const HILLS = [
+  { name: "Youth Hill", x: 800, y: 555, rx: 95, ry: 88, lx: 800, ly: 452, anchor: "middle" },
+  { name: "Bunardzhik", x: 930, y: 380, rx: 62, ry: 72, lx: 930, ly: 478, anchor: "middle" },
+  { name: "Sahat Tepe", x: 1100, y: 332, rx: 34, ry: 38, lx: 1100, ly: 396, anchor: "middle" },
+  { name: "Nebet Tepe", x: 1222, y: 212, rx: 30, ry: 24, lx: 1262, ly: 240, anchor: "start" },
+] as const;
+
+// PLACEHOLDER elevation profile (metres) for one loop: Plovdiv's course is mostly flat along the river.
 const ELEVATION = Array.from({ length: 64 }, (_, i) => {
   const f = i / 63;
   const bump = (c: number, w: number, h: number) => h * Math.exp(-((f - c) ** 2) / (2 * w * w));
-  return 160 + 4 * Math.sin(f * 30) + bump(0.06, 0.03, 34) + bump(0.47, 0.04, 22) + bump(0.78, 0.05, 38) + bump(0.97, 0.025, 26);
+  return 158 + 3 * Math.sin(f * 26) + bump(0.28, 0.05, 10) + bump(0.45, 0.04, 8) - bump(0.75, 0.08, 6);
 });
 const E_MIN = 140;
-const E_MAX = 215;
+const E_MAX = 190;
 const ey = (e: number) => 130 - ((e - E_MIN) / (E_MAX - E_MIN)) * 115;
 const PROFILE_LINE = ELEVATION.map((e, i) => `${i === 0 ? "M" : "L"}${((i / 63) * 800).toFixed(1)} ${ey(e).toFixed(1)}`).join(" ");
 const PROFILE_AREA = `${PROFILE_LINE} L800 140 L0 140 Z`;
@@ -37,35 +56,45 @@ const PROFILE_AREA = `${PROFILE_LINE} L800 140 L0 140 Z`;
 export function RouteMap({ data }: { project: Project; data: Data }) {
   const root = useRef<HTMLElement>(null);
   const pinned = useRef<HTMLDivElement>(null);
+  const laps = data.laps ?? 1;
+  const loopKm = data.distanceKm / laps;
 
   useScene(root, ({ reduced, mobile }) => {
     const q = gsap.utils.selector(root);
     const path = q("[data-route]")[0] as unknown as SVGPathElement;
+    const again = q("[data-route-again]")[0] as unknown as SVGPathElement | undefined;
     const len = path.getTotalLength();
     const runner = q("[data-runner]")[0];
     const km = q("[data-km]")[0];
+    const lap = q("[data-lap]")[0];
     const markers = q("[data-marker]");
     const clip = q("[data-profile-clip]")[0];
     const cursor = q("[data-profile-cursor]")[0];
     const elev = q("[data-elev]")[0];
 
-    // Kilometre markers sit on the path.
+    // Kilometre markers sit on the loop.
     markers.forEach((m) => {
-      const pt = path.getPointAtLength((Number(m.getAttribute("data-marker")) / data.distanceKm) * len);
+      const pt = path.getPointAtLength((Number(m.getAttribute("data-marker")) / loopKm) * len);
       gsap.set(m, { x: pt.x, y: pt.y });
     });
 
     const shown = markers.map(() => false);
     const render = (p: number) => {
-      const pt = path.getPointAtLength(p * len);
+      const run = p * laps; // 0 … laps
+      const lapIndex = Math.min(laps - 1, Math.floor(run));
+      const f = Math.min(1, run - lapIndex); // position on the current loop
+      const pt = path.getPointAtLength(f * len);
       gsap.set(runner, { x: pt.x, y: pt.y });
-      path.style.strokeDashoffset = String(len * (1 - p));
+      // First lap draws the course; later laps trace over it in a brighter line.
+      path.style.strokeDashoffset = String(len * (1 - Math.min(1, run)));
+      if (again) again.style.strokeDashoffset = String(len * (1 - Math.max(0, Math.min(1, run - 1))));
       km.textContent = (p * data.distanceKm).toFixed(3);
-      gsap.set(clip, { scaleX: p });
-      gsap.set(cursor, { x: p * 800 });
-      elev.textContent = `${Math.round(ELEVATION[Math.min(63, Math.round(p * 63))])} m`;
+      if (lap) lap.textContent = `Lap ${lapIndex + 1} / ${laps}`;
+      gsap.set(clip, { scaleX: f });
+      gsap.set(cursor, { x: f * 800 });
+      elev.textContent = `${Math.round(ELEVATION[Math.min(63, Math.round(f * 63))])} m`;
       markers.forEach((m, i) => {
-        const passed = p * data.distanceKm >= Number(m.getAttribute("data-marker"));
+        const passed = Math.min(1, run) * loopKm >= Number(m.getAttribute("data-marker"));
         if (passed === shown[i]) return;
         shown[i] = passed;
         gsap.to(m, { autoAlpha: passed ? 1 : 0, scale: passed ? 1 : 0.4, duration: 0.3, overwrite: true });
@@ -73,6 +102,7 @@ export function RouteMap({ data }: { project: Project; data: Data }) {
     };
 
     path.style.strokeDasharray = String(len);
+    if (again) again.style.strokeDasharray = String(len);
     if (reduced) {
       render(1);
       return;
@@ -83,20 +113,25 @@ export function RouteMap({ data }: { project: Project; data: Data }) {
       p: 1,
       ease: "none",
       onUpdate: () => render(state.p),
-      scrollTrigger: { trigger: pinned.current, start: "top top", end: mobile ? "+=180%" : "+=260%", pin: true, scrub: 0.8 },
+      scrollTrigger: { trigger: pinned.current, start: "top top", end: mobile ? "+=200%" : "+=300%", pin: true, scrub: 0.8 },
     });
   });
 
+  const markerKms = Array.from({ length: Math.floor(loopKm / 5) }, (_, i) => (i + 1) * 5);
+
   return (
     <section ref={root} aria-labelledby="route-title">
-      <div ref={pinned} className="flex h-dvh flex-col gap-6 px-4 pt-28 pb-8 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,1.7fr)] md:gap-10 md:px-10 md:pt-28">
+      <div ref={pinned} className="flex h-dvh flex-col gap-6 px-4 pt-28 pb-8 md:grid md:grid-cols-[minmax(0,1fr)_minmax(0,2fr)] md:gap-10 md:px-10 md:pt-28">
         <div className="flex flex-col">
-          <SectionLabel index="02" placeholder>
-            The route
-          </SectionLabel>
+          <SectionLabel index="02">The route</SectionLabel>
           <h2 id="route-title" className="font-display mt-4 text-[clamp(1.75rem,3.4vw,3.5rem)] leading-[1] tracking-[-0.02em] md:mt-6">
-            One loop through the city of hills
+            Along the Maritsa, through the city of hills
           </h2>
+          {laps > 1 && (
+            <p data-lap className="mt-4 font-mono text-xs tracking-widest text-[var(--p-accent-2)] uppercase md:mt-6">
+              Lap {laps} / {laps}
+            </p>
+          )}
           <p className="mt-auto hidden font-mono text-xs tracking-widest text-[var(--p-muted)] uppercase md:block">Distance</p>
           <p className="font-display text-[clamp(3rem,8vw,8.5rem)] leading-none tracking-[-0.04em] tabular-nums text-[var(--p-accent)]" aria-live="off">
             <span data-km>{data.distanceKm.toFixed(3)}</span>
@@ -104,60 +139,82 @@ export function RouteMap({ data }: { project: Project; data: Data }) {
           </p>
         </div>
 
-        <div className="flex min-h-0 flex-1 flex-col gap-3">
-          <svg viewBox="0 0 800 540" className="min-h-0 w-full flex-1" role="img" aria-label="Stylized map of Plovdiv with the marathon route looping from the Old Town across the Maritsa and back">
+        <div className="flex min-h-0 flex-1 flex-col justify-center gap-3">
+          <svg
+            viewBox={`0 0 ${MAP_W} ${MAP_H}`}
+            className="max-h-full min-h-0 w-full"
+            role="img"
+            aria-label={`Map of Plovdiv with the ${loopKm.toFixed(1)} km loop: from the Rowing Canal along the Maritsa, past Youth Hill and through the centre${laps > 1 ? `, run ${laps} times` : ""}`}
+          >
             <defs>
-              <pattern id="streets" width="26" height="26" patternUnits="userSpaceOnUse" patternTransform="rotate(18)">
-                <path d="M0 0 H26 M0 0 V26" stroke="var(--p-fg)" strokeOpacity="0.07" strokeWidth="1" />
+              <pattern id="streets" width="34" height="34" patternUnits="userSpaceOnUse" patternTransform="rotate(-16)">
+                <path d="M0 0 H34 M0 0 V34" stroke="var(--p-fg)" strokeOpacity="0.06" strokeWidth="1.2" />
               </pattern>
             </defs>
-            <rect width="800" height="540" rx="6" fill="var(--p-fg)" fillOpacity="0.04" />
-            <rect width="800" height="540" rx="6" fill="url(#streets)" />
-            {/* Maritsa river */}
-            <path d="M-20 150 C 120 118, 220 190, 360 160 S 600 108, 820 146" fill="none" stroke="#7fa2a8" strokeOpacity="0.45" strokeWidth="26" strokeLinecap="round" />
-            <text x="690" y="118" fill="#56777d" fontSize="15" fontStyle="italic" fontFamily="var(--p-display)">
+            <rect width={MAP_W} height={MAP_H} rx="10" fill="var(--p-fg)" fillOpacity="0.035" />
+            <rect width={MAP_W} height={MAP_H} rx="10" fill="url(#streets)" />
+
+            {/* Rowing Canal park, the Maritsa and the canal itself */}
+            <path d="M40 600 L470 190 L620 230 L700 420 L470 520 L220 640 Z" fill="var(--p-fg)" fillOpacity="0.035" />
+            <path d={RIVER} fill="none" stroke="var(--p-accent-2)" strokeOpacity="0.28" strokeWidth="34" strokeLinecap="round" />
+            <path d={CANAL} fill="var(--p-accent-2)" fillOpacity="0.22" />
+            <text x="760" y="104" fill="var(--p-accent-2)" fontSize="26" fontStyle="italic" fontFamily="var(--p-display)">
               Maritsa
             </text>
-            {/* Hills with contour lines */}
+            <text x="190" y="470" fill="var(--p-muted)" fontSize="17" fontFamily="var(--font-mono)" transform="rotate(-41 190 470)" letterSpacing="2">
+              ROWING CANAL
+            </text>
+
             {HILLS.map((h) => (
               <g key={h.name}>
-                {[1, 0.7, 0.42].map((k) => (
-                  <ellipse key={k} cx={h.x} cy={h.y} rx={h.r * k * 1.25} ry={h.r * k} fill="var(--p-fg)" fillOpacity={0.035} stroke="var(--p-fg)" strokeOpacity="0.28" />
+                {[1, 0.66, 0.34].map((k) => (
+                  <ellipse key={k} cx={h.x} cy={h.y} rx={h.rx * k} ry={h.ry * k} fill="var(--p-fg)" fillOpacity={0.035} stroke="var(--p-fg)" strokeOpacity="0.22" strokeWidth="1.5" />
                 ))}
-                <text x={h.x} y={h.y + h.r + 16} textAnchor="middle" fontSize="11" fill="var(--p-muted)" fontFamily="var(--font-mono)">
+                <text x={h.lx} y={h.ly} textAnchor={h.anchor} fontSize="17" fill="var(--p-muted)" fontFamily="var(--font-mono)">
                   {h.name}
                 </text>
               </g>
             ))}
-            <text x="296" y="236" fontSize="12" fill="var(--p-fg)" fontFamily="var(--font-mono)" textAnchor="end">
-              OLD TOWN · START / FINISH
+            <text x="1262" y="320" fontSize="17" fill="var(--p-muted)" fontFamily="var(--font-mono)">
+              KAPANA · CENTRE
             </text>
-            {/* Route: faint full course, then the drawn part */}
-            <path d={ROUTE} fill="none" stroke="var(--p-fg)" strokeOpacity="0.18" strokeWidth="3" strokeDasharray="2 8" strokeLinecap="round" />
-            <path data-route d={ROUTE} fill="none" stroke="var(--p-accent)" strokeWidth="5" strokeLinecap="round" strokeLinejoin="round" />
-            {[5, 10, 15, 20, 25, 30, 35, 40].map((k) => (
+
+            {/* Course: faint full loop, the drawn first lap, then later laps in a brighter trace */}
+            <path d={ROUTE} fill="none" stroke="var(--p-fg)" strokeOpacity="0.22" strokeWidth="4" strokeDasharray="3 12" strokeLinecap="round" strokeLinejoin="round" />
+            <path data-route d={ROUTE} fill="none" stroke="var(--p-accent)" strokeOpacity={laps > 1 ? 0.55 : 1} strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />
+            {laps > 1 && <path data-route-again d={ROUTE} fill="none" stroke="var(--p-accent)" strokeWidth="7" strokeLinecap="round" strokeLinejoin="round" />}
+
+            {markerKms.map((k) => (
               <g key={k} data-marker={k} style={{ opacity: 0 }}>
-                <circle r="11" fill="var(--p-bg)" stroke="var(--p-accent)" strokeWidth="2" />
-                <text textAnchor="middle" dy="4" fontSize="10" fontWeight="700" fill="var(--p-accent)" fontFamily="var(--font-mono)">
+                <circle r="19" fill="var(--p-bg)" stroke="var(--p-accent)" strokeWidth="3" />
+                <text textAnchor="middle" dy="6" fontSize="17" fontWeight="700" fill="var(--p-accent)" fontFamily="var(--font-mono)">
                   {k}
                 </text>
               </g>
             ))}
-            <circle cx="330" cy="250" r="6" fill="var(--p-fg)" />
+
+            <g>
+              <circle cx="425" cy="338" r="11" fill="var(--p-fg)" />
+              <text x="400" y="330" textAnchor="end" fontSize="18" fill="var(--p-fg)" fontFamily="var(--font-mono)">
+                START / FINISH
+              </text>
+            </g>
             <g data-runner>
-              <circle r="16" fill="var(--p-accent-2)" fillOpacity="0.35" className="animate-ping motion-reduce:animate-none" style={{ transformBox: "fill-box", transformOrigin: "center" }} />
-              <circle r="8" fill="var(--p-accent-2)" stroke="var(--p-bg)" strokeWidth="3" />
+              <circle r="26" fill="var(--p-accent-2)" fillOpacity="0.35" className="animate-ping motion-reduce:animate-none" style={{ transformBox: "fill-box", transformOrigin: "center" }} />
+              <circle r="13" fill="var(--p-accent-2)" stroke="var(--p-bg)" strokeWidth="4" />
             </g>
           </svg>
 
           <div className="shrink-0">
             <div className="flex justify-between font-mono text-[11px] tracking-wide text-[var(--p-muted)] uppercase">
-              <span>Elevation</span>
+              <span className="flex items-center gap-2">
+                Elevation <PlaceholderTag />
+              </span>
               <span data-elev className="tabular-nums text-[var(--p-fg)]">
                 160 m
               </span>
             </div>
-            <svg viewBox="0 0 800 140" preserveAspectRatio="none" className="mt-1 h-[11dvh] w-full" aria-hidden="true">
+            <svg viewBox="0 0 800 140" preserveAspectRatio="none" className="mt-1 h-[9dvh] w-full" aria-hidden="true">
               <defs>
                 <clipPath id="profile-clip">
                   <rect data-profile-clip width="800" height="140" style={{ transformOrigin: "0 0" }} />
@@ -183,7 +240,6 @@ export function RouteMap({ data }: { project: Project; data: Data }) {
 function RaceDay({ data }: { data: Data }) {
   const target = data.raceDate.iso ? new Date(data.raceDate.iso).getTime() : null;
   const [now, setNow] = useState<number | null>(null);
-  const button = useRef<HTMLAnchorElement>(null);
 
   useEffect(() => {
     if (!target) return;
@@ -193,29 +249,6 @@ function RaceDay({ data }: { data: Data }) {
     return () => window.clearInterval(id);
   }, [target]);
 
-  // Magnetic pull on the Register button (desktop pointers only).
-  useEffect(() => {
-    const el = button.current;
-    if (!el || !window.matchMedia("(hover: hover) and (prefers-reduced-motion: no-preference)").matches) return;
-    const xTo = gsap.quickTo(el, "x", { duration: 0.5, ease: "elastic.out(1, 0.4)" });
-    const yTo = gsap.quickTo(el, "y", { duration: 0.5, ease: "elastic.out(1, 0.4)" });
-    const move = (e: PointerEvent) => {
-      const r = el.getBoundingClientRect();
-      xTo((e.clientX - r.left - r.width / 2) * 0.25);
-      yTo((e.clientY - r.top - r.height / 2) * 0.25);
-    };
-    const leave = () => {
-      xTo(0);
-      yTo(0);
-    };
-    el.addEventListener("pointermove", move);
-    el.addEventListener("pointerleave", leave);
-    return () => {
-      el.removeEventListener("pointermove", move);
-      el.removeEventListener("pointerleave", leave);
-    };
-  }, []);
-
   const left = target && now ? Math.max(0, target - now) : null;
   const parts = [
     ["Days", left === null ? null : Math.floor(left / 86_400_000)],
@@ -223,7 +256,6 @@ function RaceDay({ data }: { data: Data }) {
     ["Minutes", left === null ? null : Math.floor(left / 60_000) % 60],
     ["Seconds", left === null ? null : Math.floor(left / 1000) % 60],
   ] as const;
-  const isUrl = /^https?:\/\//.test(data.registerUrl);
 
   return (
     <div className="px-4 py-[14vh] md:px-10">
@@ -239,20 +271,6 @@ function RaceDay({ data }: { data: Data }) {
             <div className="mt-2 font-mono text-[10px] tracking-widest text-[var(--p-muted)] uppercase md:text-xs">{label}</div>
           </div>
         ))}
-      </div>
-
-      <div className="mt-14 flex flex-col items-start gap-3">
-        <a
-          ref={button}
-          href={isUrl ? data.registerUrl : "#register"}
-          target={isUrl ? "_blank" : undefined}
-          rel={isUrl ? "noreferrer" : undefined}
-          onClick={(e) => !isUrl && e.preventDefault()}
-          className="font-display inline-flex items-center gap-4 rounded-full bg-[var(--p-accent)] px-10 py-6 text-[clamp(2rem,5vw,4.5rem)] leading-none text-[var(--p-bg)] transition-colors hover:bg-[var(--p-fg)] md:px-14 md:py-8"
-        >
-          Register <span aria-hidden="true">→</span>
-        </a>
-        {!isUrl && <PlaceholderTag>{data.registerUrl}</PlaceholderTag>}
       </div>
     </div>
   );
