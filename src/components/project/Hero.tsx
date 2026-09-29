@@ -1,12 +1,14 @@
 "use client";
 
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import { gsap } from "gsap";
 import { SplitText } from "gsap/SplitText";
 import type { Project } from "@/data/projects";
 import { useScene } from "@/lib/use-scene";
 import { useProjectTransition } from "@/components/transition/ProjectTransition";
+import { prefersReducedMotion } from "@/lib/motion";
+import { CorsaStage } from "./hero-scenes/CorsaStage";
 
 export function Hero({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
@@ -15,6 +17,27 @@ export function Hero({ project }: { project: Project }) {
   // A theme may bring its own title size (wide faces need smaller type).
   const custom = project.theme.titleClass ?? "";
   const titleClass = custom.includes("text-[") ? custom : `text-[clamp(3.25rem,11vw,11.5rem)] ${custom}`;
+
+  // Live 3D hero (if the project has one): mounts after hydration, fades in over the
+  // still (a render of its first frame) and only runs while the hero is on screen.
+  const [scene, setScene] = useState<{ on: boolean; ready: boolean; visible: boolean }>({ on: false, ready: false, visible: true });
+  useEffect(() => {
+    if (!project.heroScene || prefersReducedMotion()) return;
+    const el = root.current!;
+    let inView = true;
+    const update = () => setScene((s) => ({ ...s, on: true, visible: inView && !document.hidden }));
+    const io = new IntersectionObserver(([e]) => {
+      inView = e.isIntersecting;
+      update();
+    });
+    io.observe(el);
+    document.addEventListener("visibilitychange", update);
+    update();
+    return () => {
+      io.disconnect();
+      document.removeEventListener("visibilitychange", update);
+    };
+  }, [project.heroScene]);
 
   useScene(root, ({ reduced }) => {
     const title = root.current!.querySelector<HTMLElement>("[data-title]")!;
@@ -61,6 +84,11 @@ export function Hero({ project }: { project: Project }) {
             className="object-cover"
             onLoad={() => heroReady(project.slug)}
           />
+          {scene.on && project.heroScene === "corsa-head" && (
+            <div className={`absolute inset-0 transition-opacity duration-1000 ${scene.ready ? "opacity-100" : "opacity-0"}`}>
+              <CorsaStage paused={!scene.visible} onReady={() => setScene((s) => ({ ...s, ready: true }))} />
+            </div>
+          )}
         </div>
       </div>
       <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />

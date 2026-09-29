@@ -99,6 +99,8 @@ export type Project = {
   images: ProjectImage[];
   link?: string;
   coverMotion?: CoverMotion;
+  /** A live 3D scene that plays over the hero image on the project page. */
+  heroScene?: "corsa-head";
 
   year: string;
   role: string;
@@ -329,8 +331,9 @@ export const projects: Project[] = [
     title: "Corsa Car Audio",
     subtitle: "A voice-controlled music interface designed for safer driving",
     coverMotion: "drift",
+    heroScene: "corsa-head",
     images: [
-      { src: "/projects/corsa-car-audio-cover.jpg", alt: "Glossy dark figure lit by an iridescent streak of light on violet" },
+      { src: "/projects/corsa-car-audio-cover.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
       { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background" },
       { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon" },
     ],
