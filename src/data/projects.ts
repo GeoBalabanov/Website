@@ -81,7 +81,7 @@ export type Signature =
  * The first six are code-drawn copies of the placeholder cover artwork, animated:
  *   lava   – drifting orange/red blobs that breathe          (plovdiv-marathon-1)
  *   tracks – drifting blobs, flowing track lines + runners   (marathon-running-1)
- *   typing – floating papers, lines typing in, shifting glow (ai-case-generator-1)
+ *   typing – fanned case cards, top card writes itself      (ai-case-generator-1)
  *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
  *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
  *   bloom  – a slowly turning, breathing flower              (bloom-1)
@@ -251,9 +251,9 @@ export const projects: Project[] = [
     subtitle: "Turning real social work documents into educational case scenarios",
     coverMotion: "typing",
     images: [
-      { src: "/projects/ai-case-generator-1.svg", alt: "Stacked paper documents over a soft violet glow" },
+      { src: "/projects/ai-case-generator-1.svg", alt: "Three case-scenario cards fanned out over a deep blue glow" },
       { src: "/projects/ai-case-generator-2.svg", alt: "Blue light on a dark navy grid" },
-      { src: "/projects/ai-case-generator-3.svg", alt: "Pale lavender gradient study" },
+      { src: "/projects/ai-case-generator-3.svg", alt: "A single case card close up in teal and violet light" },
     ],
     year: "2025",
     role: "Design & Development",

@@ -96,51 +96,84 @@ export function TracksCover() {
   );
 }
 
-/* ---------------- 03 AI Case Generator: floating papers, the top page types itself ---------------- */
-const TYPE_CYCLE = 9; // seconds
-const LINE_W = (j: number) => (j % 3 === 2 ? 180 : 300);
+/* ---------------- 03 AI Case Generator: case cards fan out, the top card writes itself ---------------- */
+const TYPE_CYCLE = 8; // seconds
+const TYPE_LINES = 6;
+const LINE_W = (j: number) => (j % 3 === 2 ? 200 : 330);
 
 // One keyframe per line: type in turn, hold, clear together, repeat.
-const typingKeyframes = Array.from({ length: 9 }, (_, j) => {
-  const start = (0.4 + j * 0.5) / TYPE_CYCLE;
-  const end = start + 0.42 / TYPE_CYCLE;
+const typingKeyframes = Array.from({ length: TYPE_LINES }, (_, j) => {
+  const start = (0.5 + j * 0.55) / TYPE_CYCLE;
+  const end = start + 0.45 / TYPE_CYCLE;
   const p = (x: number) => `${(x * 100).toFixed(2)}%`;
   return `@keyframes lc-type-${j} {
-    0%, ${p(start)} { transform: scaleX(0); opacity: 0.35; }
-    ${p(end)}, 86% { transform: scaleX(1); opacity: 0.35; }
+    0%, ${p(start)} { transform: scaleX(0); opacity: 1; }
+    ${p(end)}, 86% { transform: scaleX(1); opacity: 1; }
     93% { transform: scaleX(1); opacity: 0; }
     94%, 100% { transform: scaleX(0); opacity: 0; }
   }`;
 }).join("\n");
 
+/** A case-scenario card (same geometry as the still cover). `content` only on the top card. */
+function CaseCard({ content }: { content?: boolean }) {
+  return (
+    <>
+      <rect width="420" height="540" rx="28" fill="#1b1f5a" fillOpacity="0.92" stroke="#ffffff" strokeOpacity="0.35" strokeWidth="1.5" />
+      {content && (
+        <>
+          <circle cx="64" cy="70" r="26" fill="#ffffff" fillOpacity="0.55" />
+          <rect x="104" y="58" width="150" height="10" rx="5" fill="#ffffff" fillOpacity="0.7" />
+          <rect x="104" y="78" width="96" height="8" rx="4" fill="#ffffff" fillOpacity="0.4" />
+          {Array.from({ length: TYPE_LINES }, (_, j) => (
+            <rect
+              key={j}
+              x="40"
+              y={150 + j * 40}
+              width={LINE_W(j)}
+              height="10"
+              rx="5"
+              fill="#ffffff"
+              fillOpacity="0.5"
+              className={s.typeLine}
+              // Start mid-hold so the first frame shows the card fully written, like the still.
+              style={{ animation: `lc-type-${j} calc(${TYPE_CYCLE}s / var(--speed, 1)) linear calc(-5.5s / var(--speed, 1)) infinite` }}
+            />
+          ))}
+          <g className={s.pulse} style={{ transformBox: "fill-box", transformOrigin: "center" }}>
+            <rect x="40" y="440" width="120" height="44" rx="22" fill="#a5b4fc" fillOpacity="0.9" />
+          </g>
+        </>
+      )}
+    </>
+  );
+}
+
+// The fanned stack: [x, y, rotation, opacity, fan direction].
+const CARDS = [
+  [150, 420, -11, 0.6, -1],
+  [270, 350, 6, 0.8, 1],
+  [230, 300, -2, 1, 0],
+] as const;
+
 export function TypingCover() {
   return (
-    <Frame bg="#ecebe6" grain={0.05} speed={{ blob: 2.2, loop: 1.3 }}>
+    <Frame bg="#0f1330" grain={0.09} vignette speed={{ blob: 2.2, loop: 1.2 }}>
       <style>{typingKeyframes}</style>
-      <Blob sigma={120} spec={{ cx: 600, cy: 350, rx: 280, ry: 300, color: "#9aa9ff", opacity: 0.8 }} drift={{ dx: "-6%", dy: "7%", dxDur: 17, dyDur: 21 }} />
-      {/* The glow slowly shifts blue ↔ purple: violet twins crossfade over the originals. */}
-      <Blob sigma={120} wrap={s.crossfade} spec={{ cx: 600, cy: 350, rx: 280, ry: 300, color: "#b69cff", opacity: 0.8 }} drift={{ dx: "-6%", dy: "7%", dxDur: 17, dyDur: 21 }} />
-      <Blob sigma={120} spec={{ cx: 300, cy: 900, rx: 300, ry: 260, color: "#c6b8ff", opacity: 0.7 }} drift={{ dx: "6%", dy: "-6%", dxDur: 19, dyDur: 15 }} />
-      <Blob sigma={120} wrap={s.crossfade} spec={{ cx: 300, cy: 900, rx: 300, ry: 260, color: "#a9b8ff", opacity: 0.7 }} drift={{ dx: "6%", dy: "-6%", dxDur: 19, dyDur: 15 }} />
+      <Blob sigma={110} spec={{ cx: 450, cy: 560, rx: 340, ry: 320, color: "#3b4cff", opacity: 0.8 }} drift={{ dx: "-5%", dy: "5%", dxDur: 17, dyDur: 21 }} />
+      {/* The glow slowly shifts violet ↔ blue: twins crossfade over the originals. */}
+      <Blob sigma={110} spec={{ cx: 560, cy: 460, rx: 180, ry: 180, color: "#a78bfa", opacity: 0.8 }} drift={{ dx: "-14%", dy: "12%", ds: 1.1, dxDur: 15, dyDur: 19 }} />
+      <Blob sigma={110} wrap={s.crossfade} spec={{ cx: 560, cy: 460, rx: 180, ry: 180, color: "#60a5fa", opacity: 0.8 }} drift={{ dx: "-14%", dy: "12%", ds: 1.1, dxDur: 15, dyDur: 19 }} />
+      <Blob sigma={110} spec={{ cx: 300, cy: 900, rx: 260, ry: 200, color: "#22d3ee", opacity: 0.35 }} drift={{ dx: "12%", dy: "-8%", dxDur: 19, dyDur: 15 }} />
       <svg {...svgProps}>
-        {[0, 1, 2].map((i) => (
-          <g key={i} className={s.float} style={{ "--dur": `${6.5 + i * 1.1}s`, "--delay": `${-i * 2.2}s`, "--fy": `${-10 - i * 3}px`, "--fr": `${i % 2 ? -1.2 : 1}deg` } as React.CSSProperties}>
-            <g transform={`translate(${230 + i * 36} ${300 + i * 60}) rotate(${-8 + i * 6})`}>
-              <rect width="380" height="500" fill="#fbfbf8" stroke="#1c1c28" strokeWidth="1.5" />
-              {Array.from({ length: 9 }, (_, j) => (
-                <rect
-                  key={j}
-                  x="36"
-                  y={60 + j * 44}
-                  width={LINE_W(j)}
-                  height="8"
-                  fill="#1c1c28"
-                  opacity="0.35"
-                  className={i === 2 ? s.typeLine : undefined}
-                  // Start mid-hold so the first frame shows the page fully written, like the still.
-                  style={i === 2 ? { animation: `lc-type-${j} ${TYPE_CYCLE}s linear -6s infinite` } : undefined}
-                />
-              ))}
+        {CARDS.map(([x, y, r, o, fan], i) => (
+          // Back cards fan outwards and back; the top card floats.
+          <g
+            key={i}
+            className={s.float}
+            style={{ "--dur": `${6 + i * 0.8}s`, "--delay": `${-i * 1.5}s`, "--fy": `${fan ? -8 : -14}px`, "--fr": `${fan * 3.5 || 0.8}deg` } as React.CSSProperties}
+          >
+            <g transform={`translate(${x} ${y}) rotate(${r})`} opacity={o}>
+              <CaseCard content={i === 2} />
             </g>
           </g>
         ))}
