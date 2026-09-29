@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+<defs>
+<filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="100"/></filter>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
+<radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+</defs>
+<rect width="900" height="1200" fill="#dfe0da"/>
+<g filter="url(#b)"><ellipse cx="300" cy="380" rx="280" ry="300" fill="#c8f25a" opacity="0.85"/><ellipse cx="620" cy="820" rx="300" ry="330" fill="#8fb3a1" opacity="0.9"/></g>
+<path d="M -100 1200 C 200 700, 420 520, 1000 260" fill="none" stroke="#1f3b2d" stroke-width="3" opacity="0.35"/><path d="M -30 1200 C 260 680, 460 520, 1000 330" fill="none" stroke="#1f3b2d" stroke-width="3" opacity="0.35"/><path d="M 40 1200 C 320 660, 500 520, 1000 400" fill="none" stroke="#1f3b2d" stroke-width="3" opacity="0.35"/><path d="M 110 1200 C 380 640, 540 520, 1000 470" fill="none" stroke="#1f3b2d" stroke-width="3" opacity="0.35"/><path d="M 180 1200 C 440 620, 580 520, 1000 540" fill="none" stroke="#1f3b2d" stroke-width="3" opacity="0.35"/><path d="M 250 1200 C 500 600, 620 520, 1000 610" fill="none" stroke="#1f3b2d" stroke-width="3" opacity="0.35"/>
+
+<rect width="900" height="1200" filter="url(#n)" opacity="0.07" style="mix-blend-mode:overlay"/>
+</svg>

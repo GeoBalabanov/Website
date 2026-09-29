@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+<defs>
+<filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="130"/></filter>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
+<radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+</defs>
+<rect width="900" height="1200" fill="#d9d8e6"/>
+<g filter="url(#b)"><ellipse cx="250" cy="300" rx="300" ry="280" fill="#ffffff" opacity="0.9"/><ellipse cx="650" cy="900" rx="330" ry="330" fill="#6f7cff" opacity="0.55"/></g>
+
+
+<rect width="900" height="1200" filter="url(#n)" opacity="0.08" style="mix-blend-mode:overlay"/>
+</svg>

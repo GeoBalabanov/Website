@@ -1,0 +1,116 @@
+@import "tailwindcss";
+@import "lenis/dist/lenis.css";
+
+@theme {
+  /* Palette */
+  --color-paper: #f7f7f2;
+  --color-ink: #111111;
+  /* Brand secondary. Used for ticks, rules and large text. */
+  --color-mute: #71717b;
+  /* Secondary for small text: a shade darker so it passes WCAG AA on paper (5.5:1) and on the gradient. */
+  --color-mute-ink: #64646d;
+  --color-faint: #c9c9c2;
+
+  /* Warm gradient (cream → peach → pink) */
+  --color-cream: #f7f7f2;
+  --color-peach: #f7e0cf;
+  --color-blush: #f3d4d8;
+
+  /* Type */
+  --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
+  --font-serif: var(--font-garamond), ui-serif, Georgia, serif;
+  --font-mono: var(--font-mono-face), ui-monospace, SFMono-Regular, monospace;
+
+  /* Motion */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--color-paper);
+  }
+
+  ::selection {
+    background: var(--color-ink);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-ink);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  button,
+  a {
+    cursor: pointer;
+    touch-action: manipulation;
+  }
+}
+
+@layer components {
+  /* Underline for nav items: thin, offset, animated in from the left. */
+  .nav-link {
+    position: relative;
+    padding-block: 0.25rem;
+    transition: color 200ms var(--ease-out-soft);
+  }
+  .nav-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0.2rem;
+    height: 1px;
+    background: currentColor;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 350ms var(--ease-out-soft);
+  }
+  .nav-link:hover::after {
+    transform: scaleX(1);
+    transform-origin: left;
+    opacity: 0.35;
+  }
+  .nav-link[aria-current="page"]::after,
+  .nav-link[aria-pressed="true"]::after {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+
+  /* About page: hovering or focusing one paragraph dims the others. */
+  .about-paragraphs > p {
+    transition: color 400ms var(--ease-out-soft);
+  }
+  .about-paragraphs:has(> p:hover) > p:not(:hover),
+  .about-paragraphs:has(> p:focus-visible) > p:not(:focus-visible) {
+    color: var(--color-faint);
+  }
+}
+
+@utility scrollbar-none {
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
