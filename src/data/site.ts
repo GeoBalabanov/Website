@@ -3,7 +3,7 @@
 export const site = {
   name: "Georgi",
   fullName: "Georgi Balabanov",
-  tagline: "Design-Driven Developer & Marathon Runner",
+  tagline: "Design-Driven Developer",
   description:
     "Georgi Balabanov is a design-driven developer and marathon runner, interested in fashion, brutalist design and turning concepts into usable products.",
 };
