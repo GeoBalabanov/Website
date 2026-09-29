@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import type { CoverMotion } from "@/data/projects";
 import { BloomCover, DriftCover, LavaCover, RippleCover, TracksCover, TypingCover, VoiceCover } from "./art";
+import { CorsaStage } from "@/components/project/hero-scenes/CorsaStage";
 import s from "./LivingCover.module.css";
 
 // Browser state as external stores: SSR renders the animated markup, the client corrects it.
@@ -47,6 +48,8 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "ripple" && <RippleCover />}
       {motion === "bloom" && <BloomCover />}
       {motion === "drift" && <DriftCover src={src} />}
+      {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
+      {motion === "head3d" && active && <CorsaStage paused={!running} />}
     </div>
   );
 }

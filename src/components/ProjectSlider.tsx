@@ -96,7 +96,6 @@ export function ProjectSlider({ projects }: Props) {
 
     s.load(projects.map((p) => p.images[0].src)).then((ok) => {
       if (!alive || !ok) return;
-      m.pos = m.target = indexNow.current;
       strip.current = s;
     });
     const onResize = () => s.resize();
@@ -157,13 +156,14 @@ export function ProjectSlider({ projects }: Props) {
     };
 
     // Reduced motion, deep links, and the WebGL strip (which draws the movement itself): swap instantly.
+    // Keep the scroll position in step when the index changed without the strip (deep link, fallback).
+    if (!motion.current.running) motion.current.pos = motion.current.target = index;
     if (prefersReducedMotion() || instant || motion.current.running) {
       gsap.set(fromEl, { autoAlpha: 0, zIndex: 0 });
       gsap.set(toEl, { autoAlpha: 1, zIndex: 1, clipPath: "inset(0% 0% 0% 0%)" });
       if (motion.current.running) captionIn();
       return;
     }
-    motion.current.pos = motion.current.target = index;
 
     // Fallback without WebGL: a clip-path wipe.
     const tl = gsap.timeline({
