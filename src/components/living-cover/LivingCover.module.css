@@ -201,7 +201,23 @@
     transform: scale(1);
   }
   50% {
-    transform: scale(1.06);
+    transform: scale(1.1);
+  }
+}
+
+/* Each petal swells outward from the centre and back; staggered delays make a wave. */
+.petal {
+  will-change: transform;
+  transform-origin: 50% 48.333%;
+  animation: petal calc(5s / var(--speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--speed, 1)) infinite;
+}
+@keyframes petal {
+  0%,
+  100% {
+    transform: translateY(0) scale(1, 1);
+  }
+  50% {
+    transform: translateY(-4%) scale(1.08, 1.14);
   }
 }
 

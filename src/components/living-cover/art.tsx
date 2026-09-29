@@ -274,7 +274,10 @@ export function RippleCover() {
   );
 }
 
-/* ---------------- 06 Bloom: a flower slowly turning and breathing open ---------------- */
+/* ---------------- 06 Bloom: a flower whose petals swell in a wave while it turns ---------------- */
+// Heavily blurred, the 8 petals read as one round glow, so spinning alone looks static.
+// Each petal is its own layer instead (blurred once, exactly like the still) and swells
+// outward in turn, so the outline ripples while the flower turns.
 export function BloomCover() {
   // Unique per instance: the slider renders desktop and mobile copies, and a filter
   // referenced from a hidden (display: none) copy would not apply.
@@ -282,23 +285,29 @@ export function BloomCover() {
   return (
     <Frame bg="#eef0e3" grain={0.06} speed={{ blob: 2, loop: 1.6 }}>
       {/* The amber centre sits under the petals, as in the still. */}
-      <Blob sigma={60} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 70, ry: 70, color: "#f59e0b", opacity: 0.9 }} drift={{ dx: "3%", dy: "-3%", ds: 1.04, dxDur: 9, dyDur: 11 }} />
-      <div className={`${s.fill} ${s.open}`}>
-        <div className={`${s.fill} ${s.spin}`}>
-          <svg {...svgProps}>
-            <defs>
-              <filter id={blurId} x="-50%" y="-50%" width="200%" height="200%">
-                <feGaussianBlur stdDeviation="60" />
-              </filter>
-            </defs>
-            <g filter={`url(#${blurId})`} opacity="0.9">
-              {Array.from({ length: 8 }, (_, i) => (
-                <ellipse key={i} cx="450" cy={580 - 125} rx="62.5" ry="125" fill="#f472b6" opacity="0.55" transform={`rotate(${45 * i} 450 580)`} />
-              ))}
-            </g>
-          </svg>
+      <Blob sigma={60} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 70, ry: 70, color: "#f59e0b", opacity: 0.9 }} drift={{ dx: "10%", dy: "-8%", ds: 1.1, dxDur: 9, dyDur: 11 }} />
+      <svg width="0" height="0" className="absolute" aria-hidden="true">
+        <filter id={blurId} x="-100%" y="-60%" width="300%" height="220%">
+          <feGaussianBlur stdDeviation="60" />
+        </filter>
+      </svg>
+      <div className={`${s.fill} ${s.sway}`} style={{ "--dur": "9s", "--sx": "3%", "--sy": "-2.5%" } as React.CSSProperties}>
+        <div className={`${s.fill} ${s.open}`}>
+          <div className={`${s.fill} ${s.spin}`}>
+            {Array.from({ length: 8 }, (_, i) => (
+              <div key={i} className={s.fill} style={{ transform: `rotate(${45 * i}deg)`, transformOrigin: "50% 48.333%" }}>
+                <div className={`${s.fill} ${s.petal}`} style={{ "--delay": `${i * 0.45}s` } as React.CSSProperties}>
+                  <svg {...svgProps}>
+                    <ellipse cx="450" cy="455" rx="62.5" ry="125" fill="#f472b6" opacity={0.55 * 0.9} filter={`url(#${blurId})`} />
+                  </svg>
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
+      {/* A warm glow that drifts in and out beside the flower. */}
+      <Blob sigma={90} wrap={s.crossfade} spec={{ cx: 620, cy: 760, rx: 170, ry: 150, color: "#fb923c", opacity: 0.35 }} drift={{ dx: "-30%", dy: "-20%", ds: 1.2, dxDur: 10, dyDur: 13 }} />
     </Frame>
   );
 }
