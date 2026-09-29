@@ -10,8 +10,16 @@ import { LivingCover } from "./living-cover/LivingCover";
 import { SliderStrip } from "./slider-strip";
 
 const MINOR_TICKS = 5;
+// Continuous scrolling (WebGL strip): the covers follow the wheel or finger and settle on the nearest project.
+const WHEEL_PX = 320; // wheel distance that moves one project
+const SNAP_DELAY = 140; // ms without wheel input before settling
+const SNAP_BIAS = 0.15; // how far past a cover already counts as "on to the next one"
+const FOLLOW = 0.12; // how quickly the strip catches up with the input (per 60 fps frame)
+const FLING = 0.3; // seconds of finger speed carried on after release
+const OVERSCROLL = 0.3;
+// Fallback (no WebGL or reduced motion): one project per gesture.
 const WHEEL_THRESHOLD = 30;
-const WHEEL_COOLDOWN = 850;
+const WHEEL_COOLDOWN = 450;
 const SWIPE_THRESHOLD = 40;
 
 type Props = { projects: Project[] };
@@ -24,35 +32,85 @@ export function ProjectSlider({ projects }: Props) {
   const caption = useRef<HTMLDivElement>(null);
   const section = useRef<HTMLElement>(null);
   const shown = useRef(0);
+  const indexNow = useRef(0);
   const timeline = useRef<gsap.core.Timeline | null>(null);
   // Set when the index comes from the URL: show that project immediately, no transition.
   const jump = useRef(false);
-  // WebGL strip for the bending transition. `null` until its textures are loaded.
+  // WebGL strip for the bending scroll. `null` until its textures are loaded.
   const canvas = useRef<HTMLCanvasElement>(null);
   const frame = useRef<HTMLDivElement>(null);
   const strip = useRef<SliderStrip | null>(null);
-  const stripPos = useRef({ pos: 0, tween: null as gsap.core.Tween | null });
+  // Scroll state in slides: `pos` is what is drawn, `target` is where the input wants to be.
+  const motion = useRef({ pos: 0, target: 0, vel: 0, running: false, dragging: false, frameW: 0 });
+  const kick = useRef<() => void>(() => {});
+  const goTo = useRef<(i: number) => void>(() => {});
+
+  useEffect(() => {
+    indexNow.current = index;
+  }, [index]);
 
   // Set up the strip once; if WebGL or any cover fails, the CSS transition is used instead.
   useEffect(() => {
-    if (!canvas.current || prefersReducedMotion()) return;
-    const s = SliderStrip.create(canvas.current);
+    const cv = canvas.current;
+    if (!cv || prefersReducedMotion()) return;
+    const s = SliderStrip.create(cv);
     if (!s) return;
     let alive = true;
+    const m = motion.current;
+
+    const tick = (_time: number, deltaMs: number) => {
+      const dt = Math.min(Math.max(deltaMs, 1), 50) / 1000;
+      const prev = m.pos;
+      m.pos += (m.target - m.pos) * (1 - Math.pow(1 - FOLLOW, dt * 60));
+      if (Math.abs(m.target - m.pos) < 0.0005) m.pos = m.target;
+      // Smoothed speed (slides per second) drives the bend, eased so it never snaps.
+      m.vel += ((m.pos - prev) / dt - m.vel) * Math.min(1, dt * 10);
+      s.render(m.pos, Math.tanh(m.vel / 3), m.frameW);
+
+      const nearest = Math.max(0, Math.min(count - 1, Math.round(m.pos)));
+      if (nearest !== indexNow.current) {
+        indexNow.current = nearest;
+        setIndex(nearest);
+      }
+      // At rest on a cover: hand back to the DOM cover (with its living animation).
+      if (!m.dragging && m.pos === m.target && Number.isInteger(m.target) && Math.abs(m.vel) < 0.02) {
+        gsap.ticker.remove(tick);
+        m.running = false;
+        m.vel = 0;
+        if (frame.current) gsap.set(frame.current, { opacity: 1 });
+        gsap.to(cv, { opacity: 0, duration: 0.15, onComplete: () => void (m.running || s.clear()) });
+      }
+    };
+
+    kick.current = () => {
+      if (strip.current !== s || m.running) return;
+      m.running = true;
+      s.resize();
+      m.frameW = frame.current?.getBoundingClientRect().width ?? 0;
+      s.render(m.pos, 0, m.frameW);
+      gsap.killTweensOf(cv);
+      gsap.set(cv, { opacity: 1 });
+      if (frame.current) gsap.set(frame.current, { opacity: 0 });
+      gsap.ticker.add(tick);
+    };
+
     s.load(projects.map((p) => p.images[0].src)).then((ok) => {
-      if (alive && ok) strip.current = s;
+      if (!alive || !ok) return;
+      m.pos = m.target = indexNow.current;
+      strip.current = s;
     });
     const onResize = () => s.resize();
     window.addEventListener("resize", onResize);
     return () => {
       alive = false;
+      gsap.ticker.remove(tick);
+      m.running = false;
+      kick.current = () => {};
       window.removeEventListener("resize", onResize);
       strip.current = null;
       s.destroy();
     };
-  }, [projects]);
-
-  const go = useCallback((next: number) => setIndex(Math.max(0, Math.min(count - 1, next))), [count]);
+  }, [projects, count]);
 
   // Deep link: /#slug opens that project.
   useEffect(() => {
@@ -60,6 +118,7 @@ export function ProjectSlider({ projects }: Props) {
     const found = projects.findIndex((p) => p.slug === slug);
     if (found > 0) {
       jump.current = true;
+      motion.current.pos = motion.current.target = found;
       // The hash only exists in the browser, so it has to be read after hydration.
       // eslint-disable-next-line react-hooks/set-state-in-effect
       setIndex(found);
@@ -72,7 +131,7 @@ export function ProjectSlider({ projects }: Props) {
     window.history.replaceState(window.history.state, "", url);
   }, [index, projects]);
 
-  // Animate between stacked image layers whenever the index changes.
+  // Swap the visible cover whenever the index changes.
   useLayoutEffect(() => {
     const from = shown.current;
     if (from === index) return;
@@ -85,68 +144,28 @@ export function ProjectSlider({ projects }: Props) {
     const fromImg = fromEl.firstElementChild;
     const toImg = toEl.firstElementChild;
     const dir = index > from ? 1 : -1;
-
     const instant = jump.current;
     jump.current = false;
-    if (prefersReducedMotion() || instant) {
-      gsap.set(fromEl, { autoAlpha: 0 });
-      gsap.set(toEl, { autoAlpha: 1, clipPath: "inset(0% 0% 0% 0%)" });
-      stripPos.current.pos = index;
-      return;
-    }
 
     const captionIn = () => {
       if (!caption.current) return;
       gsap.fromTo(
         caption.current.querySelectorAll("[data-line]"),
         { yPercent: 110 * dir },
-        { yPercent: 0, duration: 0.8, ease: "power3.out", stagger: 0.06, delay: 0.25, overwrite: true },
+        { yPercent: 0, duration: 0.7, ease: "power3.out", stagger: 0.05, delay: 0.1, overwrite: true },
       );
     };
 
-    // WebGL: the covers slide as one strip and bend with the scroll speed.
-    const s = strip.current;
-    if (s && canvas.current && frame.current && canvas.current.offsetParent !== null) {
-      const st = stripPos.current;
-      st.tween?.kill();
-      const cv = canvas.current;
-      const fr = frame.current;
+    // Reduced motion, deep links, and the WebGL strip (which draws the movement itself): swap instantly.
+    if (prefersReducedMotion() || instant || motion.current.running) {
       gsap.set(fromEl, { autoAlpha: 0, zIndex: 0 });
       gsap.set(toEl, { autoAlpha: 1, zIndex: 1, clipPath: "inset(0% 0% 0% 0%)" });
-      gsap.set(fr, { opacity: 0 });
-      gsap.killTweensOf(cv);
-      gsap.set(cv, { opacity: 1 });
-      s.resize();
-      const frameW = fr.getBoundingClientRect().width;
-      let lastPos = st.pos;
-      let lastT = performance.now();
-      let vel = 0;
-      const distance = Math.abs(index - st.pos);
-      st.tween = gsap.to(st, {
-        pos: index,
-        duration: 0.95 + Math.min(distance, 4) * 0.15,
-        ease: "power3.inOut",
-        onUpdate: () => {
-          const now = performance.now();
-          const dt = Math.max(1, now - lastT) / 1000;
-          // Smoothed velocity in slides per second drives the bend.
-          vel += ((st.pos - lastPos) / dt - vel) * 0.35;
-          lastPos = st.pos;
-          lastT = now;
-          s.render(st.pos, vel, frameW);
-        },
-        onComplete: () => {
-          s.render(index, 0, frameW);
-          gsap.set(fr, { opacity: 1 });
-          gsap.to(cv, { opacity: 0, duration: 0.2, onComplete: () => s.clear() });
-          st.tween = null;
-        },
-      });
-      captionIn();
+      if (motion.current.running) captionIn();
       return;
     }
-    stripPos.current.pos = index;
+    motion.current.pos = motion.current.target = index;
 
+    // Fallback without WebGL: a clip-path wipe.
     const tl = gsap.timeline({
       defaults: { ease: "power3.inOut" },
       onComplete: () => {
@@ -160,9 +179,9 @@ export function ProjectSlider({ projects }: Props) {
       autoAlpha: 1,
       clipPath: dir > 0 ? "inset(100% 0% 0% 0%)" : "inset(0% 0% 100% 0%)",
     });
-    tl.to(toEl, { clipPath: "inset(0% 0% 0% 0%)", duration: 1 }, 0)
-      .fromTo(toImg, { scale: 1.12, yPercent: 6 * dir }, { scale: 1, yPercent: 0, duration: 1.2, ease: "power3.out" }, 0)
-      .to(fromImg, { yPercent: -8 * dir, scale: 1.04, duration: 1 }, 0);
+    tl.to(toEl, { clipPath: "inset(0% 0% 0% 0%)", duration: 0.8 }, 0)
+      .fromTo(toImg, { scale: 1.12, yPercent: 6 * dir }, { scale: 1, yPercent: 0, duration: 1, ease: "power3.out" }, 0)
+      .to(fromImg, { yPercent: -8 * dir, scale: 1.04, duration: 0.8 }, 0);
 
     captionIn();
     timeline.current = tl;
@@ -170,10 +189,43 @@ export function ProjectSlider({ projects }: Props) {
 
   // Wheel, swipe and keyboard navigation.
   useEffect(() => {
+    const m = motion.current;
+    const clampIndex = (i: number) => Math.max(0, Math.min(count - 1, i));
+    const clampScroll = (x: number) => Math.max(-OVERSCROLL, Math.min(count - 1 + OVERSCROLL, x));
+    const live = () => strip.current !== null;
+    let snapTimer = 0;
+
+    // Come to rest on a cover, leaning towards the direction of travel.
+    const settle = (at: number, dir: number) => {
+      m.target = clampIndex(dir > 0 ? Math.ceil(at - SNAP_BIAS) : dir < 0 ? Math.floor(at + SNAP_BIAS) : Math.round(at));
+      kick.current();
+    };
+
+    goTo.current = (i: number) => {
+      window.clearTimeout(snapTimer);
+      if (live()) {
+        m.target = clampIndex(i);
+        kick.current();
+      } else {
+        setIndex(clampIndex(i));
+      }
+    };
+    const base = () => (live() ? Math.round(m.target) : indexNow.current);
+
     let acc = 0;
     let last = 0;
     const onWheel = (e: WheelEvent) => {
-      const delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      let delta = Math.abs(e.deltaY) > Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (e.deltaMode === 1) delta *= 40;
+      else if (e.deltaMode === 2) delta *= window.innerHeight;
+      if (live()) {
+        m.target = clampScroll(m.target + delta / WHEEL_PX);
+        const dir = Math.sign(delta);
+        window.clearTimeout(snapTimer);
+        snapTimer = window.setTimeout(() => settle(m.target, dir), SNAP_DELAY);
+        kick.current();
+        return;
+      }
       const now = performance.now();
       if (now - last < WHEEL_COOLDOWN) return;
       acc += delta;
@@ -181,10 +233,11 @@ export function ProjectSlider({ projects }: Props) {
         last = now;
         // Read the direction now: the state updater may run later, after acc is reset.
         const step = Math.sign(acc);
-        setIndex((i) => Math.max(0, Math.min(count - 1, i + step)));
+        setIndex((i) => clampIndex(i + step));
         acc = 0;
       }
     };
+
     const onKey = (e: KeyboardEvent) => {
       if (e.altKey || e.ctrlKey || e.metaKey) return;
       const target = e.target as HTMLElement;
@@ -192,50 +245,99 @@ export function ProjectSlider({ projects }: Props) {
       const step: Record<string, number> = { ArrowDown: 1, ArrowRight: 1, PageDown: 1, ArrowUp: -1, ArrowLeft: -1, PageUp: -1 };
       if (e.key in step) {
         e.preventDefault();
-        setIndex((i) => Math.max(0, Math.min(count - 1, i + step[e.key])));
+        goTo.current(base() + step[e.key]);
       } else if (e.key === "Home") {
         e.preventDefault();
-        setIndex(0);
+        goTo.current(0);
       } else if (e.key === "End") {
         e.preventDefault();
-        setIndex(count - 1);
+        goTo.current(count - 1);
       }
     };
-    // Touch: a vertical (or horizontal) swipe moves one project, like a wheel step.
-    let startX = 0;
-    let startY = 0;
+
+    // Touch: the strip follows the finger; a quick flick carries on through several projects.
+    let sx = 0;
+    let sy = 0;
+    let startAt = 0;
+    let axis: "x" | "y" | null = null;
+    let unit = 1;
+    let lastD = 0;
+    let lastT = 0;
+    let flick = 0;
     const onTouchStart = (e: TouchEvent) => {
-      startX = e.touches[0].clientX;
-      startY = e.touches[0].clientY;
+      sx = e.touches[0].clientX;
+      sy = e.touches[0].clientY;
+      axis = null;
+      lastD = 0;
+      flick = 0;
+      lastT = performance.now();
+      startAt = m.pos;
+    };
+    const onTouchMove = (e: TouchEvent) => {
+      if (!live()) return;
+      const dx = sx - e.touches[0].clientX;
+      const dy = sy - e.touches[0].clientY;
+      if (!axis) {
+        if (Math.hypot(dx, dy) < 8) return;
+        axis = Math.abs(dy) >= Math.abs(dx) ? "y" : "x";
+        const r = frame.current?.getBoundingClientRect();
+        unit = (axis === "y" ? r?.height : r?.width) || window.innerHeight / 2;
+        window.clearTimeout(snapTimer);
+        m.dragging = true;
+      }
+      const d = (axis === "y" ? dy : dx) / unit;
+      const now = performance.now();
+      const dt = Math.max(1, now - lastT) / 1000;
+      flick += ((d - lastD) / dt - flick) * 0.5;
+      lastD = d;
+      lastT = now;
+      m.target = clampScroll(startAt + d);
+      kick.current();
     };
     const onTouchEnd = (e: TouchEvent) => {
-      const dx = startX - e.changedTouches[0].clientX;
-      const dy = startY - e.changedTouches[0].clientY;
+      if (live()) {
+        if (!m.dragging) return;
+        m.dragging = false;
+        // A finger that stopped before lifting shouldn't fling.
+        if (performance.now() - lastT > 100) flick = 0;
+        settle(m.target + flick * FLING, Math.sign(flick) || Math.sign(m.target - startAt));
+        return;
+      }
+      const dx = sx - e.changedTouches[0].clientX;
+      const dy = sy - e.changedTouches[0].clientY;
       const d = Math.abs(dy) >= Math.abs(dx) ? dy : dx;
       if (Math.abs(d) < SWIPE_THRESHOLD) return;
       const step = Math.sign(d);
-      setIndex((i) => Math.max(0, Math.min(count - 1, i + step)));
+      setIndex((i) => clampIndex(i + step));
     };
+
     const el = section.current;
     window.addEventListener("wheel", onWheel, { passive: true });
     window.addEventListener("keydown", onKey);
     el?.addEventListener("touchstart", onTouchStart, { passive: true });
+    el?.addEventListener("touchmove", onTouchMove, { passive: true });
     el?.addEventListener("touchend", onTouchEnd, { passive: true });
+    el?.addEventListener("touchcancel", onTouchEnd, { passive: true });
     return () => {
+      window.clearTimeout(snapTimer);
       window.removeEventListener("wheel", onWheel);
       window.removeEventListener("keydown", onKey);
       el?.removeEventListener("touchstart", onTouchStart);
+      el?.removeEventListener("touchmove", onTouchMove);
       el?.removeEventListener("touchend", onTouchEnd);
+      el?.removeEventListener("touchcancel", onTouchEnd);
     };
   }, [count]);
 
-  const current = projects[index];
+  const go = useCallback((i: number) => goTo.current(i), []);
+
+  const active = projects[index];
 
   return (
     <section ref={section} aria-roledescription="carousel" aria-label="Projects" className="h-dvh touch-none overflow-hidden">
       <h1 className="sr-only">Projects</h1>
       <p className="sr-only" aria-live="polite" aria-atomic="true">
-        {`Project ${index + 1} of ${count}: ${current.title}, ${current.subtitle}`}
+        {`Project ${index + 1} of ${count}: ${active.title}, ${active.subtitle}`}
       </p>
 
       {/* Centered stack with the vertical index beside it (all screen sizes). */}
@@ -243,10 +345,10 @@ export function ProjectSlider({ projects }: Props) {
         {/* On phones, leave room on the right for the index so the pair is centred together. */}
         <div className="relative -mt-6 pr-[4.5rem] md:mt-0 md:pr-0">
           <div className="relative">
-            <OpenProjectLink project={current}>
+            <OpenProjectLink project={active}>
               <div
                 ref={frame}
-                data-flip-id={current.slug}
+                data-flip-id={active.slug}
                 className="relative aspect-[3/4] h-[min(56dvh,calc((100vw-9rem)*4/3))] overflow-hidden bg-ink/5 md:h-[min(62dvh,calc((100vw-14rem)*4/3))]"
               >
                 {projects.map((p, i) => (
@@ -277,12 +379,12 @@ export function ProjectSlider({ projects }: Props) {
           <div ref={caption} className="absolute top-full left-0 mt-4 w-full text-[15px] leading-snug">
             <div className="overflow-hidden">
               <h2 data-line className="font-semibold tracking-[-0.01em]">
-                {current.title}
+                {active.title}
               </h2>
             </div>
             <div className="overflow-hidden">
               <p data-line className="max-w-[28rem] text-mute-ink">
-                {current.subtitle}
+                {active.subtitle}
               </p>
             </div>
           </div>
