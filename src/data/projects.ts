@@ -75,8 +75,8 @@ export type Signature =
   | { type: "bloom-garden"; total: number; notes: string[] };
 
 /**
- * "Living poster" loop for the cover in the homepage Slider (grid and project
- * pages always show the still image).
+ * "Living poster" loop for the project's cover in the Slider and the Grid
+ * (project pages always show the still image).
  *
  * The first six are code-drawn copies of the placeholder cover artwork, animated:
  *   lava   – drifting orange/red blobs that breathe          (plovdiv-marathon-1)

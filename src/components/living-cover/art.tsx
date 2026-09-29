@@ -41,14 +41,17 @@ function Blob({ spec, sigma, drift = {}, wrap }: { spec: BlobSpec; sigma: number
   );
 }
 
-function Frame({ bg, grain, vignette, children }: { bg: string; grain: number; vignette?: boolean; children: React.ReactNode }) {
+type Speed = { blob?: number; loop?: number };
+
+function Frame({ bg, grain, vignette, speed = {}, children }: { bg: string; grain: number; vignette?: boolean; speed?: Speed; children: React.ReactNode }) {
+  const vars = { "--blob-speed": speed.blob ?? 1, "--speed": speed.loop ?? 1 } as React.CSSProperties;
   return (
-    <>
+    <div className={s.fill} style={vars}>
       <div className={s.fill} style={{ background: bg }} />
       {children}
       {vignette && <div className={s.fill} style={{ background: VIGNETTE }} />}
       <div className={s.fill} style={{ backgroundImage: GRAIN, backgroundSize: "100% 100%", opacity: grain, mixBlendMode: "overlay" }} />
-    </>
+    </div>
   );
 }
 
@@ -57,7 +60,7 @@ const svgProps = { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid slic
 /* ---------------- 01 Plovdiv Marathon: lava glow that breathes ---------------- */
 export function LavaCover() {
   return (
-    <Frame bg="#0b0b0b" grain={0.09} vignette>
+    <Frame bg="#0b0b0b" grain={0.09} vignette speed={{ blob: 2.4 }}>
       <div className={`${s.fill} ${s.breathe}`}>
         <Blob sigma={80} spec={{ cx: 450, cy: 700, rx: 280, ry: 320, color: "#ff6a1a" }} drift={{ dx: "7%", dy: "-6%", dxDur: 21, dyDur: 17 }} />
         <Blob sigma={80} spec={{ cx: 360, cy: 620, rx: 170, ry: 200, color: "#ffb36b", opacity: 0.9 }} drift={{ dx: "22%", dy: "16%", ds: 1.12, dxDur: 16, dyDur: 23 }} />
@@ -112,7 +115,7 @@ const typingKeyframes = Array.from({ length: 9 }, (_, j) => {
 
 export function TypingCover() {
   return (
-    <Frame bg="#ecebe6" grain={0.05}>
+    <Frame bg="#ecebe6" grain={0.05} speed={{ blob: 2.2, loop: 1.3 }}>
       <style>{typingKeyframes}</style>
       <Blob sigma={120} spec={{ cx: 600, cy: 350, rx: 280, ry: 300, color: "#9aa9ff", opacity: 0.8 }} drift={{ dx: "-6%", dy: "7%", dxDur: 17, dyDur: 21 }} />
       {/* The glow slowly shifts blue ↔ purple: violet twins crossfade over the originals. */}
@@ -185,7 +188,7 @@ export function VoiceCover({ running }: { running: boolean }) {
   }, [running]);
 
   return (
-    <Frame bg="#2a0f24" grain={0.09} vignette>
+    <Frame bg="#2a0f24" grain={0.09} vignette speed={{ blob: 2.2 }}>
       <div ref={glow} className={s.fill} style={{ willChange: "transform, filter" }}>
         <Blob sigma={100} spec={{ cx: 330, cy: 520, rx: 250, ry: 280, color: "#ff5c8a", opacity: 0.9 }} drift={{ dx: "5%", dy: "4%", dxDur: 13, dyDur: 17 }} />
         <Blob sigma={100} spec={{ cx: 570, cy: 640, rx: 240, ry: 270, color: "#ff9a62", opacity: 0.85 }} drift={{ dx: "-5%", dy: "-4%", dxDur: 15, dyDur: 12 }} />
@@ -214,7 +217,7 @@ export function VoiceCover({ running }: { running: boolean }) {
 /* ---------------- 05 Corsa Car Audio: speaker pulse, rings rippling out ---------------- */
 export function RippleCover() {
   return (
-    <Frame bg="#070808" grain={0.1} vignette>
+    <Frame bg="#070808" grain={0.1} vignette speed={{ blob: 2, loop: 1.4 }}>
       <Blob sigma={90} spec={{ cx: 450, cy: 620, rx: 260, ry: 260, color: "#14b8a6", opacity: 0.6 }} drift={{ dx: "3%", dy: "-3%", ds: 1.08, dxDur: 11, dyDur: 9 }} />
       <Blob sigma={90} wrap={s.pulse} spec={{ cx: 450, cy: 620, rx: 110, ry: 110, color: "#99f6e4", opacity: 0.7 }} drift={{ dx: "2%", dy: "-2%", ds: 1.02, dxDur: 7, dyDur: 9 }} />
       <svg {...svgProps}>
@@ -244,7 +247,7 @@ export function BloomCover() {
   // referenced from a hidden (display: none) copy would not apply.
   const blurId = `lc-bloom-${useId().replace(/:/g, "")}`;
   return (
-    <Frame bg="#eef0e3" grain={0.06}>
+    <Frame bg="#eef0e3" grain={0.06} speed={{ blob: 2, loop: 1.6 }}>
       {/* The amber centre sits under the petals, as in the still. */}
       <Blob sigma={60} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 70, ry: 70, color: "#f59e0b", opacity: 0.9 }} drift={{ dx: "3%", dy: "-3%", ds: 1.04, dxDur: 9, dyDur: 11 }} />
       <div className={`${s.fill} ${s.open}`}>

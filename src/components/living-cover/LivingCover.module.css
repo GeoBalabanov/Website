@@ -1,6 +1,11 @@
 /*
  * Living covers: slow, looping motion. Every keyframe starts at the resting
  * pose (identity transform), so frame 0 matches the still cover.
+ *
+ * Speed is set per cover (see Frame in art.tsx):
+ *   --blob-speed  multiplies the drift of the soft blobs
+ *   --speed       multiplies every other loop (float, ripple, spin…)
+ * Durations and delays are divided by them, so 2 = twice as fast.
  */
 
 .root {
@@ -35,13 +40,13 @@
 .blob {
   position: absolute;
   will-change: transform;
-  animation: drift-x var(--dx-dur, 19s) ease-in-out var(--delay, 0s) infinite alternate;
+  animation: drift-x calc(var(--dx-dur, 19s) / var(--blob-speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--blob-speed, 1)) infinite alternate;
 }
 .blobInner {
   position: absolute;
   inset: 0;
   will-change: transform;
-  animation: drift-y var(--dy-dur, 23s) ease-in-out var(--delay, 0s) infinite alternate;
+  animation: drift-y calc(var(--dy-dur, 23s) / var(--blob-speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--blob-speed, 1)) infinite alternate;
 }
 @keyframes drift-x {
   from {
@@ -77,7 +82,7 @@
 
 /* ---------- 02 Tracks ---------- */
 .sway {
-  animation: sway var(--dur, 9s) ease-in-out var(--delay, 0s) infinite alternate;
+  animation: sway calc(var(--dur, 9s) / var(--speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--speed, 1)) infinite alternate;
 }
 @keyframes sway {
   to {
@@ -87,7 +92,7 @@
 .runner {
   stroke-dasharray: 0.07 1.2;
   stroke-dashoffset: 0.07;
-  animation: run var(--dur, 7s) cubic-bezier(0.45, 0.05, 0.55, 0.95) var(--delay, 0s) infinite;
+  animation: run calc(var(--dur, 7s) / var(--speed, 1)) cubic-bezier(0.45, 0.05, 0.55, 0.95) calc(var(--delay, 0s) / var(--speed, 1)) infinite;
 }
 @keyframes run {
   from {
@@ -102,7 +107,7 @@
 .float {
   transform-box: fill-box;
   transform-origin: center;
-  animation: float var(--dur, 7s) ease-in-out var(--delay, 0s) infinite;
+  animation: float calc(var(--dur, 7s) / var(--speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--speed, 1)) infinite;
 }
 @keyframes float {
   0%,
@@ -119,7 +124,7 @@
 }
 .crossfade {
   will-change: opacity;
-  animation: crossfade 11s ease-in-out var(--delay, 0s) infinite alternate;
+  animation: crossfade calc(11s / var(--speed, 1)) ease-in-out infinite alternate;
 }
 @keyframes crossfade {
   from {
@@ -139,7 +144,7 @@
 /* ---------- 05 Ripple ---------- */
 .ring {
   opacity: 0;
-  animation: ripple 12s linear var(--delay, 0s) infinite;
+  animation: ripple calc(12s / var(--speed, 1)) linear calc(var(--delay, 0s) / var(--speed, 1)) infinite;
 }
 /* The radius grows (an SVG geometry property), so stroke width stays as thin as the still's. */
 @keyframes ripple {
@@ -160,7 +165,7 @@
 }
 .pulse {
   will-change: transform, opacity;
-  animation: pulse 2.6s ease-in-out infinite;
+  animation: pulse calc(2.6s / var(--speed, 1)) ease-in-out infinite;
 }
 @keyframes pulse {
   0%,
@@ -178,7 +183,7 @@
 .spin {
   will-change: transform;
   transform-origin: 50% 48.333%;
-  animation: spin 16s linear infinite;
+  animation: spin calc(16s / var(--speed, 1)) linear infinite;
 }
 @keyframes spin {
   to {
@@ -188,7 +193,7 @@
 .open {
   will-change: transform;
   transform-origin: 50% 48.333%;
-  animation: open 7s ease-in-out infinite;
+  animation: open calc(7s / var(--speed, 1)) ease-in-out infinite;
 }
 @keyframes open {
   0%,
