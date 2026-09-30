@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+<defs>
+<filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="110"/></filter>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
+<radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+<linearGradient id="bg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffc36b"/><stop offset="1" stop-color="#ff6a2b"/></linearGradient>
+<linearGradient id="hill" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9f1f17"/><stop offset="1" stop-color="#3d0b0a"/></linearGradient>
+</defs>
+<rect width="900" height="1200" fill="url(#bg)"/>
+<g filter="url(#b)"><ellipse cx="640" cy="260" rx="260" ry="220" fill="#fff1c2" opacity="0.7"/><ellipse cx="200" cy="520" rx="220" ry="200" fill="#ff4d6d" opacity="0.35"/></g>
+<path d="M -20 900 L 70 870 L 140 830 L 215 700 L 290 750 L 370 610 L 440 660 L 520 540 L 600 610 L 680 500 L 760 570 L 840 460 L 920 430 L 920 1200 L -20 1200 Z" fill="url(#hill)"/>
+<path d="M -20 900 L 70 870 L 140 830 L 215 700 L 290 750 L 370 610 L 440 660 L 520 540 L 600 610 L 680 500 L 760 570 L 840 460 L 920 430" fill="none" stroke="#fff1e6" stroke-width="4" stroke-linejoin="round" stroke-linecap="round"/>
+<circle cx="70" cy="870" r="10" fill="#fff1e6"/><circle cx="840" cy="460" r="14" fill="none" stroke="#fff1e6" stroke-width="4"/>
+
+<rect width="900" height="1200" filter="url(#n)" opacity="0.08" style="mix-blend-mode:overlay"/>
+</svg>

@@ -347,3 +347,63 @@
     transform: scale(1.12);
   }
 }
+
+/* ---------- 07 Madrid (art-madrid.tsx) ---------- */
+
+/* Dune layers: each path repeats every 900 units, so a 900-unit slide loops seamlessly. */
+.dunes {
+  animation: dunes calc(var(--dur, 40s) / var(--speed, 1)) linear infinite;
+}
+@keyframes dunes {
+  to {
+    transform: translateX(-900px);
+  }
+}
+/* The sun sinks behind the fixed slats and rises again. */
+.sunset {
+  animation: sunset calc(9s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes sunset {
+  to {
+    transform: translateY(46px);
+  }
+}
+/* Birds cross the sky from the left, flapping. Before their delay they wait off-canvas. */
+.bird {
+  animation: bird calc(var(--dur, 22s) / var(--speed, 1)) linear calc(var(--delay, 0s) / var(--speed, 1)) infinite;
+}
+@keyframes bird {
+  to {
+    transform: translate(1020px, -40px);
+  }
+}
+.flap {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: flap calc(0.45s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes flap {
+  to {
+    transform: scaleY(0.4);
+  }
+}
+/* The loading ring: half full at the start (like the still), fills up, loops. */
+.arc {
+  animation: arc calc(10s / var(--speed, 1)) linear calc(-5s / var(--speed, 1)) infinite;
+}
+@keyframes arc {
+  from {
+    stroke-dashoffset: 100;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.orbit {
+  animation: orbit calc(10s / var(--speed, 1)) linear calc(-5s / var(--speed, 1)) infinite;
+}
+@keyframes orbit {
+  to {
+    transform: rotate(360deg);
+  }
+}

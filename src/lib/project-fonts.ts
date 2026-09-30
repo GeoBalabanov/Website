@@ -1,4 +1,4 @@
-import { Barlow_Condensed, Fraunces, Instrument_Serif, Space_Grotesk, Syncopate, Syne } from "next/font/google";
+import { Barlow_Condensed, Bricolage_Grotesque, Fraunces, Instrument_Serif, Space_Grotesk, Syncopate, Syne } from "next/font/google";
 import type { FontKey } from "@/data/projects";
 
 // Display fonts for the project pages. Not preloaded: each page only downloads the one it uses.
@@ -23,7 +23,9 @@ const instrument = Instrument_Serif({
   preload: false,
 });
 
-const fonts = { fraunces, barlow, grotesk, syne, syncopate, instrument };
+const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-bricolage", display: "swap", preload: false });
+
+const fonts = { fraunces, barlow, grotesk, syne, syncopate, instrument, bricolage };
 
 /** Class that defines the CSS variable, and the family to use for display text. */
 export function projectFont(key: FontKey) {

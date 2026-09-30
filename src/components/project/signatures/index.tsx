@@ -5,6 +5,7 @@ import { HorizontalSteps } from "./HorizontalSteps";
 import { KineticType } from "./KineticType";
 import { WebGLDistort } from "./WebGLDistort";
 import { BloomGarden } from "./BloomGarden";
+import { ProgressJourney } from "./ProgressJourney";
 
 /**
  * Picks the signature section from `project.signature.type`.
@@ -26,5 +27,7 @@ export function SignatureSection({ project }: { project: Project }) {
       return <WebGLDistort project={project} data={s} />;
     case "bloom-garden":
       return <BloomGarden project={project} data={s} />;
+    case "progress-journey":
+      return <ProgressJourney project={project} data={s} />;
   }
 }
