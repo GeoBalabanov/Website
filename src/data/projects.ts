@@ -518,10 +518,37 @@ export const projects: Project[] = [
       ],
     },
     gallery: [
-      img("madrid-exchange", "wide-1", "Placeholder: Madrid", true, "Madrid, home for a semester: international relations happen far from the classroom."),
-      img("madrid-exchange", "4", "Placeholder: Madrid Half Marathon", false, "The Madrid Half Marathon: heat and hills, and a personal best 20 minutes faster."),
-      img("madrid-exchange", "5", "Placeholder: the Sahara", false, "The Sahara: mate with Franco and 200 Argentinians, a friendship without a shared language."),
-      img("madrid-exchange", "wide-2", "Placeholder: URJC", true, "URJC: new subjects, patient professors and a diverse group of classmates to build projects with."),
+      {
+        src: "/projects/madrid-exchange-marrakech.jpg",
+        alt: "A group of friends on a rooftop at night above the lit-up Jemaa el-Fnaa square in Marrakech",
+        wide: true,
+        caption: "Marrakech by night: the crew on a rooftop above Jemaa el-Fnaa, on the way to the desert.",
+      },
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/madrid-exchange-video-1.mp4",
+        poster: "/projects/madrid-exchange-video-1.jpg",
+        alt: "A crowd at night in front of a lit-up building in central Madrid, Spanish flags on the balconies",
+        caption: "Madrid at night: the centre packed, Spanish flags on the balconies.",
+      },
+      {
+        src: "/projects/madrid-exchange-medina.jpg",
+        alt: "A narrow, terracotta alley in a Moroccan medina under a hanging canvas",
+        tall: true,
+        caption: "The covered alleys of the medina, all terracotta and shade.",
+      },
+      {
+        src: "/projects/madrid-exchange-flag.jpg",
+        alt: "A Moroccan flag between tall cacti against a deep blue sky",
+        tall: true,
+        caption: "Morocco: cacti, whitewashed walls and a very blue sky.",
+      },
+      {
+        src: "/projects/madrid-exchange-sahara.jpg",
+        alt: "Georgi on a camel in the red Sahara dunes, looking back, with storm clouds on the horizon",
+        caption: "The Sahara: camels, red dunes and a storm on the horizon. Out here, friendships didn't need a shared language.",
+      },
     ],
     facts: [
       { value: 20, suffix: " min", label: "Faster half-marathon PB" },
