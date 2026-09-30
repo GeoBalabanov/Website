@@ -58,8 +58,11 @@ export type ProjectTheme = {
   font: FontKey;
   /** Extra classes for the big hero title, e.g. "uppercase italic". */
   titleClass?: string;
-  /** "light": the hero image is pale, so its text is set in ink (fg) with a paper fade instead of a dark one. */
+  /** "light": the hero image is pale, so its text is set in ink with a paper fade instead of a dark shade. */
   heroTone?: "light";
+  /** Ink and paper colours for a light hero, when they differ from the page's fg and bg. */
+  heroInk?: string;
+  heroPaper?: string;
 };
 
 export type RaceResult = {
@@ -100,7 +103,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave";
 
 export type Project = {
   slug: string;
@@ -350,9 +353,10 @@ export const projects: Project[] = [
     number: "04",
     title: "Dating App",
     subtitle: "A dating concept built around personality, music and voice",
-    coverMotion: "voice",
+    coverMotion: "hairwave",
+    hero: { src: "/projects/dating-app-hero.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
     images: [
-      { src: "/projects/dating-app-1.svg", alt: "Two pink and orange glows above a voice waveform" },
+      { src: "/projects/dating-app-1.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
       { src: "/projects/dating-app-2.svg", alt: "Dark voice waveform on a soft pink background", motion: "wave" },
     ],
     year: "2025",
@@ -361,7 +365,7 @@ export const projects: Project[] = [
     // PLACEHOLDER intro
     intro:
       "What if you heard someone before you saw them? This concept matches people on personality, the music they love and a short voice note, and only then reveals photos.",
-    theme: { bg: "#23091e", fg: "#ffe8ef", muted: "#e0a9bd", accent: "#ff5c8a", accent2: "#ff9a62", font: "syne", titleClass: "font-extrabold" },
+    theme: { bg: "#23091e", fg: "#ffe8ef", muted: "#e0a9bd", accent: "#ff5c8a", accent2: "#ff9a62", font: "syne", titleClass: "font-extrabold", heroTone: "light", heroInk: "#2a0f24", heroPaper: "#f5f1f2" },
     signature: {
       type: "kinetic-type",
       words: ["Personality", "Music", "Voice"],
