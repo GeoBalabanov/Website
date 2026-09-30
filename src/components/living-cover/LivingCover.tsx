@@ -6,6 +6,7 @@ import { BloomCover, DriftCover, LavaCover, RippleCover, TracksCover, TypingCove
 import { CardCover, DuskBloomCover, EmberCover, GridCover, NightTracksCover, PlaybackCover, RingsCover, RouteCover, WaveCover } from "./art-more";
 import { HillsCover, LoadedCover } from "./art-madrid";
 import { FlagWave } from "./FlagWave";
+import { CollageCover } from "./CollageCover";
 import { CorsaStage } from "@/components/project/hero-scenes/CorsaStage";
 import s from "./LivingCover.module.css";
 
@@ -62,6 +63,7 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "dusk-bloom" && <DuskBloomCover />}
       {/* The flag waves in the wind (WebGL): only mounted while its cover is the active one. */}
       {motion === "flag" && active && <FlagWave src={src} running={running} rasterWidth={900} />}
+      {motion === "collage" && <CollageCover />}
       {motion === "hills" && <HillsCover />}
       {motion === "loaded" && <LoadedCover />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}

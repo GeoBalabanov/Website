@@ -116,7 +116,7 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
 
   return (
     <section ref={root} aria-labelledby="pulse-title">
-      <div ref={pinned} className="relative flex h-dvh flex-col justify-between overflow-hidden bg-black px-4 pt-28 pb-8 md:px-10 md:pt-28">
+      <div ref={pinned} className="relative flex h-dvh flex-col justify-between overflow-hidden bg-[var(--p-bg)] px-4 pt-28 pb-8 md:px-10 md:pt-28">
         <div className="flex flex-wrap items-start justify-between gap-6">
           <div>
             <SectionLabel index="02">Race pace</SectionLabel>
@@ -157,7 +157,7 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
             <span data-bpm className="inline-block origin-left text-[clamp(5rem,20vw,17rem)] tabular-nums text-[var(--p-accent)]">
               {data.peakBpm}
             </span>
-            <span className="ml-3 align-top text-xl text-[var(--p-muted)] not-italic md:text-3xl">BPM</span>
+            <span className="ml-[0.9em] align-top text-xl text-[var(--p-muted)] not-italic md:text-3xl">BPM</span>
           </p>
           <p className="max-w-[16ch] text-right font-mono text-xs leading-relaxed tracking-wide text-[var(--p-muted)] uppercase">
             Resting {data.restingBpm} → race {data.peakBpm}
@@ -186,7 +186,7 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
                 <p className="mt-2 font-mono text-sm text-[var(--p-muted)]">Avg pace {r.pace}</p>
                 <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 md:max-w-3xl" aria-label={`Split times for ${r.race}`}>
                   {r.splits.map((s) => (
-                    <li key={s.label} className="rounded-md border border-white/10 bg-white/[0.04] p-3">
+                    <li key={s.label} className="rounded-md border border-[var(--p-fg)]/15 bg-[var(--p-fg)]/[0.04] p-3">
                       <span className="block font-mono text-[10px] tracking-widest text-[var(--p-muted)] uppercase">{s.label}</span>
                       <span className="mt-2 flex gap-[3px] font-mono text-lg tabular-nums md:text-xl" aria-label={s.time}>
                         {s.time.split("").map((ch, i) => (
@@ -195,7 +195,7 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
                             data-cell
                             data-final={ch}
                             aria-hidden="true"
-                            className={ch === ":" ? "px-px text-[var(--p-muted)]" : "inline-block min-w-[1.1ch] rounded-[3px] bg-white/10 px-[3px] text-center"}
+                            className={ch === ":" ? "px-px text-[var(--p-muted)]" : "inline-block min-w-[1.1ch] rounded-[3px] bg-[var(--p-fg)]/10 px-[3px] text-center"}
                           >
                             {ch}
                           </span>
