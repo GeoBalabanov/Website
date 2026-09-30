@@ -474,24 +474,24 @@
    fades, reappears on the right and sweeps back over. */
 .aturn {
   will-change: transform, opacity;
-  animation: aturn calc(9s / var(--speed, 1)) cubic-bezier(0.55, 0, 0.35, 1) infinite;
+  animation: aturn calc(3.6s / var(--speed, 1)) cubic-bezier(0.6, 0, 0.3, 1) infinite;
 }
 @keyframes aturn {
   0%,
-  45% {
+  20% {
     transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 0deg);
     opacity: 1;
   }
-  55% {
+  28% {
     transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 0deg);
     opacity: 0;
   }
-  56% {
-    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 165deg);
+  29% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 170deg);
     opacity: 0;
   }
-  64% {
-    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 165deg);
+  35% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 170deg);
     opacity: 1;
   }
   100% {
@@ -562,7 +562,7 @@
 /* Cards fan out and back around their bottom edge. */
 .afan {
   will-change: transform;
-  animation: afan calc(5s / var(--speed, 1)) ease-in-out infinite alternate;
+  animation: afan calc(2.6s / var(--speed, 1)) ease-in-out infinite alternate;
 }
 @keyframes afan {
   to {
@@ -571,11 +571,11 @@
 }
 .afloat {
   will-change: transform;
-  animation: afloat calc(6s / var(--speed, 1)) ease-in-out infinite alternate;
+  animation: afloat calc(3.4s / var(--speed, 1)) ease-in-out infinite alternate;
 }
 @keyframes afloat {
   to {
-    transform: translateY(-1.6%) rotate(-1deg);
+    transform: translateY(-3%) rotate(-2deg);
   }
 }
 .astar {
@@ -586,5 +586,27 @@
   to {
     transform: rotate(22deg) scale(1.15);
     opacity: 0.85;
+  }
+}
+
+/* Text typing onto a page: each line draws in, holds, then all clear. Starts written (like the still). */
+.atype {
+  will-change: transform, opacity;
+  animation: atype calc(6s / var(--speed, 1)) linear calc((var(--delay, 0s) - 4.2s) / var(--speed, 1)) infinite;
+}
+@keyframes atype {
+  0% {
+    transform: scaleX(0);
+    opacity: 1;
+  }
+  8%,
+  70% {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+  80%,
+  100% {
+    transform: scaleX(1);
+    opacity: 0;
   }
 }
