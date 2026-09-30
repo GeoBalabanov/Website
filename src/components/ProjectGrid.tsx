@@ -20,6 +20,7 @@ const STORY_LABEL: Record<Project["signature"]["type"], string> = {
   "kinetic-type": "The concept",
   "webgl-distort": "The interface",
   "bloom-garden": "The garden",
+  "progress-journey": "The journey",
 };
 
 /** Each image of a project opens a different part of it: the top, its signature section, its gallery. */

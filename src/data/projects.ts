@@ -43,7 +43,7 @@ export type Fact = {
   suffix?: string;
 };
 
-export type FontKey = "fraunces" | "barlow" | "grotesk" | "syne" | "syncopate" | "instrument";
+export type FontKey = "fraunces" | "barlow" | "grotesk" | "syne" | "syncopate" | "instrument" | "bricolage";
 
 export type ProjectTheme = {
   bg: string;
@@ -78,7 +78,8 @@ export type Signature =
   | { type: "horizontal-steps"; steps: { title: string; text: string }[] }
   | { type: "kinetic-type"; words: string[]; caption: string }
   | { type: "webgl-distort"; images: ProjectImage[]; caption: string }
-  | { type: "bloom-garden"; total: number; notes: string[] };
+  | { type: "bloom-garden"; total: number; notes: string[] }
+  | { type: "progress-journey"; milestones: { pct: number; kicker: string; title: string; text: string }[] };
 
 /**
  * "Living poster" loop for the project's cover in the Slider and the Grid
@@ -95,7 +96,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "sunset" | "hills" | "loaded";
 
 export type Project = {
   slug: string;
@@ -452,6 +453,79 @@ export const projects: Project[] = [
       { value: 40, suffix: " s", label: "To leave feedback" },
       { value: 6, label: "Flower species" },
     ],
+  },
+  {
+    slug: "madrid-exchange",
+    number: "07",
+    title: "Madrid",
+    subtitle: "Minor abroad · Economics for International Relations at URJC",
+    coverMotion: "sunset",
+    images: [
+      { src: "/projects/madrid-exchange-1.svg", alt: "A striped retro sun setting over red Sahara dunes" },
+      { src: "/projects/madrid-exchange-2.svg", alt: "A steep elevation profile on a warm orange sky", motion: "hills" },
+      { src: "/projects/madrid-exchange-3.svg", alt: "A half-filled orange ring labelled Loaded, Eindhoven to Madrid", motion: "loaded" },
+    ],
+    year: "2026",
+    role: "Exchange student",
+    location: "Madrid, Spain",
+    intro:
+      "In January I swapped Eindhoven for Madrid and ICT for Economics for International Relations at URJC. Five months later: a new way of seeing the world, a half-marathon PB twenty minutes faster, and friends from the Sahara. Small trip, big change.",
+    // Warm Madrid dusk: oxblood night, orange sun, saffron light.
+    theme: { bg: "#2a0c07", fg: "#fff1e6", muted: "#f0b89a", accent: "#ff6a2b", accent2: "#ffc15e", font: "bricolage", titleClass: "font-extrabold" },
+    signature: {
+      type: "progress-journey",
+      milestones: [
+        {
+          pct: 0,
+          kicker: "January",
+          title: "Eindhoven → Madrid",
+          text: "I left Eindhoven at the end of January to break my routine, and traded ICT for Economics for International Relations at Universidad Rey Juan Carlos.",
+        },
+        {
+          pct: 20,
+          kicker: "A new field",
+          title: "From design to economics",
+          text: "Economics and finance changed how I see the world: I started analysing things differently than I did in design. Patient URJC professors and a diverse group of project partners made the switch work.",
+        },
+        {
+          pct: 40,
+          kicker: "Madrid Half Marathon",
+          title: "Heat, hills and a PB",
+          text: "Used to flat, cool Dutch runs, I met Madrid's heat and steep climbs. I started with no expectations and finished 20 minutes faster than my old personal best, with my new friends at the line.",
+        },
+        {
+          pct: 50,
+          kicker: "Halfway",
+          title: "The Sahara, with 200 Argentinians",
+          text: "One moment chasing a PB in the city, the next in the desert with my buddy and 200 Argentinians I'd never met. Franco and I shared no language, and it didn't matter: mate, laughter and the dunes did the talking.",
+        },
+        {
+          pct: 75,
+          kicker: "Easter",
+          title: "One table, many countries",
+          text: "Celebrating Easter with people from all over, swapping traditions and seeing how differently, and just as passionately, everyone celebrates. That's what cultural exchange really means.",
+        },
+        {
+          pct: 100,
+          kicker: "Home",
+          title: "Small trip, big change",
+          text: "The minor didn't just add credits. It changed how I move through the world and see my future. Now it's about bringing this mindset home to Eindhoven.",
+        },
+      ],
+    },
+    gallery: [
+      img("madrid-exchange", "wide-1", "Placeholder: Madrid", true, "Madrid, home for a semester: international relations happen far from the classroom."),
+      img("madrid-exchange", "4", "Placeholder: Madrid Half Marathon", false, "The Madrid Half Marathon: heat and hills, and a personal best 20 minutes faster."),
+      img("madrid-exchange", "5", "Placeholder: the Sahara", false, "The Sahara: mate with Franco and 200 Argentinians, a friendship without a shared language."),
+      img("madrid-exchange", "wide-2", "Placeholder: URJC", true, "URJC: new subjects, patient professors and a diverse group of classmates to build projects with."),
+    ],
+    facts: [
+      { value: 20, suffix: " min", label: "Faster half-marathon PB" },
+      { value: 21.1, decimals: 1, suffix: " km", label: "Madrid Half Marathon" },
+      { value: 200, label: "Argentinians met in the Sahara" },
+      { value: 100, suffix: "%", label: "Loaded" },
+    ],
+    confirmed: ["intro", "facts"],
   },
 ];
 

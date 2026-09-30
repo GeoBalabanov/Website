@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 1200" width="900" height="1200">
+<defs>
+<filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="110"/></filter>
+<filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
+<radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+<linearGradient id="arc" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#ffc15e"/><stop offset="1" stop-color="#ff3d2e"/></linearGradient>
+</defs>
+<rect width="900" height="1200" fill="#2a0c07"/>
+<g filter="url(#b)"><ellipse cx="450" cy="560" rx="300" ry="300" fill="#ff6a2b" opacity="0.45"/><ellipse cx="250" cy="1000" rx="300" ry="200" fill="#9f1f17" opacity="0.7"/></g>
+<circle cx="450" cy="560" r="260" fill="none" stroke="#fff1e6" stroke-opacity="0.12" stroke-width="18"/>
+<path d="M 450 300 A 260 260 0 1 1 449.99 300" pathLength="100" fill="none" stroke="url(#arc)" stroke-width="18" stroke-linecap="round" stroke-dasharray="100" stroke-dashoffset="50"/>
+<circle cx="450" cy="820" r="16" fill="#fff1e6"/>
+<text x="450" y="578" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="44" letter-spacing="12" fill="#fff1e6">LOADED</text>
+<text x="450" y="930" text-anchor="middle" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="24" letter-spacing="6" fill="#f0b89a">EINDHOVEN → MADRID</text>
+<rect width="900" height="1200" fill="url(#v)"/>
+<rect width="900" height="1200" filter="url(#n)" opacity="0.09" style="mix-blend-mode:overlay"/>
+</svg>
