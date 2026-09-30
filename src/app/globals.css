@@ -137,6 +137,6 @@
 /* Hero title letters rise out of per-letter masks: clip vertically only, so slanted
    (italic) letters never lose their sides. */
 .hero-char-mask {
-  padding-inline: 0.2em;
-  margin-inline: -0.2em;
+  padding: 0.12em 0.2em;
+  margin: -0.12em -0.2em;
 }

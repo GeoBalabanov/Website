@@ -10,6 +10,7 @@ import { useProjectTransition } from "@/components/transition/ProjectTransition"
 import { prefersReducedMotion } from "@/lib/motion";
 import { CorsaStage } from "./hero-scenes/CorsaStage";
 import { FlagWave } from "@/components/living-cover/FlagWave";
+import { HERO_LIVING, HeroLiving } from "@/components/living-cover/HeroLiving";
 
 export function Hero({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
@@ -23,9 +24,11 @@ export function Hero({ project }: { project: Project }) {
 
   // Live 3D hero (if the project has one): mounts after hydration, fades in over the
   // still (a render of its first frame) and only runs while the hero is on screen.
+  // Projects without one play their living cover here instead.
+  const living = !project.heroScene && project.coverMotion && HERO_LIVING.includes(project.coverMotion) ? project.coverMotion : null;
   const [scene, setScene] = useState({ on: false, visible: true, wide: true });
   useEffect(() => {
-    if (!project.heroScene || prefersReducedMotion()) return;
+    if ((!project.heroScene && !living) || prefersReducedMotion()) return;
     const el = root.current!;
     let inView = true;
     const update = () => setScene({ on: true, visible: inView && !document.hidden, wide: window.matchMedia("(min-width: 768px)").matches });
@@ -40,7 +43,7 @@ export function Hero({ project }: { project: Project }) {
       io.disconnect();
       document.removeEventListener("visibilitychange", update);
     };
-  }, [project.heroScene]);
+  }, [project.heroScene, living]);
 
   useScene(root, ({ reduced }) => {
     const title = root.current!.querySelector<HTMLElement>("[data-title]")!;
@@ -54,7 +57,8 @@ export function Hero({ project }: { project: Project }) {
     }
 
     const split = SplitText.create(title, { type: "chars,words", mask: "chars", charsClass: "hero-char will-change-transform" });
-    gsap.from(split.chars, { yPercent: 115, duration: 1.1, ease: "expo.out", stagger: 0.028, delay });
+    // Once risen, drop the per-letter masks so no glyph stays clipped.
+    gsap.from(split.chars, { yPercent: 115, duration: 1.1, ease: "expo.out", stagger: 0.028, delay, onComplete: () => split.revert() });
     gsap.from(meta, { autoAlpha: 0, y: 12, duration: 0.8, ease: "power2.out", stagger: 0.08, delay: delay + 0.35 });
 
     // Scroll away: image drifts and zooms, title lifts.
@@ -105,6 +109,7 @@ export function Hero({ project }: { project: Project }) {
             onLoad={() => heroReady(project.slug)}
           />
           {scene.on && project.heroScene === "corsa-head" && <CorsaStage paused={!scene.visible} />}
+          {scene.on && living && <HeroLiving key={scene.wide ? "wide" : "tall"} motion={living} wide={scene.wide && !!project.hero} running={scene.visible} />}
           {scene.on && project.heroScene === "flag-wind" && (
             <FlagWave key={scene.wide ? "wide" : "tall"} src={scene.wide ? hero.src : cover.src} running={scene.visible} rasterWidth={scene.wide ? 1800 : 1000} />
           )}

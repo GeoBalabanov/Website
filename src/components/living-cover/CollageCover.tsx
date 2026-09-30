@@ -2,7 +2,7 @@
 
 import { useId } from "react";
 import { Frame, svgProps } from "./art";
-import { COLLAGE_LAYERS, PAPER } from "./collage-layers";
+import { COLLAGE_LAYERS, PAPER, type CollageLayer } from "./collage-layers";
 import s from "./LivingCover.module.css";
 
 /**
@@ -25,18 +25,18 @@ const MOTION: Record<string, string | undefined> = {
 };
 const TWINKLE_DELAY: Record<string, string> = { twinkle0: "0s", twinkle1: "0.8s", twinkle2: "1.6s" };
 
-export function CollageCover() {
+export function CollageCover({ layers = COLLAGE_LAYERS, viewBox }: { layers?: CollageLayer[]; viewBox?: string }) {
   const uid = useId().replace(/:/g, "");
   return (
     <Frame bg={PAPER} grain={0.14}>
-      {COLLAGE_LAYERS.map((l) => {
+      {layers.map((l) => {
         const art = (
           <div
             className={`${s.fill} ${MOTION[l.id] ?? ""}`}
             style={{ transformOrigin: l.origin, "--shift": l.shift, "--delay": TWINKLE_DELAY[l.id] } as React.CSSProperties}
           >
             {/* overflow visible: the sliding streaks draw a second copy past the right edge (the clip keeps them in their strip). */}
-            <svg {...svgProps} style={{ overflow: "visible" }} dangerouslySetInnerHTML={{ __html: l.svg.replaceAll("ID-", `${uid}-${l.id}-`) }} />
+            <svg {...svgProps} viewBox={viewBox ?? svgProps.viewBox} style={{ overflow: "visible" }} dangerouslySetInnerHTML={{ __html: l.svg.replaceAll("ID-", `${uid}-${l.id}-`) }} />
           </div>
         );
         return l.clip ? (
