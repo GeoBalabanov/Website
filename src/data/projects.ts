@@ -96,7 +96,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "sunset" | "hills" | "loaded";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded";
 
 export type Project = {
   slug: string;
@@ -106,6 +106,8 @@ export type Project = {
   images: ProjectImage[];
   link?: string;
   coverMotion?: CoverMotion;
+  /** Wide image for the project page hero, when the portrait cover would crop badly (defaults to images[0]). */
+  hero?: ProjectImage;
   /** A live 3D scene that plays over the hero image on the project page. */
   heroScene?: "corsa-head";
 
@@ -459,9 +461,10 @@ export const projects: Project[] = [
     number: "07",
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
-    coverMotion: "sunset",
+    coverMotion: "flag",
+    hero: { src: "/projects/madrid-exchange-hero.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
     images: [
-      { src: "/projects/madrid-exchange-1.svg", alt: "A striped retro sun setting over red Sahara dunes" },
+      { src: "/projects/madrid-exchange-1.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
       { src: "/projects/madrid-exchange-2.svg", alt: "A steep elevation profile on a warm orange sky", motion: "hills" },
       { src: "/projects/madrid-exchange-3.svg", alt: "A half-filled orange ring labelled Loaded, Eindhoven to Madrid", motion: "loaded" },
     ],
