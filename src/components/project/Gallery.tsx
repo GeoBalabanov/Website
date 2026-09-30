@@ -45,7 +45,22 @@ export function Gallery({ project }: { project: Project }) {
     });
   });
 
-  let portrait = 0;
+  // Where each item sits: wide items span the page, portraits pair up at staggered
+  // heights, and runs of vertical videos go three across (the middle one dropped).
+  const tallPlace = ["md:col-start-1", "md:col-start-5 md:mt-[16vh]", "md:col-start-9"];
+  const places: string[] = [];
+  for (let i = 0, portrait = 0, tall = 0; i < project.gallery.length; i++) {
+    const item = project.gallery[i];
+    tall = item.tall ? tall : 0;
+    places.push(
+      item.wide
+        ? "col-span-12 md:col-span-10 md:col-start-2"
+        : item.tall
+          ? `col-span-6 md:col-span-4 md:w-[82%] md:justify-self-center ${tallPlace[tall++ % 3]}`
+          : `col-span-6 md:col-span-4 ${portrait++ % 2 === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`,
+    );
+  }
+
   return (
     <section ref={root} className="px-4 py-[14vh] md:px-10">
       <SectionLabel index="03" placeholder>
@@ -53,13 +68,10 @@ export function Gallery({ project }: { project: Project }) {
       </SectionLabel>
       <div className="mt-10 grid grid-cols-12 gap-x-4 gap-y-[12vh] md:gap-x-8">
         {project.gallery.map((item, i) => {
-          const side = item.wide ? 0 : portrait++ % 2;
-          const place = item.wide
-            ? "col-span-12 md:col-span-10 md:col-start-2"
-            : `col-span-6 md:col-span-4 ${side === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`;
+          const place = places[i];
           return (
             <figure key={item.src} className={place}>
-              <div data-frame className={`relative overflow-hidden will-change-transform ${item.wide ? "aspect-[16/10]" : "aspect-[3/4]"}`}>
+              <div data-frame className={`relative overflow-hidden will-change-transform ${item.wide ? "aspect-[16/10]" : item.tall ? "aspect-[9/16]" : "aspect-[3/4]"}`}>
                 <div data-media className="absolute -inset-y-[10%] inset-x-0 will-change-transform">
                   <Media item={item} />
                 </div>

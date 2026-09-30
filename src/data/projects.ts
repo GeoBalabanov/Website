@@ -27,6 +27,8 @@ export type MediaItem = ProjectImage & {
   poster?: string;
   /** Landscape item (16:10) instead of portrait (3:4). */
   wide?: boolean;
+  /** Vertical phone video (9:16). Consecutive tall items sit side by side. */
+  tall?: boolean;
   /** A line or two under the item explaining the work. */
   caption?: string;
 };
@@ -239,8 +241,30 @@ export const projects: Project[] = [
     },
     gallery: [
       img("marathon-running", "wide-1", "Placeholder: track lanes in the dark", true, "Early-morning track sessions: intervals before the working day starts."),
-      img("marathon-running", "1", "Placeholder: morning run", false, "The daily run: building the base one easy kilometre at a time."),
-      img("marathon-running", "2", "Placeholder: long run route", false, "Sunday long runs: the route changes, the rhythm stays."),
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/marathon-running-video-1.mp4",
+        poster: "/projects/marathon-running-video-1.jpg",
+        alt: "Running along a gravel path through a dark forest",
+        caption: "Easy kilometres on the forest trails: gravel underfoot and nobody else around.",
+      },
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/marathon-running-video-2.mp4",
+        poster: "/projects/marathon-running-video-2.jpg",
+        alt: "Finishers with medals on sunny city steps after the Madrid Half Marathon",
+        caption: "Madrid Half Marathon: medals on, and the finish area slowly emptying out in the sun.",
+      },
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/marathon-running-video-3.mp4",
+        poster: "/projects/marathon-running-video-3.jpg",
+        alt: "A runner catching his breath on a forest path after a run",
+        caption: "After the long run: catching my breath before the walk home.",
+      },
       img("marathon-running", "wide-2", "Placeholder: pace data", true, "Every run is logged. Pace, heart rate and splits show what's working."),
     ],
     // PLACEHOLDER numbers
