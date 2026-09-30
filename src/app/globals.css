@@ -134,9 +134,9 @@
   animation: bloom-sway 5s ease-in-out infinite;
 }
 
-/* Brutalist gallery ticker: two identical halves, so -50% loops seamlessly. */
-@keyframes ticker {
-  to {
-    transform: translateX(-50%);
-  }
+/* Hero title letters rise out of per-letter masks: clip vertically only, so slanted
+   (italic) letters never lose their sides. */
+.hero-char-mask {
+  padding-inline: 0.2em;
+  margin-inline: -0.2em;
 }

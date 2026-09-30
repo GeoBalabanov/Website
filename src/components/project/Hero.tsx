@@ -52,7 +52,7 @@ export function Hero({ project }: { project: Project }) {
       return;
     }
 
-    const split = SplitText.create(title, { type: "chars,words", mask: "chars", charsClass: "will-change-transform" });
+    const split = SplitText.create(title, { type: "chars,words", mask: "chars", charsClass: "hero-char will-change-transform" });
     gsap.from(split.chars, { yPercent: 115, duration: 1.1, ease: "expo.out", stagger: 0.028, delay });
     gsap.from(meta, { autoAlpha: 0, y: 12, duration: 0.8, ease: "power2.out", stagger: 0.08, delay: delay + 0.35 });
 
