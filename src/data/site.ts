@@ -41,13 +41,12 @@ export const footer: { title: string; items: FooterItem[] }[] = [
       { label: "GitHub", href: "https://github.com/geobalabanov" },
       // TODO: replace with your profile URLs
       { label: "LinkedIn", href: "https://www.linkedin.com/in/georgi-balabanov-831310339/" },
-      { label: "Instagram", href: "https://www.instagram.com/georgibalabanov1/" },
       { label: "Strava", href: "https://www.strava.com/athletes/153229176" },
     ],
   },
   {
     title: "Tech Stack",
-    items: [{ label: "Next.js" }, { label: "SwiftUI" }, { label: "TypeScript" }, { label: "Tailwind CSS" }, { label: "GSAP" }, { label: "Lenis" }],
+    items: [{ label: "Next.js" }, { label: "TypeScript" }, { label: "Tailwind CSS" }, { label: "GSAP" }, { label: "Lenis" }],
   },
   {
     title: "Inspiration",
