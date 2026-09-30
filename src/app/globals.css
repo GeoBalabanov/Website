@@ -133,3 +133,10 @@
 .bloom-sway {
   animation: bloom-sway 5s ease-in-out infinite;
 }
+
+/* Brutalist gallery ticker: two identical halves, so -50% loops seamlessly. */
+@keyframes ticker {
+  to {
+    transform: translateX(-50%);
+  }
+}

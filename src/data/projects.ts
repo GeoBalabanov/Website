@@ -119,6 +119,10 @@ export type Project = {
   signature: Signature;
   gallery: MediaItem[];
   facts: Fact[];
+  /** Gallery look: the default editorial layout, or a brutalist one. */
+  galleryStyle?: "editorial" | "brutalist";
+  /** Words for the brutalist gallery's ticker. */
+  galleryTicker?: string[];
   /** Sections whose content is final, so they drop their "Placeholder" tag. */
   confirmed?: ("intro" | "facts")[];
 };
@@ -463,6 +467,8 @@ export const projects: Project[] = [
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
     heroScene: "flag-wind",
+    galleryStyle: "brutalist",
+    galleryTicker: ["Madrid", "Marrakech", "Sahara", "URJC", "21.1 km"],
     hero: { src: "/projects/madrid-exchange-hero.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
     images: [
       { src: "/projects/madrid-exchange-1.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
