@@ -62,7 +62,7 @@ export function Gallery({ project }: { project: Project }) {
   }
 
   return (
-    <section ref={root} className="px-4 py-[14vh] md:px-10">
+    <section ref={root} id="gallery" className="px-4 py-[14vh] md:px-10">
       <SectionLabel index="03" placeholder={project.gallery.some((m) => m.alt.startsWith("Placeholder"))}>
         Gallery
       </SectionLabel>

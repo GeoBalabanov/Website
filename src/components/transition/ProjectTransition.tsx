@@ -21,13 +21,18 @@ import { scrollToImmediate } from "@/components/SmoothScroll";
 
 type Rect = { left: number; top: number; width: number; height: number };
 
+/** Parts of a project page a link can open straight onto. */
+export type ProjectSection = "story" | "gallery";
+
 type Ctx = {
-  /** Expand `from` (an element containing an <img>) into the page of `slug`. */
-  open: (slug: string, from: HTMLElement) => void;
+  /** Expand `from` (an element containing an <img>) into the page of `slug`, optionally onto one of its sections. */
+  open: (slug: string, from: HTMLElement, section?: ProjectSection) => void;
   /** Leave a project page, shrinking the hero back onto its thumbnail. */
   close: (slug: string) => void;
   /** Called by the project hero once its image has loaded. */
   heroReady: (slug: string) => void;
+  /** Called by a project page once it has scrolled to the section it was opened on. */
+  sectionReady: (slug: string) => void;
 };
 
 const TransitionContext = createContext<Ctx | null>(null);
@@ -154,8 +159,22 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
     });
   }, []);
 
+  // Opening onto a section: the overlay waits for the page to scroll there, not for the hero.
+  const awaitSection = useRef(false);
+
   const heroReady = useCallback(
     (slug: string) => {
+      if (awaitSection.current) return;
+      readySlug.current = slug;
+      if (phase.current === "await-hero") hide();
+    },
+    [hide],
+  );
+
+  const sectionReady = useCallback(
+    (slug: string) => {
+      if (!awaitSection.current) return;
+      awaitSection.current = false;
       readySlug.current = slug;
       if (phase.current === "await-hero") hide();
     },
@@ -163,8 +182,8 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
   );
 
   const open = useCallback(
-    (slug: string, from: HTMLElement) => {
-      const href = `/projects/${slug}`;
+    (slug: string, from: HTMLElement, section?: ProjectSection) => {
+      const href = `/projects/${slug}${section ? `#${section}` : ""}`;
       // The slider stacks several images in one frame: use the one that is visible.
       const imgs = Array.from(from.querySelectorAll("img"));
       const src = imgs.find((i) => getComputedStyle(i).visibility !== "hidden") ?? imgs[0];
@@ -181,6 +200,7 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
       gsap.set(image.current, { ...start.img, transformOrigin: "0 0" });
 
       readySlug.current = null;
+      awaitSection.current = !!section;
       phase.current = "opening";
       setFlag(true);
       router.prefetch(href);
@@ -193,7 +213,10 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
             phase.current = "await-hero";
             router.push(href);
             // Fade even if the hero never reports (slow network): never leave the overlay stuck.
-            gsap.delayedCall(2.5, () => phase.current === "await-hero" && hide());
+            gsap.delayedCall(2.5, () => {
+              awaitSection.current = false;
+              if (phase.current === "await-hero") hide();
+            });
             if (readySlug.current === slug) hide();
           },
         })
@@ -275,7 +298,7 @@ export function ProjectTransitionProvider({ children }: { children: React.ReactN
     }
   }, [pathname, shrinkTo, show]);
 
-  const value = useMemo(() => ({ open, close, heroReady }), [open, close, heroReady]);
+  const value = useMemo(() => ({ open, close, heroReady, sectionReady }), [open, close, heroReady, sectionReady]);
 
   return (
     <TransitionContext.Provider value={value}>

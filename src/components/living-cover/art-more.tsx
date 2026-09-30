@@ -193,8 +193,9 @@ export function WaveCover({ running }: { running: boolean }) {
   );
 }
 
-/* ---------------- 05 Corsa · 2: a track playing ---------------- */
+/* ---------------- 05 Corsa · 2: a track playing, in the violet of the 3D hero ---------------- */
 // The knob starts where the still has it (x 370.8 on the 120–780 track) and plays to the end, then loops.
+// The played part carries the iridescent streak colours of the Corsa bust.
 const TRACK_START = 120;
 const TRACK_W = 660;
 const PLAY_S = 14;
@@ -203,15 +204,27 @@ const PLAY_AT = -((370.8 - TRACK_START) / TRACK_W) * PLAY_S;
 export function PlaybackCover() {
   const play = vars({ "--dur": `${PLAY_S}s`, "--delay": `${PLAY_AT}s`, "--travel": `${TRACK_W}px` });
   return (
-    <Frame bg="#2a2e33" grain={0.1} speed={{ blob: 2 }}>
-      <Blob sigma={120} spec={{ cx: 200, cy: 200, rx: 350, ry: 300, color: "#5b6570", opacity: 0.9 }} drift={{ dx: "10%", dy: "8%", dxDur: 18, dyDur: 22 }} />
-      <Blob sigma={120} spec={{ cx: 700, cy: 1000, rx: 330, ry: 300, color: "#0f766e", opacity: 0.6 }} drift={{ dx: "-10%", dy: "-10%", ds: 1.1, dxDur: 15, dyDur: 19 }} />
-      <Blob sigma={120} wrap={s.crossfade} spec={{ cx: 650, cy: 350, rx: 160, ry: 200, color: "#d6dde3", opacity: 0.35 }} drift={{ dx: "-18%", dy: "20%", dxDur: 17, dyDur: 13 }} />
+    <Frame bg="#140a3d" grain={0.1} vignette speed={{ blob: 2 }}>
+      <Blob sigma={120} spec={{ cx: 200, cy: 200, rx: 350, ry: 300, color: "#7c3aed", opacity: 0.8 }} drift={{ dx: "10%", dy: "8%", dxDur: 18, dyDur: 22 }} />
+      <Blob sigma={120} spec={{ cx: 700, cy: 1000, rx: 330, ry: 300, color: "#1d4ed8", opacity: 0.7 }} drift={{ dx: "-10%", dy: "-10%", ds: 1.1, dxDur: 15, dyDur: 19 }} />
+      <Blob sigma={120} wrap={s.crossfade} spec={{ cx: 650, cy: 350, rx: 160, ry: 200, color: "#f0abfc", opacity: 0.35 }} drift={{ dx: "-18%", dy: "20%", dxDur: 17, dyDur: 13 }} />
       <svg {...svgProps}>
-        <rect x={TRACK_START} y="760" width={TRACK_W} height="3" fill="#e2e8f0" opacity="0.5" />
-        <rect x={TRACK_START} y="760" width={TRACK_W} height="3" fill="#e2e8f0" className={s.progress} style={play} />
+        <defs>
+          <linearGradient id="lc-iri" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0" stopColor="#ff4fd8" />
+            <stop offset="0.35" stopColor="#ff8a3d" />
+            <stop offset="0.55" stopColor="#fff3e0" />
+            <stop offset="0.75" stopColor="#3ee6ff" />
+            <stop offset="1" stopColor="#5b5bff" />
+          </linearGradient>
+        </defs>
+        <rect x={TRACK_START} y="760" width={TRACK_W} height="3" fill="#e9e3ff" opacity="0.35" />
+        <rect x={TRACK_START} y="760" width={TRACK_W} height="3" fill="url(#lc-iri)" className={s.progress} style={play} />
         <g className={s.knob} style={play}>
-          <circle cx={TRACK_START} cy="761" r="10" fill="#e2e8f0" />
+          <g className={s.pulse} style={{ transformBox: "fill-box", transformOrigin: "center" }}>
+            <circle cx={TRACK_START} cy="761" r="22" fill="#f0abfc" opacity="0.25" />
+          </g>
+          <circle cx={TRACK_START} cy="761" r="10" fill="#ffffff" />
         </g>
       </svg>
     </Frame>

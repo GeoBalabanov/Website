@@ -3,10 +3,11 @@
 <filter id="b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="120"/></filter>
 <filter id="n"><feTurbulence type="fractalNoise" baseFrequency="0.85" numOctaves="2" stitchTiles="stitch"/><feColorMatrix values="0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 0 0.5  0 0 0 1 0"/></filter>
 <radialGradient id="v" cx="50%" cy="50%" r="75%"><stop offset="60%" stop-color="#000" stop-opacity="0"/><stop offset="100%" stop-color="#000" stop-opacity="0.35"/></radialGradient>
+<linearGradient id="iri" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#ff4fd8"/><stop offset="0.35" stop-color="#ff8a3d"/><stop offset="0.55" stop-color="#fff3e0"/><stop offset="0.75" stop-color="#3ee6ff"/><stop offset="1" stop-color="#5b5bff"/></linearGradient>
 </defs>
-<rect width="900" height="1200" fill="#2a2e33"/>
-<g filter="url(#b)"><ellipse cx="200" cy="200" rx="350" ry="300" fill="#5b6570" opacity="0.9"/><ellipse cx="700" cy="1000" rx="330" ry="300" fill="#0f766e" opacity="0.6"/><ellipse cx="650" cy="350" rx="160" ry="200" fill="#d6dde3" opacity="0.35"/></g>
-<rect x="120" y="760" width="660" height="3" fill="#e2e8f0" opacity="0.5"/><circle cx="370.8" cy="761" r="10" fill="#e2e8f0"/>
-
+<rect width="900" height="1200" fill="#140a3d"/>
+<g filter="url(#b)"><ellipse cx="200" cy="200" rx="350" ry="300" fill="#7c3aed" opacity="0.8"/><ellipse cx="700" cy="1000" rx="330" ry="300" fill="#1d4ed8" opacity="0.7"/><ellipse cx="650" cy="350" rx="160" ry="200" fill="#f0abfc" opacity="0.35"/></g>
+<rect x="120" y="760" width="660" height="3" fill="#e9e3ff" opacity="0.35"/><rect x="120" y="760" width="250.8" height="3" fill="url(#iri)"/><circle cx="370.8" cy="761" r="22" fill="#f0abfc" opacity="0.25"/><circle cx="370.8" cy="761" r="10" fill="#ffffff"/>
+<rect width="900" height="1200" fill="url(#v)"/>
 <rect width="900" height="1200" filter="url(#n)" opacity="0.1" style="mix-blend-mode:overlay"/>
 </svg>
