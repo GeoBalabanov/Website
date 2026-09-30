@@ -95,7 +95,8 @@ export type Signature =
  * The first six are code-drawn copies of the placeholder cover artwork, animated:
  *   lava   – drifting orange/red blobs that breathe          (plovdiv-marathon-1)
  *   tracks – drifting blobs, flowing track lines + runners   (marathon-running-1)
- *   typing – fanned case cards, top card writes itself      (ai-case-generator-1)
+ *   typing – fanned case cards, top card writes itself (unused)
+ *   ai-book / ai-flow / ai-page – iridescent book, cards, page (ai-case-generator-*.svg)
  *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
  *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
  *   bloom  – a turning flower whose petals breathe open      (bloom-1)
@@ -103,7 +104,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
 
 export type Project = {
   slug: string;
@@ -185,11 +186,12 @@ export const projects: Project[] = [
     number: "02",
     title: "AI Case Generator",
     subtitle: "Turning real social work cases into playable scenarios for the Social Work Game",
-    coverMotion: "typing",
+    coverMotion: "ai-book",
+    hero: { src: "/projects/ai-case-generator-hero.svg", alt: "A glowing open book with iridescent pink, red, yellow and blue pages on deep navy" },
     images: [
-      { src: "/projects/ai-case-generator-1.svg", alt: "Three case-scenario cards fanned out over a deep blue glow" },
-      { src: "/projects/ai-case-generator-2.svg", alt: "Blue light on a dark navy grid", motion: "grid" },
-      { src: "/projects/ai-case-generator-3.svg", alt: "A single case card close up in teal and violet light", motion: "card" },
+      { src: "/projects/ai-case-generator-book.svg", alt: "A glowing open book with iridescent pink, red, yellow and blue pages on deep navy" },
+      { src: "/projects/ai-case-generator-flow.svg", alt: "Three glowing iridescent case cards fanned out under a shining sparkle", motion: "ai-flow" },
+      { src: "/projects/ai-case-generator-page.svg", alt: "A single glowing iridescent page close up, with a cursor on it", motion: "ai-page" },
     ],
     year: "2025",
     role: "UX Design & SwiftUI Development",
