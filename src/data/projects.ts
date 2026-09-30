@@ -253,7 +253,6 @@ export const projects: Project[] = [
       ],
     },
     gallery: [
-      img("marathon-running", "wide-1", "Placeholder: track lanes in the dark", true, "Early-morning track sessions: intervals before the working day starts."),
       {
         kind: "video",
         tall: true,
@@ -278,7 +277,6 @@ export const projects: Project[] = [
         alt: "A runner catching his breath on a forest path after a run",
         caption: "After the long run: catching my breath before the walk home.",
       },
-      img("marathon-running", "wide-2", "Placeholder: pace data", true, "Every run is logged. Pace, heart rate and splits show what's working."),
     ],
     // PLACEHOLDER numbers
     facts: [
