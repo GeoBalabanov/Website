@@ -76,7 +76,8 @@ export function Hero({ project }: { project: Project }) {
   return (
     <section
       ref={root}
-      className={`relative h-dvh min-h-[34rem] overflow-hidden ${light ? "bg-[var(--p-bg)] text-[var(--p-fg)]" : "bg-black text-white"}`}
+      className={`relative h-dvh min-h-[34rem] overflow-hidden ${light ? "bg-[var(--hero-paper)] text-[var(--hero-ink)]" : "bg-black text-white"}`}
+      style={light ? ({ "--hero-ink": project.theme.heroInk ?? "var(--p-fg)", "--hero-paper": project.theme.heroPaper ?? "var(--p-bg)" } as React.CSSProperties) : undefined}
     >
       <div data-hero-media className="absolute inset-0">
         <div data-hero-img className="absolute inset-0 will-change-transform">
@@ -110,7 +111,7 @@ export function Hero({ project }: { project: Project }) {
         </div>
       </div>
       {light ? (
-        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-[var(--p-bg)]/90 via-[var(--p-bg)]/40 to-transparent md:hidden" />
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-[var(--hero-paper)]/90 via-[var(--hero-paper)]/40 to-transparent md:hidden" />
       ) : (
         <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />
       )}
