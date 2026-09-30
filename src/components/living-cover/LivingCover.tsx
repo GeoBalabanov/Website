@@ -8,6 +8,8 @@ import { HillsCover, LoadedCover } from "./art-madrid";
 import { FlagWave } from "./FlagWave";
 import { CollageCover } from "./CollageCover";
 import { HairWaveCover } from "./HairWaveCover";
+import { LayeredCover } from "./LayeredCover";
+import { AI_BG, AI_BOOK, AI_FLOW, AI_GRAIN, AI_PAGE } from "./ai-layers";
 import { CorsaStage } from "@/components/project/hero-scenes/CorsaStage";
 import s from "./LivingCover.module.css";
 
@@ -66,6 +68,9 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "flag" && active && <FlagWave src={src} running={running} rasterWidth={900} />}
       {motion === "collage" && <CollageCover />}
       {motion === "hairwave" && <HairWaveCover running={running} />}
+      {motion === "ai-book" && <LayeredCover layers={AI_BOOK} bg={AI_BG} grain={AI_GRAIN} />}
+      {motion === "ai-flow" && <LayeredCover layers={AI_FLOW} bg={AI_BG} grain={AI_GRAIN} />}
+      {motion === "ai-page" && <LayeredCover layers={AI_PAGE} bg={AI_BG} grain={AI_GRAIN} />}
       {motion === "hills" && <HillsCover />}
       {motion === "loaded" && <LoadedCover />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}

@@ -458,3 +458,133 @@
     transform: translateY(-1.2%) rotate(-1.2deg);
   }
 }
+
+/* ---------- 02 AI Case Generator: iridescent book, cards, page (LayeredCover + ai-layers.ts) ---------- */
+.aglow {
+  will-change: transform, opacity;
+  animation: aglow calc(6s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes aglow {
+  to {
+    transform: scale(1.07);
+    opacity: 0.8;
+  }
+}
+/* A page turning over the spine: at rest it stands to the left (the still), then it
+   fades, reappears on the right and sweeps back over. */
+.aturn {
+  will-change: transform, opacity;
+  animation: aturn calc(9s / var(--speed, 1)) cubic-bezier(0.55, 0, 0.35, 1) infinite;
+}
+@keyframes aturn {
+  0%,
+  45% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 0deg);
+    opacity: 1;
+  }
+  55% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 0deg);
+    opacity: 0;
+  }
+  56% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 165deg);
+    opacity: 0;
+  }
+  64% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 165deg);
+    opacity: 1;
+  }
+  100% {
+    transform: perspective(1600px) rotate3d(var(--ax), var(--ay), 0, 0deg);
+    opacity: 1;
+  }
+}
+/* Soft light travelling across a page (not in the still: starts invisible). */
+.asheen {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: asheen calc(7s / var(--speed, 1)) ease-in-out infinite;
+}
+@keyframes asheen {
+  0% {
+    transform: translateX(-30%);
+    opacity: 0;
+  }
+  20%,
+  80% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(30%);
+    opacity: 0;
+  }
+}
+/* The cursor wanders a little; its ring pulses like a click. Same path, same timing. */
+.aring {
+  will-change: transform;
+  animation: aring calc(6s / var(--speed, 1)) ease-in-out infinite;
+}
+@keyframes aring {
+  0%,
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+  40% {
+    transform: translate(-6%, 4%) scale(1);
+  }
+  48% {
+    transform: translate(-6%, 4%) scale(0.7);
+  }
+  56% {
+    transform: translate(-6%, 4%) scale(1.3);
+  }
+  70% {
+    transform: translate(-3%, 7%) scale(1);
+  }
+}
+.adot {
+  will-change: transform;
+  animation: adot calc(6s / var(--speed, 1)) ease-in-out infinite;
+}
+@keyframes adot {
+  0%,
+  100% {
+    transform: translate(0, 0);
+  }
+  40%,
+  56% {
+    transform: translate(-6%, 4%);
+  }
+  70% {
+    transform: translate(-3%, 7%);
+  }
+}
+/* Cards fan out and back around their bottom edge. */
+.afan {
+  will-change: transform;
+  animation: afan calc(5s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes afan {
+  to {
+    transform: rotate(var(--fan, 6deg));
+  }
+}
+.afloat {
+  will-change: transform;
+  animation: afloat calc(6s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes afloat {
+  to {
+    transform: translateY(-1.6%) rotate(-1deg);
+  }
+}
+.astar {
+  will-change: transform, opacity;
+  animation: astar calc(4s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes astar {
+  to {
+    transform: rotate(22deg) scale(1.15);
+    opacity: 0.85;
+  }
+}
