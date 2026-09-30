@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import type { Project } from "@/data/projects";
-import { useProjectTransition } from "./ProjectTransition";
+import { useProjectTransition, type ProjectSection } from "./ProjectTransition";
 
 type Props = {
   project: Pick<Project, "slug" | "title">;
@@ -10,24 +10,26 @@ type Props = {
   className?: string;
   tabIndex?: number;
   label?: string;
+  /** Open straight onto this part of the project page. */
+  section?: ProjectSection;
 };
 
 /**
  * A normal link to /projects/[slug] (so cmd-click, prefetch and no-JS work)
  * that plays the shared-element transition on a plain click.
  */
-export function OpenProjectLink({ project, children, className = "block", tabIndex, label }: Props) {
+export function OpenProjectLink({ project, children, className = "block", tabIndex, label, section }: Props) {
   const { open } = useProjectTransition();
   return (
     <Link
-      href={`/projects/${project.slug}`}
+      href={`/projects/${project.slug}${section ? `#${section}` : ""}`}
       className={className}
       tabIndex={tabIndex}
       aria-label={label ?? `Open project: ${project.title}`}
       onClick={(e) => {
         if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey || e.button !== 0) return;
         e.preventDefault();
-        open(project.slug, e.currentTarget);
+        open(project.slug, e.currentTarget, section);
       }}
     >
       {children}

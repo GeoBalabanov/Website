@@ -7,9 +7,27 @@ import type { Project, ProjectImage as ProjectImageType } from "@/data/projects"
 import { prefersReducedMotion } from "@/lib/motion";
 import { ProjectImage } from "./ProjectImage";
 import { OpenProjectLink } from "./transition/OpenProjectLink";
+import type { ProjectSection } from "./transition/ProjectTransition";
 import { LivingCover } from "./living-cover/LivingCover";
 
 gsap.registerPlugin(ScrollTrigger);
+
+// What each project's signature section is called on its page.
+const STORY_LABEL: Record<Project["signature"]["type"], string> = {
+  "route-map": "The route",
+  "pulse-results": "Race results",
+  "horizontal-steps": "How it works",
+  "kinetic-type": "The concept",
+  "webgl-distort": "The interface",
+  "bloom-garden": "The garden",
+};
+
+/** Each image of a project opens a different part of it: the top, its signature section, its gallery. */
+function destination(project: Project, i: number): { section?: ProjectSection; label: string } {
+  if (i === 0) return { label: "Overview" };
+  if (i === 1) return { section: "story", label: STORY_LABEL[project.signature.type] };
+  return { section: "gallery", label: "Gallery" };
+}
 
 export function ProjectGrid({ projects }: { projects: Project[] }) {
   const list = useRef<HTMLUListElement>(null);
@@ -39,9 +57,10 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
       {projects.flatMap((project) =>
         project.images.map((image, i) => {
           const first = i === 0;
+          const to = destination(project, i);
           return (
             <li key={image.src} data-grid-item className="group">
-              <OpenProjectLink project={project} label={`Open project: ${project.title}${first ? "" : `, image ${i + 1}`}`}>
+              <OpenProjectLink project={project} section={to.section} label={`Open ${project.title}: ${to.label}`}>
                 <div data-flip-id={first ? project.slug : undefined} className="relative aspect-[3/4] overflow-hidden bg-ink/5">
                   <GridMedia image={image} project={project} cover={first} />
                 </div>
@@ -49,6 +68,14 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
               <p className="mt-2.5 text-[13px] font-medium sm:text-sm">
                 <span className="sr-only">Project </span>
                 {project.number}.
+                {!first && (
+                  <span className="ml-2 font-normal text-mute-ink transition-colors group-hover:text-ink">
+                    {to.label}
+                    <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">
+                      {" "}→
+                    </span>
+                  </span>
+                )}
               </p>
               {first && (
                 <div className="mt-2.5 text-[13px] leading-snug sm:text-sm">

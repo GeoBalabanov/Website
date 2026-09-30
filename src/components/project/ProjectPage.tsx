@@ -5,6 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 import type { Project } from "@/data/projects";
 import { projectFont } from "@/lib/project-fonts";
 import { useProjectTransition } from "@/components/transition/ProjectTransition";
+import { scrollToImmediate } from "@/components/SmoothScroll";
 import { Hero } from "./Hero";
 import { Intro } from "./Intro";
 import { Gallery } from "./Gallery";
@@ -13,7 +14,7 @@ import { NextProject } from "./NextProject";
 import { SignatureSection } from "./signatures";
 
 export function ProjectPage({ project, next }: { project: Project; next: Project }) {
-  const { close } = useProjectTransition();
+  const { close, sectionReady } = useProjectTransition();
   const font = projectFont(project.theme.font);
   const t = project.theme;
 
@@ -40,6 +41,28 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
       window.clearTimeout(id);
     };
   }, [project.slug]);
+
+  // Opened on a section (/projects/slug#gallery): land there once the pinned sections are measured.
+  // Runs after the smooth-scroll reset to the top; the transition overlay waits for this.
+  useEffect(() => {
+    const id = decodeURIComponent(window.location.hash.slice(1));
+    const target = id ? document.getElementById(id) : null;
+    if (!target) return;
+    let done = false;
+    const go = () => {
+      if (done) return;
+      done = true;
+      ScrollTrigger.refresh();
+      scrollToImmediate(target.getBoundingClientRect().top + window.scrollY);
+      ScrollTrigger.update();
+      requestAnimationFrame(() => sectionReady(project.slug));
+    };
+    const timer = window.setTimeout(go, 320);
+    return () => {
+      window.clearTimeout(timer);
+      done = true;
+    };
+  }, [project.slug, sectionReady]);
 
   // Escape goes back to the index.
   useEffect(() => {
@@ -68,7 +91,9 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
     >
       <Hero project={project} />
       <Intro project={project} />
-      <SignatureSection project={project} />
+      <div id="story">
+        <SignatureSection project={project} />
+      </div>
       <Gallery project={project} />
       <Facts project={project} />
       <NextProject next={next} />

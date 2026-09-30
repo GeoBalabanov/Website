@@ -383,7 +383,7 @@ export const projects: Project[] = [
     heroScene: "corsa-head",
     images: [
       { src: "/projects/corsa-car-audio-3d.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
-      { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background", motion: "playback" },
+      { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar with an iridescent progress line on violet", motion: "playback" },
       { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon", motion: "rings" },
     ],
     year: "2024",
