@@ -139,159 +139,50 @@ const img = (slug: string, name: string, alt: string, wide = false, caption?: st
 
 export const projects: Project[] = [
   {
-    slug: "plovdiv-marathon",
+    slug: "corsa-car-audio",
     number: "01",
-    title: "Plovdiv Marathon",
-    subtitle: "Organizer · Plovdiv, Bulgaria",
-    coverMotion: "lava",
+    title: "Corsa Car Audio",
+    subtitle: "A voice-controlled music interface designed for safer driving",
+    coverMotion: "head3d",
+    heroScene: "corsa-head",
     images: [
-      { src: "/projects/plovdiv-marathon-1.svg", alt: "Warm orange glow on a black poster background" },
-      { src: "/projects/plovdiv-marathon-2.svg", alt: "Dotted marathon route drawn across a cream background", motion: "route" },
-      { src: "/projects/plovdiv-marathon-3.svg", alt: "Soft coral light on a deep red background", motion: "ember" },
+      { src: "/projects/corsa-car-audio-3d.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
+      { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar with an iridescent progress line on violet", motion: "playback" },
+      { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon", motion: "rings" },
     ],
-    year: "2026",
-    role: "Organizer",
-    location: "Plovdiv, Bulgaria",
+    year: "2024",
+    role: "Interaction Design",
+    location: "[Location]",
     // PLACEHOLDER intro
     intro:
-      "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The loop runs from the Rowing Canal along the Maritsa and through the centre, and every kilometre is planned for runners and for the city that hosts them.",
-    // Night-blue with gold: the route and numbers in gold, the river and runner in sky blue.
-    theme: { bg: "#0d1b33", fg: "#edf1f7", muted: "#9fb0c9", accent: "#f2b441", accent2: "#6cb8ff", font: "fraunces" },
+      "Every glance at a screen is a glance away from the road. Corsa lets drivers control music by voice, with an interface that only shows what matters and gets out of the way the rest of the time.",
+    theme: { bg: "#0b0d0f", fg: "#e6f2f1", muted: "#8fa6a3", accent: "#2dd4bf", accent2: "#99f6e4", font: "syncopate", titleClass: "uppercase font-bold tracking-[0.01em] text-[clamp(2.25rem,8vw,8.5rem)]" },
     signature: {
-      type: "route-map",
-      distanceKm: 42.195,
-      // The course map is a ~21.1 km loop (km markers 1–21), run twice for the marathon.
-      laps: 2,
-      raceDate: { label: "18 April 2027", iso: "2027-04-18T08:00:00+03:00" }, // start time assumed 08:00 local (EEST)
-    },
-    gallery: [
-      {
-        kind: "video",
-        src: "/projects/plovdiv-marathon-video-1.mp4",
-        poster: "/projects/plovdiv-marathon-video-1.jpg",
-        alt: "A runner in black jogging on the red track of an empty stadium",
-        caption: "Testing the pace on the track: every stretch of the course is run before it is planned.",
-        wide: true,
-      },
-      img("plovdiv-marathon", "2", "Placeholder: route sketch", false, "Early route sketches: finding a loop that passes the city's landmarks and stays fast."),
-      img("plovdiv-marathon", "3", "Placeholder: runners at dusk", false, "Runners at dusk: the atmosphere the whole race is built around."),
-      {
-        kind: "video",
-        src: "/projects/plovdiv-marathon-video-2.mp4",
-        poster: "/projects/plovdiv-marathon-video-2.jpg",
-        alt: "Black and white: a runner resting on the stadium stands, checking a phone",
-        caption: "Between sessions: checking the splits and planning the next run.",
-        wide: true,
-      },
-    ],
-    // PLACEHOLDER numbers
-    facts: [
-      { value: 42.195, decimals: 3, suffix: " km", label: "Race distance" },
-      { value: 1500, suffix: "+", label: "Runners expected" },
-      { value: 6, label: "Hills of Plovdiv" },
-      { value: 200, suffix: "+", label: "Volunteers" },
-    ],
-  },
-  {
-    slug: "marathon-running",
-    number: "02",
-    title: "Marathon running",
-    subtitle: "Athlete · Races & results",
-    coverMotion: "collage",
-    hero: { src: "/projects/marathon-running-hero.svg", alt: "A photocopied collage: a blurred white shape in a blue block, a sunset strip, a starry dark block and a figure in a cyan triangle" },
-    images: [
-      { src: "/projects/marathon-running-1.svg", alt: "A photocopied collage: a blurred white shape in a blue block, a sunset strip, a starry dark block and a figure in a cyan triangle" },
-      { src: "/projects/marathon-running-2.svg", alt: "Light track lanes sweeping across a dark green background", motion: "night-tracks" },
-    ],
-    year: "Ongoing",
-    role: "Athlete",
-    location: "The Netherlands & abroad",
-    // PLACEHOLDER intro
-    intro:
-      "Running is where the discipline comes from. Early mornings, long Sundays and the quiet maths of pacing: the same patience that goes into building products, measured in kilometres instead of commits.",
-    // Photocopied collage: pale paper, black ink, ultramarine and cyan.
-    theme: { bg: "#e3e2dc", fg: "#111111", muted: "#55554f", accent: "#1f33d6", accent2: "#3fb6c4", font: "anton", titleClass: "uppercase italic", heroTone: "light" },
-    signature: {
-      type: "pulse-results",
-      restingBpm: 52,
-      peakBpm: 178,
-      // PLACEHOLDER results
-      results: [
-        {
-          race: "[Race name] Marathon",
-          date: "Apr 2026",
-          time: "3:28:41",
-          pace: "4:57 /km",
-          splits: [
-            { label: "10K", time: "0:49:12" },
-            { label: "HALF", time: "1:43:55" },
-            { label: "30K", time: "2:28:04" },
-            { label: "FIN", time: "3:28:41" },
-          ],
-        },
-        {
-          race: "[Race name] Half",
-          date: "Oct 2025",
-          time: "1:36:18",
-          pace: "4:34 /km",
-          splits: [
-            { label: "5K", time: "0:22:51" },
-            { label: "10K", time: "0:45:40" },
-            { label: "15K", time: "1:08:22" },
-            { label: "FIN", time: "1:36:18" },
-          ],
-        },
-        {
-          race: "[Race name] Marathon",
-          date: "Apr 2025",
-          time: "3:41:07",
-          pace: "5:15 /km",
-          splits: [
-            { label: "10K", time: "0:51:30" },
-            { label: "HALF", time: "1:49:47" },
-            { label: "30K", time: "2:36:15" },
-            { label: "FIN", time: "3:41:07" },
-          ],
-        },
+      type: "webgl-distort",
+      images: [
+        { src: "/projects/corsa-car-audio-1.svg", alt: "Speaker rings" },
+        { src: "/projects/corsa-car-audio-2.svg", alt: "Playback bar" },
+        { src: "/projects/corsa-car-audio-3.svg", alt: "Rings over horizon" },
       ],
+      caption: "Hover (or drag) to disturb the signal. Scroll to change track.",
     },
     gallery: [
-      {
-        kind: "video",
-        tall: true,
-        src: "/projects/marathon-running-video-1.mp4",
-        poster: "/projects/marathon-running-video-1.jpg",
-        alt: "Running along a gravel path through a dark forest",
-        caption: "Easy kilometres on the forest trails: gravel underfoot and nobody else around.",
-      },
-      {
-        kind: "video",
-        tall: true,
-        src: "/projects/marathon-running-video-2.mp4",
-        poster: "/projects/marathon-running-video-2.jpg",
-        alt: "Finishers with medals on sunny city steps after the Madrid Half Marathon",
-        caption: "Madrid Half Marathon: medals on, and the finish area slowly emptying out in the sun.",
-      },
-      {
-        kind: "video",
-        tall: true,
-        src: "/projects/marathon-running-video-3.mp4",
-        poster: "/projects/marathon-running-video-3.jpg",
-        alt: "A runner catching his breath on a forest path after a run",
-        caption: "After the long run: catching my breath before the walk home.",
-      },
+      img("corsa-car-audio", "wide-1", "Placeholder: dashboard view", true, "In the dashboard: large type and high contrast, readable at a glance."),
+      img("corsa-car-audio", "2", "Placeholder: playback screen", false, "Playback reduced to the essentials: track, artist and one clear control."),
+      img("corsa-car-audio", "3", "Placeholder: night mode", false, "Night mode dims everything except what the driver needs."),
+      img("corsa-car-audio", "wide-2", "Placeholder: voice command flow", true, "Voice first: say what you want, and the screen only confirms it."),
     ],
     // PLACEHOLDER numbers
     facts: [
-      { value: 6, label: "Marathons finished" },
-      { value: 3120, suffix: " km", label: "Run last year" },
-      { value: 3.28, decimals: 2, suffix: " h", label: "Marathon PB" },
-      { value: 178, suffix: " bpm", label: "Race-day peak" },
+      { value: 0, suffix: " TAPS", label: "To change a song" },
+      { value: 1.2, decimals: 1, suffix: " S", label: "Average command" },
+      { value: 14, label: "Voice commands" },
+      { value: 72, suffix: "%", label: "Fewer glances" },
     ],
   },
   {
     slug: "ai-case-generator",
-    number: "03",
+    number: "02",
     title: "AI Case Generator",
     subtitle: "Turning real social work cases into playable scenarios for the Social Work Game",
     coverMotion: "typing",
@@ -350,7 +241,7 @@ export const projects: Project[] = [
   },
   {
     slug: "dating-app",
-    number: "04",
+    number: "03",
     title: "Dating App",
     subtitle: "A dating concept built around personality, music and voice",
     coverMotion: "hairwave",
@@ -386,50 +277,8 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "corsa-car-audio",
-    number: "05",
-    title: "Corsa Car Audio",
-    subtitle: "A voice-controlled music interface designed for safer driving",
-    coverMotion: "head3d",
-    heroScene: "corsa-head",
-    images: [
-      { src: "/projects/corsa-car-audio-3d.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
-      { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar with an iridescent progress line on violet", motion: "playback" },
-      { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon", motion: "rings" },
-    ],
-    year: "2024",
-    role: "Interaction Design",
-    location: "[Location]",
-    // PLACEHOLDER intro
-    intro:
-      "Every glance at a screen is a glance away from the road. Corsa lets drivers control music by voice, with an interface that only shows what matters and gets out of the way the rest of the time.",
-    theme: { bg: "#0b0d0f", fg: "#e6f2f1", muted: "#8fa6a3", accent: "#2dd4bf", accent2: "#99f6e4", font: "syncopate", titleClass: "uppercase font-bold tracking-[0.01em] text-[clamp(2.25rem,8vw,8.5rem)]" },
-    signature: {
-      type: "webgl-distort",
-      images: [
-        { src: "/projects/corsa-car-audio-1.svg", alt: "Speaker rings" },
-        { src: "/projects/corsa-car-audio-2.svg", alt: "Playback bar" },
-        { src: "/projects/corsa-car-audio-3.svg", alt: "Rings over horizon" },
-      ],
-      caption: "Hover (or drag) to disturb the signal. Scroll to change track.",
-    },
-    gallery: [
-      img("corsa-car-audio", "wide-1", "Placeholder: dashboard view", true, "In the dashboard: large type and high contrast, readable at a glance."),
-      img("corsa-car-audio", "2", "Placeholder: playback screen", false, "Playback reduced to the essentials: track, artist and one clear control."),
-      img("corsa-car-audio", "3", "Placeholder: night mode", false, "Night mode dims everything except what the driver needs."),
-      img("corsa-car-audio", "wide-2", "Placeholder: voice command flow", true, "Voice first: say what you want, and the screen only confirms it."),
-    ],
-    // PLACEHOLDER numbers
-    facts: [
-      { value: 0, suffix: " TAPS", label: "To change a song" },
-      { value: 1.2, decimals: 1, suffix: " S", label: "Average command" },
-      { value: 14, label: "Voice commands" },
-      { value: 72, suffix: "%", label: "Fewer glances" },
-    ],
-  },
-  {
     slug: "bloom",
-    number: "06",
+    number: "04",
     title: "Bloom",
     subtitle: "A collective feedback garden designed for art galleries",
     coverMotion: "bloom",
@@ -466,7 +315,7 @@ export const projects: Project[] = [
   },
   {
     slug: "madrid-exchange",
-    number: "07",
+    number: "05",
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
@@ -566,6 +415,157 @@ export const projects: Project[] = [
       { value: 100, suffix: "%", label: "Loaded" },
     ],
     confirmed: ["intro", "facts"],
+  },
+  {
+    slug: "marathon-running",
+    number: "06",
+    title: "Marathon running",
+    subtitle: "Athlete · Races & results",
+    coverMotion: "collage",
+    hero: { src: "/projects/marathon-running-hero.svg", alt: "A photocopied collage: a blurred white shape in a blue block, a sunset strip, a starry dark block and a figure in a cyan triangle" },
+    images: [
+      { src: "/projects/marathon-running-1.svg", alt: "A photocopied collage: a blurred white shape in a blue block, a sunset strip, a starry dark block and a figure in a cyan triangle" },
+      { src: "/projects/marathon-running-2.svg", alt: "Light track lanes sweeping across a dark green background", motion: "night-tracks" },
+    ],
+    year: "Ongoing",
+    role: "Athlete",
+    location: "The Netherlands & abroad",
+    // PLACEHOLDER intro
+    intro:
+      "Running is where the discipline comes from. Early mornings, long Sundays and the quiet maths of pacing: the same patience that goes into building products, measured in kilometres instead of commits.",
+    // Photocopied collage: pale paper, black ink, ultramarine and cyan.
+    theme: { bg: "#e3e2dc", fg: "#111111", muted: "#55554f", accent: "#1f33d6", accent2: "#3fb6c4", font: "anton", titleClass: "uppercase italic", heroTone: "light" },
+    signature: {
+      type: "pulse-results",
+      restingBpm: 52,
+      peakBpm: 178,
+      // PLACEHOLDER results
+      results: [
+        {
+          race: "[Race name] Marathon",
+          date: "Apr 2026",
+          time: "3:28:41",
+          pace: "4:57 /km",
+          splits: [
+            { label: "10K", time: "0:49:12" },
+            { label: "HALF", time: "1:43:55" },
+            { label: "30K", time: "2:28:04" },
+            { label: "FIN", time: "3:28:41" },
+          ],
+        },
+        {
+          race: "[Race name] Half",
+          date: "Oct 2025",
+          time: "1:36:18",
+          pace: "4:34 /km",
+          splits: [
+            { label: "5K", time: "0:22:51" },
+            { label: "10K", time: "0:45:40" },
+            { label: "15K", time: "1:08:22" },
+            { label: "FIN", time: "1:36:18" },
+          ],
+        },
+        {
+          race: "[Race name] Marathon",
+          date: "Apr 2025",
+          time: "3:41:07",
+          pace: "5:15 /km",
+          splits: [
+            { label: "10K", time: "0:51:30" },
+            { label: "HALF", time: "1:49:47" },
+            { label: "30K", time: "2:36:15" },
+            { label: "FIN", time: "3:41:07" },
+          ],
+        },
+      ],
+    },
+    gallery: [
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/marathon-running-video-1.mp4",
+        poster: "/projects/marathon-running-video-1.jpg",
+        alt: "Running along a gravel path through a dark forest",
+        caption: "Easy kilometres on the forest trails: gravel underfoot and nobody else around.",
+      },
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/marathon-running-video-2.mp4",
+        poster: "/projects/marathon-running-video-2.jpg",
+        alt: "Finishers with medals on sunny city steps after the Madrid Half Marathon",
+        caption: "Madrid Half Marathon: medals on, and the finish area slowly emptying out in the sun.",
+      },
+      {
+        kind: "video",
+        tall: true,
+        src: "/projects/marathon-running-video-3.mp4",
+        poster: "/projects/marathon-running-video-3.jpg",
+        alt: "A runner catching his breath on a forest path after a run",
+        caption: "After the long run: catching my breath before the walk home.",
+      },
+    ],
+    // PLACEHOLDER numbers
+    facts: [
+      { value: 6, label: "Marathons finished" },
+      { value: 3120, suffix: " km", label: "Run last year" },
+      { value: 3.28, decimals: 2, suffix: " h", label: "Marathon PB" },
+      { value: 178, suffix: " bpm", label: "Race-day peak" },
+    ],
+  },
+  {
+    slug: "plovdiv-marathon",
+    number: "07",
+    title: "Plovdiv Marathon",
+    subtitle: "Organizer · Plovdiv, Bulgaria",
+    coverMotion: "lava",
+    images: [
+      { src: "/projects/plovdiv-marathon-1.svg", alt: "Warm orange glow on a black poster background" },
+      { src: "/projects/plovdiv-marathon-2.svg", alt: "Dotted marathon route drawn across a cream background", motion: "route" },
+      { src: "/projects/plovdiv-marathon-3.svg", alt: "Soft coral light on a deep red background", motion: "ember" },
+    ],
+    year: "2026",
+    role: "Organizer",
+    location: "Plovdiv, Bulgaria",
+    // PLACEHOLDER intro
+    intro:
+      "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The loop runs from the Rowing Canal along the Maritsa and through the centre, and every kilometre is planned for runners and for the city that hosts them.",
+    // Night-blue with gold: the route and numbers in gold, the river and runner in sky blue.
+    theme: { bg: "#0d1b33", fg: "#edf1f7", muted: "#9fb0c9", accent: "#f2b441", accent2: "#6cb8ff", font: "fraunces" },
+    signature: {
+      type: "route-map",
+      distanceKm: 42.195,
+      // The course map is a ~21.1 km loop (km markers 1–21), run twice for the marathon.
+      laps: 2,
+      raceDate: { label: "18 April 2027", iso: "2027-04-18T08:00:00+03:00" }, // start time assumed 08:00 local (EEST)
+    },
+    gallery: [
+      {
+        kind: "video",
+        src: "/projects/plovdiv-marathon-video-1.mp4",
+        poster: "/projects/plovdiv-marathon-video-1.jpg",
+        alt: "A runner in black jogging on the red track of an empty stadium",
+        caption: "Testing the pace on the track: every stretch of the course is run before it is planned.",
+        wide: true,
+      },
+      img("plovdiv-marathon", "2", "Placeholder: route sketch", false, "Early route sketches: finding a loop that passes the city's landmarks and stays fast."),
+      img("plovdiv-marathon", "3", "Placeholder: runners at dusk", false, "Runners at dusk: the atmosphere the whole race is built around."),
+      {
+        kind: "video",
+        src: "/projects/plovdiv-marathon-video-2.mp4",
+        poster: "/projects/plovdiv-marathon-video-2.jpg",
+        alt: "Black and white: a runner resting on the stadium stands, checking a phone",
+        caption: "Between sessions: checking the splits and planning the next run.",
+        wide: true,
+      },
+    ],
+    // PLACEHOLDER numbers
+    facts: [
+      { value: 42.195, decimals: 3, suffix: " km", label: "Race distance" },
+      { value: 1500, suffix: "+", label: "Runners expected" },
+      { value: 6, label: "Hills of Plovdiv" },
+      { value: 200, suffix: "+", label: "Volunteers" },
+    ],
   },
 ];
 
