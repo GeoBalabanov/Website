@@ -235,3 +235,115 @@
     transform: scale(1.09) translate3d(-2%, -1.5%, 0);
   }
 }
+
+/* ---------- Other grid images (art-more.tsx) ---------- */
+
+/* Dotted route marching forward: the dash pattern (1 + 16) moves two units per loop. */
+.march {
+  animation: march calc(1.6s / var(--speed, 1)) linear infinite;
+}
+@keyframes march {
+  to {
+    stroke-dashoffset: -34;
+  }
+}
+/* A single dot travelling along a path (pathLength = 1). */
+.dot {
+  stroke-dasharray: 0.0001 1.2;
+  stroke-dashoffset: 0.07;
+  animation: run calc(var(--dur, 7s) / var(--speed, 1)) cubic-bezier(0.45, 0.05, 0.55, 0.95) calc(var(--delay, 0s) / var(--speed, 1)) infinite;
+}
+
+/* Grid cells lighting up in turn. */
+.cell {
+  opacity: 0;
+  animation: cell calc(6.6s / var(--speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--speed, 1)) infinite;
+}
+@keyframes cell {
+  0%,
+  100% {
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.2;
+  }
+  35% {
+    opacity: 0;
+  }
+}
+.scan {
+  animation: scan calc(7s / var(--speed, 1)) linear infinite;
+}
+@keyframes scan {
+  to {
+    transform: translateY(1360px);
+  }
+}
+
+/* Playback: the knob travels the track and the played part fills in behind it. */
+.knob {
+  animation: knob var(--dur, 14s) linear var(--delay, 0s) infinite;
+}
+@keyframes knob {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(var(--travel, 660px));
+  }
+}
+.progress {
+  transform-box: fill-box;
+  transform-origin: left center;
+  animation: progress var(--dur, 14s) linear var(--delay, 0s) infinite;
+}
+@keyframes progress {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Sound rings: five rings 60 units apart, growing out and fading. */
+.wave {
+  animation: wave calc(10s / var(--speed, 1)) linear calc(var(--delay, 0s) / var(--speed, 1)) infinite;
+}
+/* Opacity follows the still: 0.45 at r 40 down to 0.25 at r 280, then fades out. */
+@keyframes wave {
+  0% {
+    r: 40px;
+    opacity: 0.45;
+  }
+  80% {
+    r: 280px;
+    opacity: 0.25;
+  }
+  100% {
+    r: 340px;
+    opacity: 0;
+  }
+}
+
+/* A 12-petal flower: a 30° turn loops seamlessly; it swells gently as it turns. */
+.spin12 {
+  animation: spin12 calc(9s / var(--speed, 1)) linear infinite;
+}
+@keyframes spin12 {
+  to {
+    transform: rotate(30deg);
+  }
+}
+.swell {
+  animation: swell calc(5s / var(--speed, 1)) ease-in-out infinite;
+}
+@keyframes swell {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.12);
+  }
+}

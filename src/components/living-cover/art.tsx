@@ -9,14 +9,14 @@ import s from "./LivingCover.module.css";
  * public/projects/*-1.svg): same colors, shapes and composition, animated.
  */
 
-type Drift = { dx?: string; dy?: string; ds?: number; dxDur?: number; dyDur?: number; delay?: number };
+export type Drift = { dx?: string; dy?: string; ds?: number; dxDur?: number; dyDur?: number; delay?: number };
 
 /**
  * One soft blob. The outer layer drifts on x, the inner on y (plus a little
  * scale). `wrap` adds an effect layer around it (crossfade, pulse) without
  * overriding the drift.
  */
-function Blob({ spec, sigma, drift = {}, wrap }: { spec: BlobSpec; sigma: number; drift?: Drift; wrap?: string }) {
+export function Blob({ spec, sigma, drift = {}, wrap }: { spec: BlobSpec; sigma: number; drift?: Drift; wrap?: string }) {
   const { background, ...box } = blobStyle(spec, sigma);
   const vars = {
     "--dx": drift.dx ?? "6%",
@@ -43,7 +43,7 @@ function Blob({ spec, sigma, drift = {}, wrap }: { spec: BlobSpec; sigma: number
 
 type Speed = { blob?: number; loop?: number };
 
-function Frame({ bg, grain, vignette, speed = {}, children }: { bg: string; grain: number; vignette?: boolean; speed?: Speed; children: React.ReactNode }) {
+export function Frame({ bg, grain, vignette, speed = {}, children }: { bg: string; grain: number; vignette?: boolean; speed?: Speed; children: React.ReactNode }) {
   const vars = { "--blob-speed": speed.blob ?? 1, "--speed": speed.loop ?? 1 } as React.CSSProperties;
   return (
     <div className={s.fill} style={vars}>
@@ -55,7 +55,7 @@ function Frame({ bg, grain, vignette, speed = {}, children }: { bg: string; grai
   );
 }
 
-const svgProps = { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid slice", className: s.svg, "aria-hidden": true } as const;
+export const svgProps = { viewBox: `0 0 ${W} ${H}`, preserveAspectRatio: "xMidYMid slice", className: s.svg, "aria-hidden": true } as const;
 
 /* ---------------- 01 Plovdiv Marathon: lava glow that breathes ---------------- */
 export function LavaCover() {
@@ -189,7 +189,11 @@ const BARS = Array.from({ length: 29 }, (_, i) => {
   return { x: 150 + i * 21, h };
 });
 
-export function VoiceCover({ running }: { running: boolean }) {
+/**
+ * Drives a row of waveform bars like someone speaking (syllables inside phrases,
+ * short pauses) and makes an optional glow layer pulse with the loudness.
+ */
+export function useSpeakingBars(running: boolean) {
   const bars = useRef<(SVGRectElement | null)[]>([]);
   const glow = useRef<HTMLDivElement>(null);
 
@@ -219,6 +223,12 @@ export function VoiceCover({ running }: { running: boolean }) {
     raf = requestAnimationFrame(frame);
     return () => cancelAnimationFrame(raf);
   }, [running]);
+
+  return { bars, glow };
+}
+
+export function VoiceCover({ running }: { running: boolean }) {
+  const { bars, glow } = useSpeakingBars(running);
 
   return (
     <Frame bg="#2a0f24" grain={0.09} vignette speed={{ blob: 2.2 }}>

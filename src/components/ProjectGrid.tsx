@@ -65,13 +65,14 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
 }
 
 /**
- * One grid image. A project's cover (its first image) gets its living-poster
- * animation, running only while it is on screen.
+ * One grid image. Every image with a motion (a project's cover via `coverMotion`,
+ * the others via their own `motion`) comes alive, but only while it is on screen.
  */
 function GridMedia({ image, project, cover }: { image: ProjectImageType; project: Project; cover: boolean }) {
   const ref = useRef<HTMLDivElement>(null);
   const [inView, setInView] = useState(false);
-  const animated = cover && !!project.coverMotion;
+  const motion = cover ? project.coverMotion : image.motion;
+  const animated = !!motion;
 
   useEffect(() => {
     if (!animated || !ref.current) return;
@@ -86,7 +87,7 @@ function GridMedia({ image, project, cover }: { image: ProjectImageType; project
       className="absolute inset-0 transition-transform duration-[900ms] ease-out-soft group-hover:scale-[1.04] group-focus-within:scale-[1.04]"
     >
       <ProjectImage image={image} sizes="(min-width: 1024px) 14vw, (min-width: 640px) 26vw, 46vw" />
-      {animated && <LivingCover motion={project.coverMotion!} src={image.src} active={inView} />}
+      {motion && <LivingCover motion={motion} src={image.src} active={inView} />}
     </div>
   );
 }

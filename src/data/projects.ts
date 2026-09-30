@@ -18,6 +18,8 @@
 export type ProjectImage = {
   src: string;
   alt: string;
+  /** Living animation for this image in the grid (a project's first image uses `coverMotion`). */
+  motion?: CoverMotion;
 };
 
 export type MediaItem = ProjectImage & {
@@ -93,7 +95,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom";
 
 export type Project = {
   slug: string;
@@ -134,8 +136,8 @@ export const projects: Project[] = [
     coverMotion: "lava",
     images: [
       { src: "/projects/plovdiv-marathon-1.svg", alt: "Warm orange glow on a black poster background" },
-      { src: "/projects/plovdiv-marathon-2.svg", alt: "Dotted marathon route drawn across a cream background" },
-      { src: "/projects/plovdiv-marathon-3.svg", alt: "Soft coral light on a deep red background" },
+      { src: "/projects/plovdiv-marathon-2.svg", alt: "Dotted marathon route drawn across a cream background", motion: "route" },
+      { src: "/projects/plovdiv-marathon-3.svg", alt: "Soft coral light on a deep red background", motion: "ember" },
     ],
     year: "2026",
     role: "Organizer",
@@ -188,7 +190,7 @@ export const projects: Project[] = [
     coverMotion: "tracks",
     images: [
       { src: "/projects/marathon-running-1.svg", alt: "Curved running-track lanes over a pale green haze" },
-      { src: "/projects/marathon-running-2.svg", alt: "Light track lanes sweeping across a dark green background" },
+      { src: "/projects/marathon-running-2.svg", alt: "Light track lanes sweeping across a dark green background", motion: "night-tracks" },
     ],
     year: "Ongoing",
     role: "Athlete",
@@ -285,8 +287,8 @@ export const projects: Project[] = [
     coverMotion: "typing",
     images: [
       { src: "/projects/ai-case-generator-1.svg", alt: "Three case-scenario cards fanned out over a deep blue glow" },
-      { src: "/projects/ai-case-generator-2.svg", alt: "Blue light on a dark navy grid" },
-      { src: "/projects/ai-case-generator-3.svg", alt: "A single case card close up in teal and violet light" },
+      { src: "/projects/ai-case-generator-2.svg", alt: "Blue light on a dark navy grid", motion: "grid" },
+      { src: "/projects/ai-case-generator-3.svg", alt: "A single case card close up in teal and violet light", motion: "card" },
     ],
     year: "2025",
     role: "UX Design & SwiftUI Development",
@@ -344,7 +346,7 @@ export const projects: Project[] = [
     coverMotion: "voice",
     images: [
       { src: "/projects/dating-app-1.svg", alt: "Two pink and orange glows above a voice waveform" },
-      { src: "/projects/dating-app-2.svg", alt: "Dark voice waveform on a soft pink background" },
+      { src: "/projects/dating-app-2.svg", alt: "Dark voice waveform on a soft pink background", motion: "wave" },
     ],
     year: "2025",
     role: "Concept & UI Design",
@@ -381,8 +383,8 @@ export const projects: Project[] = [
     heroScene: "corsa-head",
     images: [
       { src: "/projects/corsa-car-audio-3d.jpg", alt: "3D render of a glossy, faceless bust lit by an iridescent streak of light on violet" },
-      { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background" },
-      { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon" },
+      { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar on a graphite background", motion: "playback" },
+      { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon", motion: "rings" },
     ],
     year: "2024",
     role: "Interaction Design",
@@ -422,7 +424,7 @@ export const projects: Project[] = [
     coverMotion: "bloom",
     images: [
       { src: "/projects/bloom-1.svg", alt: "A soft pink flower with an amber centre on pale green" },
-      { src: "/projects/bloom-2.svg", alt: "Pale petals over dusk-coloured light on dark green" },
+      { src: "/projects/bloom-2.svg", alt: "Pale petals over dusk-coloured light on dark green", motion: "dusk-bloom" },
     ],
     year: "2024",
     role: "Concept & Development",
