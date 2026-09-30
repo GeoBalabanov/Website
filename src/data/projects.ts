@@ -306,37 +306,26 @@ export const projects: Project[] = [
     },
     gallery: [
       {
-        src: "/projects/ai-case-generator-screen-home.jpg",
+        src: "/projects/ai-case-generator-boardgame.jpg",
+        alt: "The Sociality board game on a table with the Het Skatepark case: the board, the rule book and numbered decision cards",
+        wide: true,
+        caption: "Where it all ends up: Tweekracht's board game, Sociality, with the Het Skatepark case laid out. The board, the rule book and every numbered decision card.",
+      },
+      {
+        src: "/projects/ai-case-generator-home.jpg",
         alt: "AI Case Generator home screen with the three steps: upload, generate and review",
         wide: true,
         caption: "The home screen explains the whole tool in three steps: upload, generate, review. Nothing else competes for attention.",
       },
       {
-        src: "/projects/ai-case-generator-screen-upload.jpg",
-        alt: "Upload screen with a drop zone for PDF, DOCX or TXT files and a case language picker",
-        wide: true,
-        caption: "Upload: drop in a PDF, Word or text file, pick the case language and press Generate Case. It takes about 30 to 60 seconds.",
+        src: "/projects/ai-case-generator-start.jpg",
+        alt: "Start Case Simulation screen for Het Skatepark: 16 decision cards, 4 win outcomes, 5 learning outcomes, 25 cards in total",
+        caption: "Before playing, the generated case is summarised: Het Skatepark has 16 decision cards, 4 win and 5 learning outcomes, and no single right path.",
       },
       {
-        src: "/projects/ai-case-generator-screen-overview.jpg",
-        alt: "Decision tree overview of the generated case Het Skatepark, with cards tagged formal, informal, individual and collective",
-        caption: "The generated case, Het Skatepark, as a decision tree: every card is tagged formal or informal, individual or collective, and ends in a win or a learning outcome.",
-      },
-      {
-        src: "/projects/ai-case-generator-screen-editor.jpg",
-        alt: "Card editor with a list of cards and a preview of game card 1A",
-        caption: "The card editor shows each card exactly as it will look in the game, and every outcome and choice can be edited before export.",
-      },
-      {
-        src: "/projects/ai-case-generator-screen-play.jpg",
+        src: "/projects/ai-case-generator-play.jpg",
         alt: "Playing card 1A of Het Skatepark: a situation and three choices under the heading Wat doe je?",
-        caption: "Test play: the teacher can run the case like a student would, choosing a path at every card, with two jokers to spend.",
-      },
-      {
-        src: "/projects/ai-case-generator-screen-export.jpg",
-        alt: "Export successful screen with options to test the case, generate another case or go home",
-        wide: true,
-        caption: "Export done: the case is ready for the classroom, can be tested as a simulation, or the next one generated.",
+        caption: "Test play: the teacher runs the case like a student would, choosing a path at every card, with two jokers to spend.",
       },
     ],
     facts: [
