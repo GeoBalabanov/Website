@@ -27,6 +27,8 @@ export type MediaItem = ProjectImage & {
   poster?: string;
   /** Landscape item (16:10) instead of portrait (3:4). */
   wide?: boolean;
+  /** A line or two under the item explaining the work. */
+  caption?: string;
 };
 
 export type Fact = {
@@ -112,10 +114,11 @@ export type Project = {
   facts: Fact[];
 };
 
-const img = (slug: string, name: string, alt: string, wide = false): MediaItem => ({
+const img = (slug: string, name: string, alt: string, wide = false, caption?: string): MediaItem => ({
   src: `/projects/${slug}-${name}.svg`,
   alt,
   wide,
+  caption,
 });
 
 export const projects: Project[] = [
@@ -151,15 +154,17 @@ export const projects: Project[] = [
         src: "/projects/plovdiv-marathon-video-1.mp4",
         poster: "/projects/plovdiv-marathon-video-1.jpg",
         alt: "A runner in black jogging on the red track of an empty stadium",
+        caption: "Testing the pace on the track: every stretch of the course is run before it is planned.",
         wide: true,
       },
-      img("plovdiv-marathon", "2", "Placeholder: route sketch"),
-      img("plovdiv-marathon", "3", "Placeholder: runners at dusk"),
+      img("plovdiv-marathon", "2", "Placeholder: route sketch", false, "Early route sketches: finding a loop that passes the city's landmarks and stays fast."),
+      img("plovdiv-marathon", "3", "Placeholder: runners at dusk", false, "Runners at dusk: the atmosphere the whole race is built around."),
       {
         kind: "video",
         src: "/projects/plovdiv-marathon-video-2.mp4",
         poster: "/projects/plovdiv-marathon-video-2.jpg",
         alt: "Black and white: a runner resting on the stadium stands, checking a phone",
+        caption: "Between sessions: checking the splits and planning the next run.",
         wide: true,
       },
     ],
@@ -233,10 +238,10 @@ export const projects: Project[] = [
       ],
     },
     gallery: [
-      img("marathon-running", "wide-1", "Placeholder: track lanes in the dark", true),
-      img("marathon-running", "1", "Placeholder: morning run"),
-      img("marathon-running", "2", "Placeholder: long run route"),
-      img("marathon-running", "wide-2", "Placeholder: pace data", true),
+      img("marathon-running", "wide-1", "Placeholder: track lanes in the dark", true, "Early-morning track sessions: intervals before the working day starts."),
+      img("marathon-running", "1", "Placeholder: morning run", false, "The daily run: building the base one easy kilometre at a time."),
+      img("marathon-running", "2", "Placeholder: long run route", false, "Sunday long runs: the route changes, the rhythm stays."),
+      img("marathon-running", "wide-2", "Placeholder: pace data", true, "Every run is logged. Pace, heart rate and splits show what's working."),
     ],
     // PLACEHOLDER numbers
     facts: [
@@ -276,10 +281,10 @@ export const projects: Project[] = [
       ],
     },
     gallery: [
-      img("ai-case-generator", "wide-1", "Placeholder: document flow", true),
-      img("ai-case-generator", "2", "Placeholder: interface detail"),
-      img("ai-case-generator", "3", "Placeholder: scenario card"),
-      img("ai-case-generator", "wide-2", "Placeholder: system diagram", true),
+      img("ai-case-generator", "wide-1", "Placeholder: document flow", true, "From document to scenario: anonymised case files go in, teaching scenarios come out."),
+      img("ai-case-generator", "2", "Placeholder: interface detail", false, "The editor lets educators adjust tone, complexity and learning goals."),
+      img("ai-case-generator", "3", "Placeholder: scenario card", false, "Each scenario card holds a situation, the people involved and questions to discuss."),
+      img("ai-case-generator", "wide-2", "Placeholder: system diagram", true, "Under the hood: personal details are removed before any text is generated."),
     ],
     // PLACEHOLDER numbers
     facts: [
@@ -312,10 +317,10 @@ export const projects: Project[] = [
       caption: "Move your cursor (or finger) through the letters.",
     },
     gallery: [
-      img("dating-app", "wide-1", "Placeholder: voice match screen", true),
-      img("dating-app", "1", "Placeholder: profile"),
-      img("dating-app", "2", "Placeholder: waveform detail"),
-      img("dating-app", "wide-2", "Placeholder: music taste rings", true),
+      img("dating-app", "wide-1", "Placeholder: voice match screen", true, "The match screen: you hear a voice note before you see a face."),
+      img("dating-app", "1", "Placeholder: profile", false, "Profiles lead with personality and music taste. Photos come last."),
+      img("dating-app", "2", "Placeholder: waveform detail", false, "The voice note waveform, the first thing you see of someone."),
+      img("dating-app", "wide-2", "Placeholder: music taste rings", true, "Overlapping rings show how much two people's music taste has in common."),
     ],
     // PLACEHOLDER numbers
     facts: [
@@ -354,10 +359,10 @@ export const projects: Project[] = [
       caption: "Hover (or drag) to disturb the signal. Scroll to change track.",
     },
     gallery: [
-      img("corsa-car-audio", "wide-1", "Placeholder: dashboard view", true),
-      img("corsa-car-audio", "2", "Placeholder: playback screen"),
-      img("corsa-car-audio", "3", "Placeholder: night mode"),
-      img("corsa-car-audio", "wide-2", "Placeholder: voice command flow", true),
+      img("corsa-car-audio", "wide-1", "Placeholder: dashboard view", true, "In the dashboard: large type and high contrast, readable at a glance."),
+      img("corsa-car-audio", "2", "Placeholder: playback screen", false, "Playback reduced to the essentials: track, artist and one clear control."),
+      img("corsa-car-audio", "3", "Placeholder: night mode", false, "Night mode dims everything except what the driver needs."),
+      img("corsa-car-audio", "wide-2", "Placeholder: voice command flow", true, "Voice first: say what you want, and the screen only confirms it."),
     ],
     // PLACEHOLDER numbers
     facts: [
@@ -391,10 +396,10 @@ export const projects: Project[] = [
       notes: ["“I stood here for ten minutes.”", "“The blue feels like home.”", "“Made me call my mother.”", "“Too loud — I loved it.”", "“I want to touch it.”", "“Quietly devastating.”"],
     },
     gallery: [
-      img("bloom", "wide-1", "Placeholder: garden wall", true),
-      img("bloom", "1", "Placeholder: single bloom"),
-      img("bloom", "2", "Placeholder: garden at night"),
-      img("bloom", "wide-2", "Placeholder: installation view", true),
+      img("bloom", "wide-1", "Placeholder: garden wall", true, "The garden wall: every flower is a visitor's thought about an artwork."),
+      img("bloom", "1", "Placeholder: single bloom", false, "Each bloom's size and colour come from the feedback it grew from."),
+      img("bloom", "2", "Placeholder: garden at night", false, "By evening, the day's feedback has grown into a shared garden."),
+      img("bloom", "wide-2", "Placeholder: installation view", true, "The installation in the gallery, next to the works it responds to."),
     ],
     // PLACEHOLDER numbers
     facts: [

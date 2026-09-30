@@ -10,12 +10,21 @@ import { SectionLabel } from "./bits";
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
  * staggered heights. Each frame scales up as it enters and its media drifts
- * inside it (parallax).
+ * inside it (parallax); its caption rises in underneath.
  */
 export function Gallery({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
 
   useScene(root, ({ reduced, mobile }) => {
+    gsap.utils.toArray<HTMLElement>("[data-caption]").forEach((caption) => {
+      gsap.from(caption, {
+        autoAlpha: 0,
+        y: reduced ? 0 : 14,
+        duration: 0.8,
+        ease: "power2.out",
+        scrollTrigger: { trigger: caption, start: "top 92%" },
+      });
+    });
     const frames = gsap.utils.toArray<HTMLElement>("[data-frame]");
     frames.forEach((frame) => {
       const media = frame.querySelector("[data-media]");
@@ -43,16 +52,26 @@ export function Gallery({ project }: { project: Project }) {
         Gallery
       </SectionLabel>
       <div className="mt-10 grid grid-cols-12 gap-x-4 gap-y-[12vh] md:gap-x-8">
-        {project.gallery.map((item) => {
+        {project.gallery.map((item, i) => {
           const side = item.wide ? 0 : portrait++ % 2;
-          const cls = item.wide
-            ? "col-span-12 aspect-[16/10] md:col-span-10 md:col-start-2"
-            : `col-span-6 aspect-[3/4] md:col-span-4 ${side === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`;
+          const place = item.wide
+            ? "col-span-12 md:col-span-10 md:col-start-2"
+            : `col-span-6 md:col-span-4 ${side === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`;
           return (
-            <figure key={item.src} data-frame className={`relative overflow-hidden will-change-transform ${cls}`}>
-              <div data-media className="absolute -inset-y-[10%] inset-x-0 will-change-transform">
-                <Media item={item} />
+            <figure key={item.src} className={place}>
+              <div data-frame className={`relative overflow-hidden will-change-transform ${item.wide ? "aspect-[16/10]" : "aspect-[3/4]"}`}>
+                <div data-media className="absolute -inset-y-[10%] inset-x-0 will-change-transform">
+                  <Media item={item} />
+                </div>
               </div>
+              {item.caption && (
+                <figcaption data-caption className="mt-3 flex gap-3 text-[13px] leading-snug text-[var(--p-muted)] md:mt-4 md:gap-4 md:text-sm">
+                  <span aria-hidden="true" className="shrink-0 pt-px font-mono text-[11px] tracking-wide md:text-xs">
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="max-w-[46ch]">{item.caption}</span>
+                </figcaption>
+              )}
             </figure>
           );
         })}
