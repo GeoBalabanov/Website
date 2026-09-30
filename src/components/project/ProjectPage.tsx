@@ -9,6 +9,7 @@ import { scrollToImmediate } from "@/components/SmoothScroll";
 import { Hero } from "./Hero";
 import { Intro } from "./Intro";
 import { Gallery } from "./Gallery";
+import { BrutalistGallery } from "./BrutalistGallery";
 import { Facts } from "./Facts";
 import { NextProject } from "./NextProject";
 import { SignatureSection } from "./signatures";
@@ -94,7 +95,7 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
       <div id="story">
         <SignatureSection project={project} />
       </div>
-      <Gallery project={project} />
+      {project.galleryStyle === "brutalist" ? <BrutalistGallery project={project} /> : <Gallery project={project} />}
       <Facts project={project} />
       <NextProject next={next} />
 

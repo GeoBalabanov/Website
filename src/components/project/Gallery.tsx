@@ -92,7 +92,7 @@ export function Gallery({ project }: { project: Project }) {
   );
 }
 
-function Media({ item }: { item: MediaItem }) {
+export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
   const video = useRef<HTMLVideoElement>(null);
 
   // Videos only load and play while on screen.
@@ -129,7 +129,7 @@ function Media({ item }: { item: MediaItem }) {
       src={item.src}
       alt={item.alt}
       fill
-      sizes={item.wide ? "(min-width: 768px) 80vw, 100vw" : "(min-width: 768px) 33vw, 50vw"}
+      sizes={sizes ?? (item.wide ? "(min-width: 768px) 80vw, 100vw" : "(min-width: 768px) 33vw, 50vw")}
       unoptimized={item.src.endsWith(".svg")}
       className="object-cover"
     />
