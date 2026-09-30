@@ -2,74 +2,17 @@
 
 import { useId } from "react";
 import { Blob, Frame, svgProps } from "./art";
-import {
-  MADRID_BLOTCH,
-  MADRID_FLAG_LIGHTS,
-  MADRID_FLAG_SIGMA,
-  MADRID_FLAG_SPLATS,
-  MADRID_FLAG_TIDES,
-  MADRID_FLAG_WASHES,
-  MADRID_HILL_AREA,
-  MADRID_HILL_LINE,
-  MADRID_PAPER,
-  MADRID_RING,
-} from "./madrid-shapes";
+import { MADRID_HILL_AREA, MADRID_HILL_LINE, MADRID_RING } from "./madrid-shapes";
 import s from "./LivingCover.module.css";
 
 /**
- * 07 Madrid: living versions of public/projects/madrid-exchange-{1,2,3}.svg.
+ * 07 Madrid: living versions of public/projects/madrid-exchange-{2,3}.svg
+ * (the flag cover waves in WebGL, see FlagWave.tsx).
  * Geometry comes from madrid-shapes.ts (generated together with the stills).
  */
 
 type Vars = React.CSSProperties & Record<`--${string}`, string | number>;
 const vars = (v: Record<string, string | number>) => v as Vars;
-
-/* ---------------- Cover: a watercolour Spanish flag, waving ---------------- */
-// Pigment washes drift inside their bands (wet paint flowing), the tide lines sway,
-// and the whole sheet waves gently like cloth.
-export function FlagCover() {
-  const id = useId().replace(/:/g, "");
-  return (
-    <Frame bg={MADRID_PAPER} grain={0.2} vignette speed={{ blob: 1.6, loop: 1 }}>
-      <div className={`${s.fill} ${s.flagwave}`}>
-        {MADRID_FLAG_WASHES.map((w, i) => (
-          <Blob
-            key={i}
-            sigma={MADRID_FLAG_SIGMA}
-            spec={w}
-            drift={{ dx: `${(i % 2 ? -1 : 1) * (3 + (i % 3) * 2)}%`, dy: `${(i % 3 ? 1 : -1) * (2 + (i % 2) * 2)}%`, ds: 1.04, dxDur: 11 + (i % 4) * 3, dyDur: 13 + (i % 3) * 3 }}
-          />
-        ))}
-        {MADRID_FLAG_LIGHTS.map((w, i) => (
-          <Blob key={`l${i}`} sigma={MADRID_FLAG_SIGMA} spec={w} drift={{ dx: `${i % 2 ? 5 : -5}%`, dy: `${i % 2 ? -4 : 4}%`, dxDur: 15 + i, dyDur: 12 + i }} />
-        ))}
-        <div className={s.fill} style={{ backgroundImage: MADRID_BLOTCH, backgroundSize: "100% 100%", opacity: 0.18, mixBlendMode: "multiply" }} />
-        <svg {...svgProps}>
-          <defs>
-            <filter id={`${id}-t`} x="-10%" y="-50%" width="120%" height="200%">
-              <feGaussianBlur stdDeviation="5" />
-            </filter>
-            <filter id={`${id}-s`} x="-50%" y="-50%" width="200%" height="200%">
-              <feGaussianBlur stdDeviation="1.2" />
-            </filter>
-          </defs>
-          <g filter={`url(#${id}-t)`} fill="none" strokeLinecap="round">
-            {MADRID_FLAG_TIDES.map((t, i) => (
-              <g key={i} className={s.sway} style={vars({ "--dur": `${7 + i}s`, "--delay": `${-i * 1.7}s`, "--sx": `${i % 2 ? -14 : 14}px`, "--sy": `${i % 2 ? 5 : -5}px` })}>
-                <path d={t.d} stroke={t.color} strokeWidth={t.width} opacity={t.opacity} />
-              </g>
-            ))}
-          </g>
-          <g filter={`url(#${id}-s)`} fill="#b3121f" opacity="0.7">
-            {MADRID_FLAG_SPLATS.map(([x, y, r]) => (
-              <circle key={`${x}-${y}`} cx={x} cy={y} r={r} />
-            ))}
-          </g>
-        </svg>
-      </div>
-    </Frame>
-  );
-}
 
 /* ---------------- 2: the Madrid Half Marathon's hills, a runner climbing ---------------- */
 export function HillsCover() {
