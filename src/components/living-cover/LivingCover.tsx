@@ -3,6 +3,7 @@
 import { useSyncExternalStore } from "react";
 import type { CoverMotion } from "@/data/projects";
 import { BloomCover, DriftCover, LavaCover, RippleCover, TracksCover, TypingCover, VoiceCover } from "./art";
+import { CardCover, DuskBloomCover, EmberCover, GridCover, NightTracksCover, PlaybackCover, RingsCover, RouteCover, WaveCover } from "./art-more";
 import { CorsaStage } from "@/components/project/hero-scenes/CorsaStage";
 import s from "./LivingCover.module.css";
 
@@ -48,6 +49,15 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "ripple" && <RippleCover />}
       {motion === "bloom" && <BloomCover />}
       {motion === "drift" && <DriftCover src={src} />}
+      {motion === "route" && <RouteCover />}
+      {motion === "ember" && <EmberCover />}
+      {motion === "night-tracks" && <NightTracksCover />}
+      {motion === "grid" && <GridCover />}
+      {motion === "card" && <CardCover />}
+      {motion === "wave" && <WaveCover running={running} />}
+      {motion === "playback" && <PlaybackCover />}
+      {motion === "rings" && <RingsCover />}
+      {motion === "dusk-bloom" && <DuskBloomCover />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
       {motion === "head3d" && active && <CorsaStage paused={!running} />}
     </div>
