@@ -58,6 +58,8 @@ export type ProjectTheme = {
   font: FontKey;
   /** Extra classes for the big hero title, e.g. "uppercase italic". */
   titleClass?: string;
+  /** "light": the hero image is pale, so its text is set in ink (fg) with a paper fade instead of a dark one. */
+  heroTone?: "light";
 };
 
 export type RaceResult = {
@@ -98,7 +100,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded";
+export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage";
 
 export type Project = {
   slug: string;
@@ -192,9 +194,10 @@ export const projects: Project[] = [
     number: "02",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
-    coverMotion: "tracks",
+    coverMotion: "collage",
+    hero: { src: "/projects/marathon-running-hero.svg", alt: "A photocopied collage: a blurred white shape in a blue block, a sunset strip, a starry dark block and a figure in a cyan triangle" },
     images: [
-      { src: "/projects/marathon-running-1.svg", alt: "Curved running-track lanes over a pale green haze" },
+      { src: "/projects/marathon-running-1.svg", alt: "A photocopied collage: a blurred white shape in a blue block, a sunset strip, a starry dark block and a figure in a cyan triangle" },
       { src: "/projects/marathon-running-2.svg", alt: "Light track lanes sweeping across a dark green background", motion: "night-tracks" },
     ],
     year: "Ongoing",
@@ -203,7 +206,8 @@ export const projects: Project[] = [
     // PLACEHOLDER intro
     intro:
       "Running is where the discipline comes from. Early mornings, long Sundays and the quiet maths of pacing: the same patience that goes into building products, measured in kilometres instead of commits.",
-    theme: { bg: "#0a0a0a", fg: "#f4f4f0", muted: "#a3a39c", accent: "#d4ff3a", accent2: "#d4ff3a", font: "anton", titleClass: "uppercase italic" },
+    // Photocopied collage: pale paper, black ink, ultramarine and cyan.
+    theme: { bg: "#e3e2dc", fg: "#111111", muted: "#55554f", accent: "#1f33d6", accent2: "#3fb6c4", font: "anton", titleClass: "uppercase italic", heroTone: "light" },
     signature: {
       type: "pulse-results",
       restingBpm: 52,

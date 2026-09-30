@@ -14,6 +14,7 @@ import { FlagWave } from "@/components/living-cover/FlagWave";
 export function Hero({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
   const { heroReady } = useProjectTransition();
+  const light = project.theme.heroTone === "light";
   const cover = project.images[0];
   const hero = project.hero ?? cover;
   // A theme may bring its own title size (wide faces need smaller type).
@@ -73,7 +74,10 @@ export function Hero({ project }: { project: Project }) {
   });
 
   return (
-    <section ref={root} className="relative h-dvh min-h-[34rem] overflow-hidden bg-black text-white">
+    <section
+      ref={root}
+      className={`relative h-dvh min-h-[34rem] overflow-hidden ${light ? "bg-[var(--p-bg)] text-[var(--p-fg)]" : "bg-black text-white"}`}
+    >
       <div data-hero-media className="absolute inset-0">
         <div data-hero-img className="absolute inset-0 will-change-transform">
           {/* A project with a separate wide hero uses it from tablet width up; phones keep the portrait cover. */}
@@ -105,10 +109,14 @@ export function Hero({ project }: { project: Project }) {
           )}
         </div>
       </div>
-      <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />
+      {light ? (
+        <div aria-hidden="true" className="absolute inset-x-0 bottom-0 h-1/2 bg-linear-to-t from-[var(--p-bg)]/90 via-[var(--p-bg)]/40 to-transparent md:hidden" />
+      ) : (
+        <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />
+      )}
 
       <div data-hero-copy className="absolute inset-x-0 bottom-0 px-4 pb-8 md:px-10 md:pb-12">
-        <p data-meta className="mb-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-wide text-white/85 uppercase md:text-sm">
+        <p data-meta className="mb-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-wide uppercase opacity-85 md:text-sm">
           <span>{project.number}</span>
           <span>{project.year}</span>
           <span>{project.role}</span>
@@ -120,17 +128,17 @@ export function Hero({ project }: { project: Project }) {
         >
           {project.title}
         </h1>
-        <div data-meta className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm text-white/85">
+        <div data-meta className="mt-6 flex flex-wrap items-center gap-x-6 gap-y-2 text-sm opacity-85">
           <span className="max-w-[40ch]">{project.subtitle}</span>
           {project.link && (
-            <a href={project.link} target="_blank" rel="noreferrer" className="nav-link text-white">
+            <a href={project.link} target="_blank" rel="noreferrer" className="nav-link">
               Visit live ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
         </div>
       </div>
 
-      <p data-meta aria-hidden="true" className="absolute right-4 bottom-8 font-mono text-xs text-white/70 uppercase md:right-10 md:bottom-12">
+      <p data-meta aria-hidden="true" className="absolute right-4 bottom-8 font-mono text-xs uppercase opacity-70 md:right-10 md:bottom-12">
         Scroll ↓
       </p>
     </section>

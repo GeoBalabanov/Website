@@ -370,3 +370,91 @@
     transform: rotate(360deg);
   }
 }
+
+/* ---------- 02 Marathon running collage (CollageCover.tsx) ---------- */
+.cburst {
+  will-change: transform, opacity;
+  animation: cburst calc(6s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes cburst {
+  to {
+    transform: scale(1.08) rotate(4deg);
+    opacity: 0.78;
+  }
+}
+/* A photocopier light sweeping down the blue block (not in the still: it starts invisible). */
+.cscan {
+  opacity: 0;
+  will-change: transform, opacity;
+  animation: cscan calc(4.5s / var(--speed, 1)) linear infinite;
+}
+@keyframes cscan {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  12%,
+  85% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateY(44.2%);
+    opacity: 0;
+  }
+}
+/* The streaks are drawn twice, one strip-width apart, so the slide loops. */
+.cstreaks {
+  will-change: transform;
+  animation: cstreaks calc(16s / var(--speed, 1)) linear infinite;
+}
+@keyframes cstreaks {
+  to {
+    transform: translateX(calc(-1 * var(--shift, 36.7%)));
+  }
+}
+.twinkle {
+  animation: twinkle calc(2.4s / var(--speed, 1)) ease-in-out calc(var(--delay, 0s) / var(--speed, 1)) infinite alternate;
+}
+@keyframes twinkle {
+  to {
+    opacity: 0.15;
+  }
+}
+.cflicker {
+  animation: cflicker calc(7s / var(--speed, 1)) linear infinite;
+}
+@keyframes cflicker {
+  0%,
+  90%,
+  100% {
+    opacity: 1;
+  }
+  92% {
+    opacity: 0.3;
+  }
+  94% {
+    opacity: 0.9;
+  }
+  96% {
+    opacity: 0.4;
+  }
+}
+.chalo {
+  will-change: transform, opacity;
+  animation: chalo calc(4s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes chalo {
+  to {
+    transform: scale(1.1);
+    opacity: 0.7;
+  }
+}
+.cfigure {
+  will-change: transform;
+  animation: cfigure calc(5s / var(--speed, 1)) ease-in-out infinite alternate;
+}
+@keyframes cfigure {
+  to {
+    transform: translateY(-1.2%) rotate(-1.2deg);
+  }
+}
