@@ -305,10 +305,39 @@ export const projects: Project[] = [
       ],
     },
     gallery: [
-      img("ai-case-generator", "wide-1", "Placeholder: document flow", true, "From documents to a case: interviews and reports go in, a six-step game case comes out."),
-      img("ai-case-generator", "2", "Placeholder: upload screen", false, "The upload screen keeps one main action: Generate Case. Built for educators, not engineers."),
-      img("ai-case-generator", "3", "Placeholder: generated card", false, "Each generated card holds a situation, a dilemma and the choices players can make, all editable."),
-      img("ai-case-generator", "wide-2", "Placeholder: AI pipeline", true, "The pipeline: extract the text, analyse it against the Social Quality Theory, generate the steps, format the cards."),
+      {
+        src: "/projects/ai-case-generator-screen-home.jpg",
+        alt: "AI Case Generator home screen with the three steps: upload, generate and review",
+        wide: true,
+        caption: "The home screen explains the whole tool in three steps: upload, generate, review. Nothing else competes for attention.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-upload.jpg",
+        alt: "Upload screen with a drop zone for PDF, DOCX or TXT files and a case language picker",
+        wide: true,
+        caption: "Upload: drop in a PDF, Word or text file, pick the case language and press Generate Case. It takes about 30 to 60 seconds.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-overview.jpg",
+        alt: "Decision tree overview of the generated case Het Skatepark, with cards tagged formal, informal, individual and collective",
+        caption: "The generated case, Het Skatepark, as a decision tree: every card is tagged formal or informal, individual or collective, and ends in a win or a learning outcome.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-editor.jpg",
+        alt: "Card editor with a list of cards and a preview of game card 1A",
+        caption: "The card editor shows each card exactly as it will look in the game, and every outcome and choice can be edited before export.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-play.jpg",
+        alt: "Playing card 1A of Het Skatepark: a situation and three choices under the heading Wat doe je?",
+        caption: "Test play: the teacher can run the case like a student would, choosing a path at every card, with two jokers to spend.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-export.jpg",
+        alt: "Export successful screen with options to test the case, generate another case or go home",
+        wide: true,
+        caption: "Export done: the case is ready for the classroom, can be tested as a simulation, or the next one generated.",
+      },
     ],
     facts: [
       { value: 6, label: "Steps per case" },
