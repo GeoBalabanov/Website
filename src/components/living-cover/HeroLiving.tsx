@@ -1,7 +1,7 @@
 "use client";
 
 import { AI_BG, AI_BOOK, AI_BOOK_WIDE, AI_GRAIN } from "./ai-layers";
-import { BloomCover } from "./art";
+import { BloomCover, LavaCover } from "./art";
 import { CollageCover } from "./CollageCover";
 import { COLLAGE_LAYERS_WIDE } from "./collage-layers";
 import { HairWaveCover } from "./HairWaveCover";
@@ -10,7 +10,7 @@ import type { CoverMotion } from "@/data/projects";
 import s from "./LivingCover.module.css";
 
 /** Which cover animations can also play full-screen behind a project hero. */
-export const HERO_LIVING: CoverMotion[] = ["ai-book", "hairwave", "bloom", "collage"];
+export const HERO_LIVING: CoverMotion[] = ["ai-book", "hairwave", "bloom", "collage", "lava"];
 
 /**
  * A project's living cover, playing behind its page hero. `wide`: the hero shows
@@ -28,6 +28,7 @@ export function HeroLiving({ motion, wide, running }: { motion: CoverMotion; wid
     art = wide ? <LayeredCover layers={AI_BOOK_WIDE} bg={AI_BG} grain={AI_GRAIN} viewBox="0 0 1600 1000" /> : portrait(<LayeredCover layers={AI_BOOK} bg={AI_BG} grain={AI_GRAIN} />);
   else if (motion === "collage") art = wide ? <CollageCover layers={COLLAGE_LAYERS_WIDE} viewBox="0 0 1600 1000" /> : portrait(<CollageCover />);
   else if (motion === "bloom") art = portrait(<BloomCover />);
+  else if (motion === "lava") art = portrait(<LavaCover />);
   if (!art) return null;
   return (
     <div className={s.root} data-active="" data-paused={running ? undefined : ""} aria-hidden="true">
