@@ -109,7 +109,7 @@ export type Project = {
   /** Wide image for the project page hero, when the portrait cover would crop badly (defaults to images[0]). */
   hero?: ProjectImage;
   /** A live 3D scene that plays over the hero image on the project page. */
-  heroScene?: "corsa-head";
+  heroScene?: "corsa-head" | "flag-wind";
 
   year: string;
   role: string;
@@ -462,6 +462,7 @@ export const projects: Project[] = [
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
+    heroScene: "flag-wind",
     hero: { src: "/projects/madrid-exchange-hero.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
     images: [
       { src: "/projects/madrid-exchange-1.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },

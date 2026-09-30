@@ -9,6 +9,7 @@ import { useScene } from "@/lib/use-scene";
 import { useProjectTransition } from "@/components/transition/ProjectTransition";
 import { prefersReducedMotion } from "@/lib/motion";
 import { CorsaStage } from "./hero-scenes/CorsaStage";
+import { FlagWave } from "@/components/living-cover/FlagWave";
 
 export function Hero({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
@@ -21,12 +22,12 @@ export function Hero({ project }: { project: Project }) {
 
   // Live 3D hero (if the project has one): mounts after hydration, fades in over the
   // still (a render of its first frame) and only runs while the hero is on screen.
-  const [scene, setScene] = useState({ on: false, visible: true });
+  const [scene, setScene] = useState({ on: false, visible: true, wide: true });
   useEffect(() => {
     if (!project.heroScene || prefersReducedMotion()) return;
     const el = root.current!;
     let inView = true;
-    const update = () => setScene((s) => ({ ...s, on: true, visible: inView && !document.hidden }));
+    const update = () => setScene({ on: true, visible: inView && !document.hidden, wide: window.matchMedia("(min-width: 768px)").matches });
     const io = new IntersectionObserver(([e]) => {
       inView = e.isIntersecting;
       update();
@@ -99,6 +100,9 @@ export function Hero({ project }: { project: Project }) {
             onLoad={() => heroReady(project.slug)}
           />
           {scene.on && project.heroScene === "corsa-head" && <CorsaStage paused={!scene.visible} />}
+          {scene.on && project.heroScene === "flag-wind" && (
+            <FlagWave key={scene.wide ? "wide" : "tall"} src={scene.wide ? hero.src : cover.src} running={scene.visible} rasterWidth={scene.wide ? 1800 : 1000} />
+          )}
         </div>
       </div>
       <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />

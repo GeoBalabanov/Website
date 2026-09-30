@@ -350,24 +350,6 @@
 
 /* ---------- 07 Madrid (art-madrid.tsx) ---------- */
 
-/* The watercolour flag waves gently, like a sheet of paper or cloth in a breeze. */
-.flagwave {
-  transform-origin: 50% 50%;
-  will-change: transform;
-  animation: flagwave calc(8s / var(--speed, 1)) ease-in-out infinite;
-}
-@keyframes flagwave {
-  0%,
-  100% {
-    transform: none;
-  }
-  33% {
-    transform: translateY(-8px) skewY(-1.4deg) scaleX(1.01);
-  }
-  66% {
-    transform: translateY(6px) skewY(1.1deg) scaleX(1.005);
-  }
-}
 /* The loading ring: half full at the start (like the still), fills up, loops. */
 .arc {
   animation: arc calc(10s / var(--speed, 1)) linear calc(-5s / var(--speed, 1)) infinite;

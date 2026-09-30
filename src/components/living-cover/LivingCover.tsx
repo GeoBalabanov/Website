@@ -4,7 +4,8 @@ import { useSyncExternalStore } from "react";
 import type { CoverMotion } from "@/data/projects";
 import { BloomCover, DriftCover, LavaCover, RippleCover, TracksCover, TypingCover, VoiceCover } from "./art";
 import { CardCover, DuskBloomCover, EmberCover, GridCover, NightTracksCover, PlaybackCover, RingsCover, RouteCover, WaveCover } from "./art-more";
-import { FlagCover, HillsCover, LoadedCover } from "./art-madrid";
+import { HillsCover, LoadedCover } from "./art-madrid";
+import { FlagWave } from "./FlagWave";
 import { CorsaStage } from "@/components/project/hero-scenes/CorsaStage";
 import s from "./LivingCover.module.css";
 
@@ -59,7 +60,8 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "playback" && <PlaybackCover />}
       {motion === "rings" && <RingsCover />}
       {motion === "dusk-bloom" && <DuskBloomCover />}
-      {motion === "flag" && <FlagCover />}
+      {/* The flag waves in the wind (WebGL): only mounted while its cover is the active one. */}
+      {motion === "flag" && active && <FlagWave src={src} running={running} rasterWidth={900} />}
       {motion === "hills" && <HillsCover />}
       {motion === "loaded" && <LoadedCover />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
