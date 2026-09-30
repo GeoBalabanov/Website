@@ -17,6 +17,8 @@ export type Layer = {
   clip?: string;
   origin?: string;
   vars?: Record<string, string | number>;
+  /** mix-blend-mode for texture layers (grain). */
+  blend?: string;
 };
 
 export function LayeredCover({ layers, bg, grain }: { layers: Layer[]; bg: string; grain: number }) {
@@ -30,7 +32,7 @@ export function LayeredCover({ layers, bg, grain }: { layers: Layer[]; bg: strin
           </div>
         );
         return (
-          <div key={l.id} className={s.fill} style={l.clip ? { clipPath: l.clip } : undefined}>
+          <div key={l.id} className={s.fill} style={{ ...(l.clip ? { clipPath: l.clip } : {}), ...(l.blend ? { mixBlendMode: l.blend } : {}) } as React.CSSProperties}>
             {art}
           </div>
         );
