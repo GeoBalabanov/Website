@@ -49,11 +49,11 @@ export function HorizontalSteps({ data }: { project: Project; data: Data }) {
       <div ref={pinned} className="flex h-dvh flex-col overflow-hidden pt-28 pb-8 md:pt-28">
         <div className="flex flex-wrap items-end justify-between gap-4 px-4 md:px-10">
           <div>
-            <SectionLabel index="02" placeholder>
+            <SectionLabel index="02">
               How it works
             </SectionLabel>
             <h2 id="steps-title" className="font-display mt-4 text-[clamp(2rem,4.5vw,4.5rem)] leading-[0.95] font-bold tracking-[-0.03em]">
-              From case file to classroom
+              From case file to board game
             </h2>
           </div>
           <p className="font-mono text-xs text-[var(--p-muted)] uppercase">{data.steps.length} steps →</p>
@@ -101,11 +101,11 @@ function StepIllustration({ index }: { index: number }) {
       {doc}
       <path d="M55 58 V28 M44 39 L55 28 L66 39" {...stroke} />
     </g>,
-    <g key="anon">
+    <g key="analyse">
       {doc}
-      <rect x="38" y="20" width="34" height="6" fill="var(--p-fg)" />
-      <path d="M38 34 H70 M38 44 H62" {...stroke} strokeWidth={2} />
-      <rect x="38" y="52" width="24" height="6" fill="var(--p-fg)" />
+      <path d="M38 20 H70 M38 30 H64 M38 40 H58" {...stroke} strokeWidth={2} />
+      <circle cx="72" cy="54" r="13" {...stroke} fill="#fff" />
+      <path d="M81.5 63.5 L94 76" {...stroke} strokeWidth={4} />
     </g>,
     <g key="gen">
       <path d="M55 6 C57 28 62 33 84 35 C62 37 57 42 55 64 C53 42 48 37 26 35 C48 33 53 28 55 6 Z" {...stroke} />
@@ -116,13 +116,10 @@ function StepIllustration({ index }: { index: number }) {
       <circle cx="78" cy="62" r="16" fill="var(--p-accent)" />
       <path d="M70 62 l6 6 10 -12" fill="none" stroke="#fff" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
     </g>,
-    <g key="class">
-      {[30, 55, 80].map((x) => (
-        <g key={x}>
-          <circle cx={x} cy="30" r="10" {...stroke} />
-          <path d={`M${x - 16} 72 C${x - 16} 52 ${x + 16} 52 ${x + 16} 72`} {...stroke} />
-        </g>
-      ))}
+    <g key="export">
+      {doc}
+      <path d="M55 22 V52 M44 41 L55 52 L66 41" {...stroke} />
+      <path d="M40 62 H70" {...stroke} strokeWidth={3} />
     </g>,
   ];
   return (

@@ -114,6 +114,8 @@ export type Project = {
   signature: Signature;
   gallery: MediaItem[];
   facts: Fact[];
+  /** Sections whose content is final, so they drop their "Placeholder" tag. */
+  confirmed?: ("intro" | "facts")[];
 };
 
 const img = (slug: string, name: string, alt: string, wide = false, caption?: string): MediaItem => ({
@@ -279,7 +281,7 @@ export const projects: Project[] = [
     slug: "ai-case-generator",
     number: "03",
     title: "AI Case Generator",
-    subtitle: "Turning real social work documents into educational case scenarios",
+    subtitle: "Turning real social work cases into playable scenarios for the Social Work Game",
     coverMotion: "typing",
     images: [
       { src: "/projects/ai-case-generator-1.svg", alt: "Three case-scenario cards fanned out over a deep blue glow" },
@@ -287,36 +289,63 @@ export const projects: Project[] = [
       { src: "/projects/ai-case-generator-3.svg", alt: "A single case card close up in teal and violet light" },
     ],
     year: "2025",
-    role: "Design & Development",
-    location: "[Location]",
-    // PLACEHOLDER intro
+    role: "UX Design & SwiftUI Development",
+    location: "Fontys × Tweekracht",
     intro:
-      "Social work students learn best from real situations, but real files are private. This tool turns anonymised case documents into realistic teaching scenarios, so educators can practise with the complexity of real life without exposing anyone in it.",
+      "Every new case for Tweekracht's Social Work Game took hours of turning interviews and reports into game cards by hand. Our Fontys team built a SwiftUI app where AI does that work: a playable six-step case, ready to edit and print.",
     theme: { bg: "#eceef6", fg: "#10132b", muted: "#4a4f6e", accent: "#3b4cff", accent2: "#8b5cf6", font: "grotesk" },
     signature: {
       type: "horizontal-steps",
-      // PLACEHOLDER steps
       steps: [
-        { title: "Upload", text: "An educator uploads a real case document." },
-        { title: "Anonymise", text: "Names, places and identifiers are stripped before anything else happens." },
-        { title: "Generate", text: "The model rewrites the case into a scenario with learning goals." },
-        { title: "Review", text: "The educator edits, approves and shares it with the class." },
-        { title: "Practise", text: "Students work through the case and discuss their decisions." },
+        { title: "Upload", text: "An educator uploads the case material: interviews, reports and notes as PDF, Word or plain text." },
+        { title: "Analyse", text: "The AI reads everything, picks out the people, problems and turning points, and maps them to the Social Quality Theory." },
+        { title: "Generate", text: "It writes the case in the game's six-step model, each step with two to four sub-steps, dilemmas and choices." },
+        { title: "Review", text: "Every card can be edited. If one step doesn't feel right, the educator regenerates just that step." },
+        { title: "Export", text: "The finished case is exported as a PDF, ready to print and play in the physical board game." },
       ],
     },
     gallery: [
-      img("ai-case-generator", "wide-1", "Placeholder: document flow", true, "From document to scenario: anonymised case files go in, teaching scenarios come out."),
-      img("ai-case-generator", "2", "Placeholder: interface detail", false, "The editor lets educators adjust tone, complexity and learning goals."),
-      img("ai-case-generator", "3", "Placeholder: scenario card", false, "Each scenario card holds a situation, the people involved and questions to discuss."),
-      img("ai-case-generator", "wide-2", "Placeholder: system diagram", true, "Under the hood: personal details are removed before any text is generated."),
+      {
+        src: "/projects/ai-case-generator-screen-home.jpg",
+        alt: "AI Case Generator home screen with the three steps: upload, generate and review",
+        wide: true,
+        caption: "The home screen explains the whole tool in three steps: upload, generate, review. Nothing else competes for attention.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-upload.jpg",
+        alt: "Upload screen with a drop zone for PDF, DOCX or TXT files and a case language picker",
+        wide: true,
+        caption: "Upload: drop in a PDF, Word or text file, pick the case language and press Generate Case. It takes about 30 to 60 seconds.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-overview.jpg",
+        alt: "Decision tree overview of the generated case Het Skatepark, with cards tagged formal, informal, individual and collective",
+        caption: "The generated case, Het Skatepark, as a decision tree: every card is tagged formal or informal, individual or collective, and ends in a win or a learning outcome.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-editor.jpg",
+        alt: "Card editor with a list of cards and a preview of game card 1A",
+        caption: "The card editor shows each card exactly as it will look in the game, and every outcome and choice can be edited before export.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-play.jpg",
+        alt: "Playing card 1A of Het Skatepark: a situation and three choices under the heading Wat doe je?",
+        caption: "Test play: the teacher can run the case like a student would, choosing a path at every card, with two jokers to spend.",
+      },
+      {
+        src: "/projects/ai-case-generator-screen-export.jpg",
+        alt: "Export successful screen with options to test the case, generate another case or go home",
+        wide: true,
+        caption: "Export done: the case is ready for the classroom, can be tested as a simulation, or the next one generated.",
+      },
     ],
-    // PLACEHOLDER numbers
     facts: [
-      { value: 120, suffix: "+", label: "Cases generated" },
-      { value: 5, label: "Steps per case" },
-      { value: 92, suffix: "%", label: "Educator approval" },
-      { value: 0, label: "Real names stored" },
+      { value: 6, label: "Steps per case" },
+      { value: 4, prefix: "2–", label: "Sub-steps per step" },
+      { value: 3, label: "File types: PDF, Word, text" },
+      { value: 2, label: "Languages: Dutch & English" },
     ],
+    confirmed: ["intro", "facts"],
   },
   {
     slug: "dating-app",
