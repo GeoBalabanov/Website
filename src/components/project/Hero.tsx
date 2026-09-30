@@ -13,7 +13,8 @@ import { CorsaStage } from "./hero-scenes/CorsaStage";
 export function Hero({ project }: { project: Project }) {
   const root = useRef<HTMLElement>(null);
   const { heroReady } = useProjectTransition();
-  const hero = project.images[0];
+  const cover = project.images[0];
+  const hero = project.hero ?? cover;
   // A theme may bring its own title size (wide faces need smaller type).
   const custom = project.theme.titleClass ?? "";
   const titleClass = custom.includes("text-[") ? custom : `text-[clamp(3.25rem,11vw,11.5rem)] ${custom}`;
@@ -74,6 +75,19 @@ export function Hero({ project }: { project: Project }) {
     <section ref={root} className="relative h-dvh min-h-[34rem] overflow-hidden bg-black text-white">
       <div data-hero-media className="absolute inset-0">
         <div data-hero-img className="absolute inset-0 will-change-transform">
+          {/* A project with a separate wide hero uses it from tablet width up; phones keep the portrait cover. */}
+          {project.hero && (
+            <Image
+              src={cover.src}
+              alt={cover.alt}
+              fill
+              priority
+              sizes="100vw"
+              unoptimized={cover.src.endsWith(".svg")}
+              className="object-cover md:hidden"
+              onLoad={() => heroReady(project.slug)}
+            />
+          )}
           <Image
             src={hero.src}
             alt={hero.alt}
@@ -81,7 +95,7 @@ export function Hero({ project }: { project: Project }) {
             priority
             sizes="100vw"
             unoptimized={hero.src.endsWith(".svg")}
-            className="object-cover"
+            className={`object-cover ${project.hero ? "max-md:hidden" : ""}`}
             onLoad={() => heroReady(project.slug)}
           />
           {scene.on && project.heroScene === "corsa-head" && <CorsaStage paused={!scene.visible} />}

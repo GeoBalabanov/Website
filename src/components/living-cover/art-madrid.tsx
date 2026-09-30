@@ -2,7 +2,18 @@
 
 import { useId } from "react";
 import { Blob, Frame, svgProps } from "./art";
-import { MADRID_DUNES, MADRID_HAZE, MADRID_HILL_AREA, MADRID_HILL_LINE, MADRID_RING, MADRID_SKY, MADRID_SLATS } from "./madrid-shapes";
+import {
+  MADRID_BLOTCH,
+  MADRID_FLAG_LIGHTS,
+  MADRID_FLAG_SIGMA,
+  MADRID_FLAG_SPLATS,
+  MADRID_FLAG_TIDES,
+  MADRID_FLAG_WASHES,
+  MADRID_HILL_AREA,
+  MADRID_HILL_LINE,
+  MADRID_PAPER,
+  MADRID_RING,
+} from "./madrid-shapes";
 import s from "./LivingCover.module.css";
 
 /**
@@ -13,60 +24,49 @@ import s from "./LivingCover.module.css";
 type Vars = React.CSSProperties & Record<`--${string}`, string | number>;
 const vars = (v: Record<string, string | number>) => v as Vars;
 
-const SKY = `linear-gradient(180deg, ${MADRID_SKY.map(([o, c]) => `${c} ${Number(o) * 100}%`).join(", ")})`;
-
-/** A little bird: two arcs that flap. */
-function Bird({ y, scale, delay, dur }: { y: number; scale: number; delay: number; dur: number }) {
-  return (
-    <g className={s.bird} style={vars({ "--delay": `${delay}s`, "--dur": `${dur}s` })}>
-      <g transform={`translate(-60 ${y}) scale(${scale})`}>
-        <path className={s.flap} d="M -12 0 Q -6 -7 0 0 Q 6 -7 12 0" fill="none" stroke="#3d0b0a" strokeWidth="2.4" strokeLinecap="round" />
-      </g>
-    </g>
-  );
-}
-
-/* ---------------- Cover: a retro sunset over the Sahara dunes ---------------- */
-export function SunsetCover() {
+/* ---------------- Cover: a watercolour Spanish flag, waving ---------------- */
+// Pigment washes drift inside their bands (wet paint flowing), the tide lines sway,
+// and the whole sheet waves gently like cloth.
+export function FlagCover() {
   const id = useId().replace(/:/g, "");
   return (
-    <Frame bg={SKY} grain={0.1} vignette speed={{ blob: 2 }}>
-      {MADRID_HAZE.map((h, i) => (
-        <Blob key={i} sigma={90} spec={h} drift={{ dx: i ? "-14%" : "16%", dy: i ? "10%" : "-8%", ds: 1.1, dxDur: 15 + i * 4, dyDur: 19 - i * 3 }} />
-      ))}
-      <svg {...svgProps}>
-        <defs>
-          <linearGradient id={`${id}-sun`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stopColor="#ffe08a" />
-            <stop offset="1" stopColor="#ff6a2b" />
-          </linearGradient>
-          <radialGradient id={`${id}-glow`}>
-            <stop offset="0" stopColor="#ffb46b" stopOpacity="0.55" />
-            <stop offset="1" stopColor="#ffb46b" stopOpacity="0" />
-          </radialGradient>
-          {/* The slats stay put; the sun slides behind them, so the stripes seem to travel over it. */}
-          <mask id={`${id}-slats`} maskUnits="userSpaceOnUse" x="0" y="0" width="900" height="1200">
-            <rect width="900" height="1200" fill="#fff" />
-            {MADRID_SLATS.map((l) => (
-              <rect key={l.y} x="0" y={l.y} width="900" height={l.h} fill="#000" />
-            ))}
-          </mask>
-        </defs>
-        <g className={s.breathe} style={{ transformBox: "view-box", transformOrigin: "450px 690px" }}>
-          <circle cx="450" cy="690" r="400" fill={`url(#${id}-glow)`} />
-        </g>
-        <g mask={`url(#${id}-slats)`}>
-          <g className={s.sunset}>
-            <circle cx="450" cy="690" r="230" fill={`url(#${id}-sun)`} />
-          </g>
-        </g>
-        <Bird y={360} scale={1.2} delay={1.5} dur={20} />
-        <Bird y={410} scale={0.9} delay={2.4} dur={23} />
-        <Bird y={300} scale={0.7} delay={11} dur={26} />
-        {MADRID_DUNES.map((d) => (
-          <path key={d.color} d={d.d} fill={d.color} className={s.dunes} style={vars({ "--dur": `${d.dur}s` })} />
+    <Frame bg={MADRID_PAPER} grain={0.2} vignette speed={{ blob: 1.6, loop: 1 }}>
+      <div className={`${s.fill} ${s.flagwave}`}>
+        {MADRID_FLAG_WASHES.map((w, i) => (
+          <Blob
+            key={i}
+            sigma={MADRID_FLAG_SIGMA}
+            spec={w}
+            drift={{ dx: `${(i % 2 ? -1 : 1) * (3 + (i % 3) * 2)}%`, dy: `${(i % 3 ? 1 : -1) * (2 + (i % 2) * 2)}%`, ds: 1.04, dxDur: 11 + (i % 4) * 3, dyDur: 13 + (i % 3) * 3 }}
+          />
         ))}
-      </svg>
+        {MADRID_FLAG_LIGHTS.map((w, i) => (
+          <Blob key={`l${i}`} sigma={MADRID_FLAG_SIGMA} spec={w} drift={{ dx: `${i % 2 ? 5 : -5}%`, dy: `${i % 2 ? -4 : 4}%`, dxDur: 15 + i, dyDur: 12 + i }} />
+        ))}
+        <div className={s.fill} style={{ backgroundImage: MADRID_BLOTCH, backgroundSize: "100% 100%", opacity: 0.18, mixBlendMode: "multiply" }} />
+        <svg {...svgProps}>
+          <defs>
+            <filter id={`${id}-t`} x="-10%" y="-50%" width="120%" height="200%">
+              <feGaussianBlur stdDeviation="5" />
+            </filter>
+            <filter id={`${id}-s`} x="-50%" y="-50%" width="200%" height="200%">
+              <feGaussianBlur stdDeviation="1.2" />
+            </filter>
+          </defs>
+          <g filter={`url(#${id}-t)`} fill="none" strokeLinecap="round">
+            {MADRID_FLAG_TIDES.map((t, i) => (
+              <g key={i} className={s.sway} style={vars({ "--dur": `${7 + i}s`, "--delay": `${-i * 1.7}s`, "--sx": `${i % 2 ? -14 : 14}px`, "--sy": `${i % 2 ? 5 : -5}px` })}>
+                <path d={t.d} stroke={t.color} strokeWidth={t.width} opacity={t.opacity} />
+              </g>
+            ))}
+          </g>
+          <g filter={`url(#${id}-s)`} fill="#b3121f" opacity="0.7">
+            {MADRID_FLAG_SPLATS.map(([x, y, r]) => (
+              <circle key={`${x}-${y}`} cx={x} cy={y} r={r} />
+            ))}
+          </g>
+        </svg>
+      </div>
     </Frame>
   );
 }

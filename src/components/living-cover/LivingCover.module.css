@@ -350,41 +350,22 @@
 
 /* ---------- 07 Madrid (art-madrid.tsx) ---------- */
 
-/* Dune layers: each path repeats every 900 units, so a 900-unit slide loops seamlessly. */
-.dunes {
-  animation: dunes calc(var(--dur, 40s) / var(--speed, 1)) linear infinite;
+/* The watercolour flag waves gently, like a sheet of paper or cloth in a breeze. */
+.flagwave {
+  transform-origin: 50% 50%;
+  will-change: transform;
+  animation: flagwave calc(8s / var(--speed, 1)) ease-in-out infinite;
 }
-@keyframes dunes {
-  to {
-    transform: translateX(-900px);
+@keyframes flagwave {
+  0%,
+  100% {
+    transform: none;
   }
-}
-/* The sun sinks behind the fixed slats and rises again. */
-.sunset {
-  animation: sunset calc(9s / var(--speed, 1)) ease-in-out infinite alternate;
-}
-@keyframes sunset {
-  to {
-    transform: translateY(46px);
+  33% {
+    transform: translateY(-8px) skewY(-1.4deg) scaleX(1.01);
   }
-}
-/* Birds cross the sky from the left, flapping. Before their delay they wait off-canvas. */
-.bird {
-  animation: bird calc(var(--dur, 22s) / var(--speed, 1)) linear calc(var(--delay, 0s) / var(--speed, 1)) infinite;
-}
-@keyframes bird {
-  to {
-    transform: translate(1020px, -40px);
-  }
-}
-.flap {
-  transform-box: fill-box;
-  transform-origin: center;
-  animation: flap calc(0.45s / var(--speed, 1)) ease-in-out infinite alternate;
-}
-@keyframes flap {
-  to {
-    transform: scaleY(0.4);
+  66% {
+    transform: translateY(6px) skewY(1.1deg) scaleX(1.005);
   }
 }
 /* The loading ring: half full at the start (like the still), fills up, loops. */
