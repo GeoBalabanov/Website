@@ -21,14 +21,14 @@ export type Layer = {
   blend?: string;
 };
 
-export function LayeredCover({ layers, bg, grain }: { layers: Layer[]; bg: string; grain: number }) {
+export function LayeredCover({ layers, bg, grain, viewBox }: { layers: Layer[]; bg: string; grain: number; viewBox?: string }) {
   const uid = useId().replace(/:/g, "");
   return (
     <Frame bg={bg} grain={grain} vignette>
       {layers.map((l) => {
         const art = (
           <div className={`${s.fill} ${l.motion ? (s[l.motion] ?? "") : ""}`} style={{ transformOrigin: l.origin, ...l.vars } as React.CSSProperties}>
-            <svg {...svgProps} style={{ overflow: "visible" }} dangerouslySetInnerHTML={{ __html: l.svg.replaceAll("ID-", `${uid}-${l.id}-`) }} />
+            <svg {...svgProps} viewBox={viewBox ?? svgProps.viewBox} style={{ overflow: "visible" }} dangerouslySetInnerHTML={{ __html: l.svg.replaceAll("ID-", `${uid}-${l.id}-`) }} />
           </div>
         );
         return (

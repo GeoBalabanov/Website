@@ -436,7 +436,7 @@ export const projects: Project[] = [
     intro:
       "Running is where the discipline comes from. Early mornings, long Sundays and the quiet maths of pacing: the same patience that goes into building products, measured in kilometres instead of commits.",
     // Photocopied collage: pale paper, black ink, ultramarine and cyan.
-    theme: { bg: "#e3e2dc", fg: "#111111", muted: "#55554f", accent: "#1f33d6", accent2: "#3fb6c4", font: "anton", titleClass: "uppercase italic", heroTone: "light" },
+    theme: { bg: "#e3e2dc", fg: "#111111", muted: "#55554f", accent: "#1f33d6", accent2: "#3fb6c4", font: "anton", titleClass: "uppercase italic text-[clamp(3rem,9vw,8.5rem)]", heroTone: "light" },
     signature: {
       type: "pulse-results",
       restingBpm: 52,
