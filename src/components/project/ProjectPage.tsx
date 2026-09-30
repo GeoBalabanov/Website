@@ -9,7 +9,6 @@ import { scrollToImmediate } from "@/components/SmoothScroll";
 import { Hero } from "./Hero";
 import { Intro } from "./Intro";
 import { Gallery } from "./Gallery";
-import { BrutalistGallery } from "./BrutalistGallery";
 import { Facts } from "./Facts";
 import { NextProject } from "./NextProject";
 import { SignatureSection } from "./signatures";
@@ -87,6 +86,8 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
           "--p-accent": t.accent,
           "--p-accent-2": t.accent2,
           "--p-display": font.family,
+          // Anton ships one (heavy) weight: never fake a bolder one on top of it.
+          ...(t.font === "anton" ? { fontSynthesisWeight: "none" } : {}),
         } as React.CSSProperties
       }
     >
@@ -95,7 +96,7 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
       <div id="story">
         <SignatureSection project={project} />
       </div>
-      {project.galleryStyle === "brutalist" ? <BrutalistGallery project={project} /> : <Gallery project={project} />}
+      <Gallery project={project} />
       <Facts project={project} />
       <NextProject next={next} />
 

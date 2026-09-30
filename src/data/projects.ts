@@ -29,6 +29,8 @@ export type MediaItem = ProjectImage & {
   poster?: string;
   /** Landscape item (16:10) instead of portrait (3:4). */
   wide?: boolean;
+  /** A wide item shown smaller (centred, about half the page), for photos that would blur at full width. */
+  compact?: boolean;
   /** Vertical phone video (9:16). Consecutive tall items sit side by side. */
   tall?: boolean;
   /** A line or two under the item explaining the work. */
@@ -43,7 +45,7 @@ export type Fact = {
   suffix?: string;
 };
 
-export type FontKey = "fraunces" | "barlow" | "grotesk" | "syne" | "syncopate" | "instrument" | "bricolage";
+export type FontKey = "fraunces" | "barlow" | "grotesk" | "syne" | "syncopate" | "instrument" | "bricolage" | "anton";
 
 export type ProjectTheme = {
   bg: string;
@@ -119,10 +121,6 @@ export type Project = {
   signature: Signature;
   gallery: MediaItem[];
   facts: Fact[];
-  /** Gallery look: the default editorial layout, or a brutalist one. */
-  galleryStyle?: "editorial" | "brutalist";
-  /** Words for the brutalist gallery's ticker. */
-  galleryTicker?: string[];
   /** Sections whose content is final, so they drop their "Placeholder" tag. */
   confirmed?: ("intro" | "facts")[];
 };
@@ -205,7 +203,7 @@ export const projects: Project[] = [
     // PLACEHOLDER intro
     intro:
       "Running is where the discipline comes from. Early mornings, long Sundays and the quiet maths of pacing: the same patience that goes into building products, measured in kilometres instead of commits.",
-    theme: { bg: "#0a0a0a", fg: "#f4f4f0", muted: "#a3a39c", accent: "#d4ff3a", accent2: "#d4ff3a", font: "barlow", titleClass: "uppercase italic font-extrabold" },
+    theme: { bg: "#0a0a0a", fg: "#f4f4f0", muted: "#a3a39c", accent: "#d4ff3a", accent2: "#d4ff3a", font: "anton", titleClass: "uppercase italic" },
     signature: {
       type: "pulse-results",
       restingBpm: 52,
@@ -467,8 +465,6 @@ export const projects: Project[] = [
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
     heroScene: "flag-wind",
-    galleryStyle: "brutalist",
-    galleryTicker: ["Madrid", "Marrakech", "Sahara", "URJC", "21.1 km"],
     hero: { src: "/projects/madrid-exchange-hero.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
     images: [
       { src: "/projects/madrid-exchange-1.svg", alt: "The Spanish flag painted in soft, watery red and yellow watercolour" },
@@ -528,6 +524,7 @@ export const projects: Project[] = [
         src: "/projects/madrid-exchange-marrakech.jpg",
         alt: "A group of friends on a rooftop at night above the lit-up Jemaa el-Fnaa square in Marrakech",
         wide: true,
+        compact: true,
         caption: "Marrakech by night: the crew on a rooftop above Jemaa el-Fnaa, on the way to the desert.",
       },
       {

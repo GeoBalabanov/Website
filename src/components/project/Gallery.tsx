@@ -54,7 +54,9 @@ export function Gallery({ project }: { project: Project }) {
     tall = item.tall ? tall : 0;
     places.push(
       item.wide
-        ? "col-span-12 md:col-span-10 md:col-start-2"
+        ? item.compact
+          ? "col-span-12 md:col-span-6 md:col-start-4"
+          : "col-span-12 md:col-span-10 md:col-start-2"
         : item.tall
           ? `col-span-6 md:col-span-4 md:w-[82%] md:justify-self-center ${tallPlace[tall++ % 3]}`
           : `col-span-6 md:col-span-4 ${portrait++ % 2 === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`,
@@ -129,7 +131,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
       src={item.src}
       alt={item.alt}
       fill
-      sizes={sizes ?? (item.wide ? "(min-width: 768px) 80vw, 100vw" : "(min-width: 768px) 33vw, 50vw")}
+      sizes={sizes ?? (item.wide ? (item.compact ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 80vw, 100vw") : "(min-width: 768px) 33vw, 50vw")}
       unoptimized={item.src.endsWith(".svg")}
       className="object-cover"
     />
