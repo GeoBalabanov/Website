@@ -193,10 +193,12 @@ export const projects: Project[] = [
       ],
     },
     gallery: [
-      img("corsa-car-audio", "wide-1", "Placeholder: dashboard view", true, "In the dashboard: large type and high contrast, readable at a glance."),
-      img("corsa-car-audio", "2", "Placeholder: playback screen", false, "Playback reduced to the essentials: track, artist and one clear control."),
-      img("corsa-car-audio", "3", "Placeholder: night mode", false, "Night mode dims everything except what the driver needs."),
-      img("corsa-car-audio", "wide-2", "Placeholder: voice command flow", true, "Voice first: say what you want, and the screen only confirms it."),
+      {
+        src: "/projects/corsa-car-audio-welcome.jpg",
+        alt: "Corsa's welcome screen: \u201cJust speak. Corsa handles the rest.\u201d above a glossy 3D head lit by an iridescent streak, on violet",
+        tall: true,
+        caption: "The welcome screen sets the promise in one line: just speak, Corsa handles the rest. One link to register, nothing else to read.",
+      },
     ],
     facts: [
       { value: 4, label: "Controls: play, pause, next, back" },

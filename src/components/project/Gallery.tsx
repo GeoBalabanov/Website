@@ -47,6 +47,7 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
 
   // Where each item sits: wide items span the page, portraits pair up at staggered
   // heights, and runs of vertical videos go three across (the middle one dropped).
+  // A single vertical item (a phone screen) sits alone in the centre.
   const tallPlace = ["md:col-start-1", "md:col-start-5 md:mt-[16vh]", "md:col-start-9"];
   const places: string[] = [];
   for (let i = 0, portrait = 0, tall = 0; i < project.gallery.length; i++) {
@@ -57,7 +58,9 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
         ? item.compact
           ? "col-span-12 md:col-span-6 md:col-start-4"
           : "col-span-12 md:col-span-10 md:col-start-2"
-        : item.tall
+        : item.tall && !project.gallery[i - 1]?.tall && !project.gallery[i + 1]?.tall
+          ? "col-span-8 col-start-3 md:col-span-4 md:col-start-5 md:w-[82%] md:justify-self-center"
+          : item.tall
           ? `col-span-6 md:col-span-4 md:w-[82%] md:justify-self-center ${tallPlace[tall++ % 3]}`
           : `col-span-6 md:col-span-4 ${portrait++ % 2 === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`,
     );
