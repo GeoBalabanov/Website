@@ -6,6 +6,7 @@ import { gsap } from "gsap";
 import type { MediaItem, Project } from "@/data/projects";
 import { useScene } from "@/lib/use-scene";
 import { SectionLabel } from "./bits";
+import { StreamingApps } from "@/components/living-cover/StreamingApps";
 
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
@@ -114,6 +115,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
     return () => io.disconnect();
   }, []);
 
+  if (item.living === "streaming-apps") return <StreamingApps label={item.alt} />;
   if (item.kind === "video") {
     return (
       <video
