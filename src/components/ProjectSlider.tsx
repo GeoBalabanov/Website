@@ -408,7 +408,7 @@ function VerticalIndex({ projects, index, onSelect }: { projects: Project[]; ind
             <button
               type="button"
               onClick={() => onSelect(i)}
-              aria-label={`Project ${p.number}: ${p.title}`}
+              aria-label={`${p.kind ?? `Project ${p.number}`}: ${p.title}`}
               aria-current={i === index ? "true" : undefined}
               className="group relative flex h-px items-center gap-3 font-mono md:gap-5 text-[11px] leading-none before:absolute before:-inset-x-2 before:-inset-y-3 before:content-['']"
             >

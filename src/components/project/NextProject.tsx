@@ -81,7 +81,7 @@ export function NextProject({ next }: { next: Project }) {
         </div>
 
         <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center px-4 text-center text-white mix-blend-difference">
-          <p className="font-mono text-xs tracking-widest uppercase">Next project — {next.number}</p>
+          <p className="font-mono text-xs tracking-widest uppercase">{next.kind ? `Next — ${next.kind}` : `Next project — ${next.number}`}</p>
           <p data-next-title className="font-display mt-4 text-[clamp(3rem,12vw,13rem)] leading-[0.85] tracking-[-0.04em]">
             {next.title}
           </p>
