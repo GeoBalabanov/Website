@@ -135,6 +135,12 @@ export type Project = {
   facts: Fact[];
   /** Sections whose content is final, so they drop their "Placeholder" tag. */
   confirmed?: ("intro" | "facts")[];
+  /** Optional story section after the signature: moments of a use scenario, then the personas behind it. */
+  drive?: {
+    title: string;
+    moments: { kicker: string; title: string; text: string }[];
+    people: { name: string; about: string; quote: string }[];
+  };
 };
 
 const img = (slug: string, name: string, alt: string, wide = false, caption?: string): MediaItem => ({
@@ -158,11 +164,10 @@ export const projects: Project[] = [
       { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon", motion: "rings" },
     ],
     year: "2024",
-    role: "Interaction Design",
+    role: "Interaction Design & SwiftUI Development",
     location: "[Location]",
-    // PLACEHOLDER intro
     intro:
-      "Every glance at a screen is a glance away from the road. Corsa lets drivers control music by voice, with an interface that only shows what matters and gets out of the way the rest of the time.",
+      "Most music apps are built for the sofa, not the driver's seat: small buttons, playlists and pop-ups that pull your eyes off the road. As a team of two we designed and built Corsa in SwiftUI, a car audio player that only does what a driver needs: play, pause and skip, with big controls, your voice and almost nothing to look at.",
     theme: { bg: "#0b0d0f", fg: "#e6f2f1", muted: "#8fa6a3", accent: "#2dd4bf", accent2: "#99f6e4", font: "syncopate", titleClass: "uppercase font-bold tracking-[0.01em] text-[clamp(2.25rem,8vw,8.5rem)]" },
     signature: {
       type: "webgl-distort",
@@ -193,13 +198,29 @@ export const projects: Project[] = [
       img("corsa-car-audio", "3", "Placeholder: night mode", false, "Night mode dims everything except what the driver needs."),
       img("corsa-car-audio", "wide-2", "Placeholder: voice command flow", true, "Voice first: say what you want, and the screen only confirms it."),
     ],
-    // PLACEHOLDER numbers
     facts: [
-      { value: 0, suffix: " TAPS", label: "To change a song" },
-      { value: 1.2, decimals: 1, suffix: " S", label: "Average command" },
-      { value: 14, label: "Voice commands" },
-      { value: 72, suffix: "%", label: "Fewer glances" },
+      { value: 4, label: "Controls: play, pause, next, back" },
+      { value: 35, prefix: "18–", label: "Age of the drivers we designed for" },
+      { value: 3, label: "Personas" },
+      { value: 0, label: "Ads, menus or playlists while driving" },
     ],
+    confirmed: ["intro", "facts"],
+    drive: {
+      title: "One drive, start to finish",
+      moments: [
+        { kicker: "Before driving", title: "Ready before you are", text: "The phone connects to Bluetooth or AUX and Corsa opens straight in driving mode. No menus, no pop-ups. Playlists are picked while still parked." },
+        { kicker: "Pulling away", title: "Hands on the wheel", text: "The last track resumes by itself, or waits for one tap on a large play button. Dark screen, big controls: one glance is enough." },
+        { kicker: "While driving", title: "One tap, one word", text: "Pause, skip or replay with the big centre button, the steering wheel or a short \u201cnext\u201d. A sound or a vibration confirms it, so there's nothing to check." },
+        { kicker: "Hands-free", title: "No screen at all", text: "In voice-only mode the phone is never touched. When the car is too loud, the steering wheel and media buttons take over." },
+        { kicker: "Phone locked", title: "A quick glance", text: "Mounted on the dashboard or locked in the cup holder, play, pause and skip still work from the lock screen." },
+        { kicker: "Parked", title: "Everything else, later", text: "Leave driving mode to change playlists or settings, only once it's safe. Nothing complex is ever asked in traffic." },
+      ],
+      people: [
+        { name: "Emma", about: "Playlist in the morning, podcast at night", quote: "I just want to say what I want to hear and keep my eyes on the road." },
+        { name: "Alex, 19", about: "The hands-free commuter", quote: "I just want to change the song without having to look down." },
+        { name: "Maya, 22", about: "The voice-first listener", quote: "If I have to touch my phone, it's already doing it wrong." },
+      ],
+    },
   },
   {
     slug: "ai-case-generator",
