@@ -67,10 +67,17 @@ export function ProjectGrid({ projects }: { projects: Project[] }) {
                 </div>
               </OpenProjectLink>
               <p className="mt-2.5 text-[13px] font-medium sm:text-sm">
-                <span className="sr-only">Project </span>
-                {project.number}.
+                {/* Personal work is named by its kind, once (under its first image). */}
+                {project.kind ? (
+                  first && project.kind
+                ) : (
+                  <>
+                    <span className="sr-only">Project </span>
+                    {project.number}.
+                  </>
+                )}
                 {!first && (
-                  <span className="ml-2 font-normal text-mute-ink transition-colors group-hover:text-ink">
+                  <span className={`font-normal text-mute-ink transition-colors group-hover:text-ink ${project.kind ? "" : "ml-2"}`}>
                     {to.label}
                     <span aria-hidden="true" className="inline-block transition-transform duration-300 group-hover:translate-x-0.5">
                       {" "}→

@@ -115,6 +115,8 @@ export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "b
 export type Project = {
   slug: string;
   number: string;
+  /** Set for personal work that isn't a project, e.g. "Event creator": shown instead of the project number. */
+  kind?: string;
   title: string;
   subtitle: string;
   images: ProjectImage[];
@@ -163,9 +165,9 @@ export const projects: Project[] = [
       { src: "/projects/corsa-car-audio-2.svg", alt: "Minimal playback bar with an iridescent progress line on violet", motion: "playback" },
       { src: "/projects/corsa-car-audio-3.svg", alt: "Grey rings above a teal horizon", motion: "rings" },
     ],
-    year: "2024",
+    year: "2025",
     role: "Interaction Design & SwiftUI Development",
-    location: "[Location]",
+    location: "Eindhoven",
     intro:
       "Most music apps are built for the sofa, not the driver's seat: small buttons, playlists and pop-ups that pull your eyes off the road. As a team of two we designed and built Corsa in SwiftUI, a car audio player that only does what a driver needs: play, pause and skip, with big controls, your voice and almost nothing to look at.",
     theme: { bg: "#0b0d0f", fg: "#e6f2f1", muted: "#8fa6a3", accent: "#2dd4bf", accent2: "#99f6e4", font: "syncopate", titleClass: "uppercase font-bold tracking-[0.01em] text-[clamp(2.25rem,8vw,8.5rem)]" },
@@ -236,9 +238,9 @@ export const projects: Project[] = [
       { src: "/projects/ai-case-generator-flow.svg", alt: "Three glowing iridescent case cards fanned out under a shining sparkle", motion: "ai-flow" },
       { src: "/projects/ai-case-generator-page.svg", alt: "A single glowing iridescent page close up, with a cursor on it", motion: "ai-page" },
     ],
-    year: "2025",
+    year: "2025–2026",
     role: "UX Design & SwiftUI Development",
-    location: "Fontys × Tweekracht",
+    location: "Eindhoven",
     intro:
       "Every new case for Tweekracht's Social Work Game took hours of turning interviews and reports into game cards by hand. Our Fontys team built a SwiftUI app where AI does that work: a playable six-step case, ready to edit and print.",
     theme: { bg: "#eceef6", fg: "#10132b", muted: "#4a4f6e", accent: "#3b4cff", accent2: "#8b5cf6", font: "grotesk" },
@@ -297,7 +299,7 @@ export const projects: Project[] = [
     ],
     year: "2025",
     role: "Concept & UI Design",
-    location: "[Location]",
+    location: "Eindhoven",
     // PLACEHOLDER intro
     intro:
       "What if you heard someone before you saw them? This concept matches people on personality, the music they love and a short voice note, and only then reveals photos.",
@@ -331,9 +333,9 @@ export const projects: Project[] = [
       { src: "/projects/bloom-1.svg", alt: "A soft pink flower with an amber centre on pale green" },
       { src: "/projects/bloom-2.svg", alt: "Pale petals over dusk-coloured light on dark green", motion: "dusk-bloom" },
     ],
-    year: "2024",
+    year: "2026",
     role: "Concept & Development",
-    location: "[Location]",
+    location: "Eindhoven",
     // PLACEHOLDER intro
     intro:
       "Visitors leave a thought about an artwork and it grows into a flower. Over a day the gallery's feedback becomes a shared garden, and the loudest opinions are simply the brightest blooms.",
@@ -464,6 +466,7 @@ export const projects: Project[] = [
   {
     slug: "marathon-running",
     number: "06",
+    kind: "For the mind, body & soul",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
     coverMotion: "collage",
@@ -561,6 +564,7 @@ export const projects: Project[] = [
   {
     slug: "plovdiv-marathon",
     number: "07",
+    kind: "Event creator",
     title: "Plovdiv Marathon",
     subtitle: "Organizer · Plovdiv, Bulgaria",
     coverMotion: "lava",

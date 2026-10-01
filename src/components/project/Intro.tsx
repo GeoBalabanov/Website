@@ -36,7 +36,7 @@ export function Intro({ project }: { project: Project }) {
   return (
     <section ref={root} className="px-4 py-[18vh] md:px-10">
       <SectionLabel index="01" placeholder={!project.confirmed?.includes("intro")}>
-        About the project
+        {project.kind ? "About" : "About the project"}
       </SectionLabel>
       <p data-intro className="mt-8 max-w-[26ch] text-[clamp(1.75rem,4.2vw,4.25rem)] leading-[1.08] font-medium tracking-[-0.02em] md:max-w-[30ch]">
         {project.intro}

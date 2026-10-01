@@ -123,7 +123,7 @@ export function Hero({ project }: { project: Project }) {
 
       <div data-hero-copy className="absolute inset-x-0 bottom-0 px-4 pb-8 md:px-10 md:pb-12">
         <p data-meta className="mb-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-wide uppercase opacity-85 md:text-sm">
-          <span>{project.number}</span>
+          <span>{project.kind ?? project.number}</span>
           <span>{project.year}</span>
           <span>{project.role}</span>
           <span>{project.location}</span>
