@@ -10,6 +10,7 @@ import { Hero } from "./Hero";
 import { Intro } from "./Intro";
 import { Gallery } from "./Gallery";
 import { Facts } from "./Facts";
+import { Drive } from "./Drive";
 import { NextProject } from "./NextProject";
 import { SignatureSection } from "./signatures";
 
@@ -17,6 +18,8 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
   const { close, sectionReady } = useProjectTransition();
   const font = projectFont(project.theme.font);
   const t = project.theme;
+  // Section numbers shift by one when the optional scenario section is shown.
+  const n = (i: number) => String(i + (project.drive ? 1 : 0)).padStart(2, "0");
 
   // Paint the whole document in the project's colors (overscroll, behind the header).
   useEffect(() => {
@@ -96,8 +99,9 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
       <div id="story">
         <SignatureSection project={project} />
       </div>
-      <Gallery project={project} />
-      <Facts project={project} />
+      {project.drive && <Drive project={project} index="03" />}
+      <Gallery project={project} index={n(3)} />
+      <Facts project={project} index={n(4)} />
       <NextProject next={next} />
 
       <button
