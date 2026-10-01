@@ -11,7 +11,7 @@ const format = (f: Fact, v: number) =>
   `${f.prefix ?? ""}${v.toLocaleString("en-US", { minimumFractionDigits: f.decimals ?? 0, maximumFractionDigits: f.decimals ?? 0 })}${f.suffix ?? ""}`;
 
 /** Key numbers that count up from zero when they scroll into view. */
-export function Facts({ project }: { project: Project }) {
+export function Facts({ project, index = "04" }: { project: Project; index?: string }) {
   const root = useRef<HTMLElement>(null);
 
   useScene(root, ({ reduced }) => {
@@ -48,7 +48,7 @@ export function Facts({ project }: { project: Project }) {
 
   return (
     <section ref={root} className="px-4 py-[16vh] md:px-10">
-      <SectionLabel index="04" placeholder={!project.confirmed?.includes("facts")}>
+      <SectionLabel index={index} placeholder={!project.confirmed?.includes("facts")}>
         In numbers
       </SectionLabel>
       <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4">

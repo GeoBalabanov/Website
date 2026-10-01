@@ -12,7 +12,7 @@ import { SectionLabel } from "./bits";
  * staggered heights. Each frame scales up as it enters and its media drifts
  * inside it (parallax); its caption rises in underneath.
  */
-export function Gallery({ project }: { project: Project }) {
+export function Gallery({ project, index = "03" }: { project: Project; index?: string }) {
   const root = useRef<HTMLElement>(null);
 
   useScene(root, ({ reduced, mobile }) => {
@@ -65,7 +65,7 @@ export function Gallery({ project }: { project: Project }) {
 
   return (
     <section ref={root} id="gallery" className="px-4 py-[14vh] md:px-10">
-      <SectionLabel index="03" placeholder={project.gallery.some((m) => m.alt.startsWith("Placeholder"))}>
+      <SectionLabel index={index} placeholder={project.gallery.some((m) => m.alt.startsWith("Placeholder"))}>
         Gallery
       </SectionLabel>
       <div className="mt-10 grid grid-cols-12 gap-x-4 gap-y-[12vh] md:gap-x-8">
