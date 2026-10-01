@@ -7,6 +7,7 @@ import type { MediaItem, Project } from "@/data/projects";
 import { useScene } from "@/lib/use-scene";
 import { SectionLabel } from "./bits";
 import { StreamingApps } from "@/components/living-cover/StreamingApps";
+import { ConnectFlow } from "@/components/living-cover/ConnectFlow";
 
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
@@ -49,7 +50,8 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
   // Where each item sits: wide items span the page, portraits pair up at staggered
   // heights, and runs of vertical videos go three across (the middle one dropped).
   // A single vertical item (a phone screen) sits alone in the centre, two form a centred pair.
-  const tallPlace = ["md:col-start-1", "md:col-start-5 md:mt-[16vh]", "md:col-start-9"];
+  // (On phones the third of a run sits centred on its own row.)
+  const tallPlace = ["md:col-start-1", "md:col-start-5 md:mt-[16vh]", "col-start-4 md:col-start-9"];
   const places: string[] = [];
   const g = project.gallery;
   for (let i = 0, portrait = 0, tall = 0; i < g.length; i++) {
@@ -123,6 +125,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
   }, []);
 
   if (item.living === "streaming-apps") return <StreamingApps label={item.alt} />;
+  if (item.living === "connect-flow") return <ConnectFlow label={item.alt} />;
   if (item.kind === "video") {
     return (
       <video
