@@ -133,8 +133,8 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
               </dd>
             </div>
             <div>
-              <dt>Target</dt>
-              <dd className="font-display mt-1 text-4xl font-extrabold text-[var(--p-fg)] tabular-nums md:text-5xl">Sub 3:30</dd>
+              <dt>{data.headline.label}</dt>
+              <dd className="font-display mt-1 text-4xl font-extrabold text-[var(--p-fg)] tabular-nums md:text-5xl">{data.headline.value}</dd>
             </div>
           </dl>
         </div>
@@ -166,7 +166,7 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
       </div>
 
       <div data-results className="relative px-4 py-[14vh] md:px-10">
-        <SectionLabel index="02b" placeholder>
+        <SectionLabel index="02b">
           Race results
         </SectionLabel>
         <div className="relative mt-12">
@@ -178,24 +178,34 @@ export function PulseResults({ data }: { project: Project; data: Data }) {
                 <p className="font-mono text-xs tracking-widest text-[var(--p-muted)] uppercase">{r.date}</p>
                 <div className="mt-2 flex flex-wrap items-baseline justify-between gap-x-8 gap-y-2">
                   <h3 className="font-display text-[clamp(2rem,5vw,4.5rem)] leading-[0.95] font-extrabold uppercase italic">{r.race}</h3>
-                  <p className="font-mono text-[clamp(1.75rem,4vw,3.5rem)] leading-none text-[var(--p-accent)] tabular-nums">
-                    <span className="sr-only">Finish time </span>
-                    {r.time}
-                  </p>
+                  {r.time ? (
+                    <p className="font-mono text-[clamp(1.75rem,4vw,3.5rem)] leading-none text-[var(--p-accent)] tabular-nums">
+                      <span className="sr-only">Finish time </span>
+                      {r.time}
+                    </p>
+                  ) : (
+                    <p className="flex items-center gap-3 font-mono text-[clamp(1.25rem,2.6vw,2.25rem)] leading-none tracking-widest text-[var(--p-accent)] uppercase">
+                      <span aria-hidden="true" className="relative flex h-3 w-3">
+                        <span className="absolute inset-0 rounded-full bg-[var(--p-accent)] opacity-60 motion-safe:animate-ping" />
+                        <span className="relative h-3 w-3 rounded-full bg-[var(--p-accent)]" />
+                      </span>
+                      Coming soon
+                    </p>
+                  )}
                 </div>
-                <p className="mt-2 font-mono text-sm text-[var(--p-muted)]">Avg pace {r.pace}</p>
-                <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-4 md:max-w-3xl" aria-label={`Split times for ${r.race}`}>
-                  {r.splits.map((s) => (
+                {r.pace && <p className="mt-2 font-mono text-sm text-[var(--p-muted)]">Avg pace {r.pace}</p>}
+                <ul className="mt-6 grid grid-cols-2 gap-2 sm:grid-cols-3 md:max-w-2xl" aria-label={`${r.race} in numbers`}>
+                  {r.stats.map((s) => (
                     <li key={s.label} className="rounded-md border border-[var(--p-fg)]/15 bg-[var(--p-fg)]/[0.04] p-3">
                       <span className="block font-mono text-[10px] tracking-widest text-[var(--p-muted)] uppercase">{s.label}</span>
-                      <span className="mt-2 flex gap-[3px] font-mono text-lg tabular-nums md:text-xl" aria-label={s.time}>
-                        {s.time.split("").map((ch, i) => (
+                      <span className="mt-2 flex gap-[2px] font-mono text-base whitespace-nowrap tabular-nums sm:gap-[3px] md:text-xl" aria-label={s.value}>
+                        {s.value.split("").map((ch, i) => (
                           <span
                             key={i}
                             data-cell
                             data-final={ch}
                             aria-hidden="true"
-                            className={ch === ":" ? "px-px text-[var(--p-muted)]" : "inline-block min-w-[1.1ch] rounded-[3px] bg-[var(--p-fg)]/10 px-[3px] text-center"}
+                            className={/\d/.test(ch) ? "inline-block min-w-[1.1ch] rounded-[3px] bg-[var(--p-fg)]/10 px-[3px] text-center" : "px-px text-[var(--p-muted)]"}
                           >
                             {ch}
                           </span>
