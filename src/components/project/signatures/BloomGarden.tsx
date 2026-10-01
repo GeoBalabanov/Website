@@ -22,7 +22,14 @@ function rng(seed: number) {
   };
 }
 
-const PALETTE = ["var(--p-accent)", "var(--p-accent-2)", "#8b5cf6", "#f472b6", "#fb923c", "#e11d48"];
+// The app's flower colours.
+const PALETTE = ["#f472b6", "#5eead4", "#c084fc", "#7dd3fc", "#fde047", "#86efac"];
+
+// Stars over the garden.
+const STARS = (() => {
+  const r = rng(3);
+  return Array.from({ length: 40 }, () => ({ x: r() * W, y: r() * 560, r: 0.8 + r() * 1.4, d: r() * 4 }));
+})();
 
 const FLOWERS = (() => {
   const r = rng(7);
@@ -115,19 +122,30 @@ export function BloomGarden({ data }: { project: Project; data: Data }) {
         </div>
 
         <svg viewBox={`0 0 ${W} 700`} preserveAspectRatio={narrow ? "xMidYMax slice" : "xMidYMax meet"} className="mt-4 min-h-0 w-full flex-1" role="img" aria-label="A garden of flowers growing, each one a visitor's feedback">
-          <line x1="0" x2={W} y1={GROUND} y2={GROUND} stroke="var(--p-fg)" strokeOpacity="0.25" />
+          <defs>
+            <radialGradient id="bloom-ground">
+              <stop offset="0" stopColor="#7c3aed" stopOpacity="0.45" />
+              <stop offset="1" stopColor="#7c3aed" stopOpacity="0" />
+            </radialGradient>
+          </defs>
+          {STARS.map((st, i) => (
+            <circle key={i} cx={st.x} cy={st.y} r={st.r} fill="#c7c9ff" className="bloom-twinkle" style={{ animationDelay: `${-st.d}s` }} />
+          ))}
+          {/* Violet light on the ground, like the garden wall in the concept videos. */}
+          <ellipse cx={W / 2} cy={GROUND} rx={W * 0.55} ry="60" fill="url(#bloom-ground)" />
+          <line x1="0" x2={W} y1={GROUND} y2={GROUND} stroke="var(--p-fg)" strokeOpacity="0.12" />
           {FLOWERS.map((f, i) => (
             <g key={i} className="bloom-sway" style={{ transformOrigin: `${f.x}px ${GROUND}px`, animationDelay: `${-i * 0.7}s` }}>
-              <path data-stem d={f.stem} fill="none" stroke="#3f6b3a" strokeWidth="3" strokeLinecap="round" />
+              <path data-stem d={f.stem} fill="none" stroke="#2f7d4a" strokeWidth="3" strokeLinecap="round" />
               <path
                 data-leaf
                 d={`M0 0 C ${f.leaf.flip ? -30 : 30} -8, ${f.leaf.flip ? -40 : 40} -28, ${f.leaf.flip ? -52 : 52} -30 C ${f.leaf.flip ? -36 : 36} -6, ${f.leaf.flip ? -18 : 18} 2, 0 0 Z`}
                 transform={`translate(${f.leaf.x} ${f.leaf.y})`}
-                fill="#6b9a5b"
+                fill="#2f7d4a"
                 style={{ transformBox: "fill-box", transformOrigin: f.leaf.flip ? "right bottom" : "left bottom" }}
               />
               <g transform={`translate(${f.headX} ${f.top})`}>
-                <g data-head>
+                <g data-head style={{ filter: `drop-shadow(0 0 ${f.size * 0.5}px ${f.color})` }}>
                   {Array.from({ length: f.petals }, (_, p) => (
                     <ellipse
                       key={p}
@@ -140,7 +158,7 @@ export function BloomGarden({ data }: { project: Project; data: Data }) {
                       transform={`rotate(${(360 / f.petals) * p})`}
                     />
                   ))}
-                  <circle r={f.size * 0.28} fill="#f5c542" stroke="var(--p-fg)" strokeOpacity="0.2" />
+                  <circle r={f.size * 0.28} fill="#fbbf24" />
                 </g>
               </g>
             </g>

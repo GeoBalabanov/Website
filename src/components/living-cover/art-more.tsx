@@ -260,15 +260,15 @@ export function RingsCover() {
 /* ---------------- 06 Bloom · 2: a small flower turning at dusk ---------------- */
 export function DuskBloomCover() {
   return (
-    <Frame bg="#16241a" grain={0.09} vignette speed={{ blob: 2 }}>
-      <Blob sigma={110} spec={{ cx: 250, cy: 400, rx: 220, ry: 260, color: "#ec4899", opacity: 0.55 }} drift={{ dx: "16%", dy: "10%", dxDur: 17, dyDur: 21 }} />
-      <Blob sigma={110} spec={{ cx: 650, cy: 700, rx: 240, ry: 260, color: "#f59e0b", opacity: 0.45 }} drift={{ dx: "-14%", dy: "-8%", dxDur: 19, dyDur: 15 }} />
-      <Blob sigma={110} spec={{ cx: 400, cy: 1000, rx: 300, ry: 200, color: "#4d7c0f", opacity: 0.8 }} drift={{ dx: "8%", dy: "-6%", dxDur: 21, dyDur: 17 }} />
+    <Frame bg="#0c0b1e" grain={0.09} vignette speed={{ blob: 2 }}>
+      <Blob sigma={110} spec={{ cx: 250, cy: 400, rx: 220, ry: 260, color: "#8b5cf6", opacity: 0.55 }} drift={{ dx: "16%", dy: "10%", dxDur: 17, dyDur: 21 }} />
+      <Blob sigma={110} spec={{ cx: 650, cy: 700, rx: 240, ry: 260, color: "#14b8a6", opacity: 0.45 }} drift={{ dx: "-14%", dy: "-8%", dxDur: 19, dyDur: 15 }} />
+      <Blob sigma={110} spec={{ cx: 400, cy: 1000, rx: 300, ry: 200, color: "#312e81", opacity: 0.8 }} drift={{ dx: "8%", dy: "-6%", dxDur: 21, dyDur: 17 }} />
       <svg {...svgProps}>
         <g className={s.swell} style={{ transformBox: "view-box", transformOrigin: "450px 600px" }}>
           <g className={s.spin12} style={{ transformBox: "view-box", transformOrigin: "450px 600px" }} opacity="0.8">
             {Array.from({ length: 12 }, (_, i) => (
-              <ellipse key={i} cx="450" cy="525" rx="37.5" ry="75" fill="#fbcfe8" opacity="0.55" transform={`rotate(${i * 30} 450 600)`} />
+              <ellipse key={i} cx="450" cy="525" rx="37.5" ry="75" fill="#c4b5fd" opacity="0.55" transform={`rotate(${i * 30} 450 600)`} />
             ))}
           </g>
         </g>

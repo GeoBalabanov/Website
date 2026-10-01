@@ -370,7 +370,8 @@ export const projects: Project[] = [
     // PLACEHOLDER intro
     intro:
       "Visitors leave a thought about an artwork and it grows into a flower. Over a day the gallery's feedback becomes a shared garden, and the loudest opinions are simply the brightest blooms.",
-    theme: { bg: "#eef0e3", fg: "#18261b", muted: "#4d5e4f", accent: "#d6408a", accent2: "#e58a1f", font: "instrument" },
+    // The app's night sky: deep navy, violet and teal light, glowing flowers.
+    theme: { bg: "#0a0a18", fg: "#f1f0fb", muted: "#a3a3c2", accent: "#a78bfa", accent2: "#5eead4", font: "instrument" },
     signature: {
       type: "bloom-garden",
       total: 128,

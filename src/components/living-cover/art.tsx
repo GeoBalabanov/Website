@@ -311,8 +311,8 @@ export function BloomCover() {
   const id = useId().replace(/:/g, "");
   const [po, pi, pc] = [`lc-po-${id}`, `lc-pi-${id}`, `lc-pc-${id}`];
   return (
-    <Frame bg="#eef0e3" grain={0.06} speed={{ blob: 2, loop: 1.6 }}>
-      <Blob sigma={90} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 270, ry: 270, color: "#f472b6", opacity: 0.3 }} drift={{ dx: "4%", dy: "-3%", ds: 1.08, dxDur: 11, dyDur: 13 }} />
+    <Frame bg="#0b0b1c" grain={0.06} speed={{ blob: 2, loop: 1.6 }}>
+      <Blob sigma={90} wrap={s.pulse} spec={{ cx: 450, cy: 580, rx: 270, ry: 270, color: "#5eead4", opacity: 0.3 }} drift={{ dx: "4%", dy: "-3%", ds: 1.08, dxDur: 11, dyDur: 13 }} />
       <svg width="0" height="0" className="absolute" aria-hidden="true">
         <filter id={po} x="-60%" y="-30%" width="220%" height="160%">
           <feGaussianBlur stdDeviation="22" />
@@ -329,12 +329,12 @@ export function BloomCover() {
           <div className={`${s.fill} ${s.spin}`}>
             {Array.from({ length: 8 }, (_, i) => (
               <Petal key={`o${i}`} angle={45 * i} delay={i * 0.4}>
-                <ellipse cx="450" cy="430" rx="78" ry="150" fill="#f472b6" opacity="0.75" filter={`url(#${po})`} />
+                <ellipse cx="450" cy="430" rx="78" ry="150" fill="#5eead4" opacity="0.75" filter={`url(#${po})`} />
               </Petal>
             ))}
             {Array.from({ length: 8 }, (_, i) => (
               <Petal key={`i${i}`} angle={45 * i + 22.5} delay={i * 0.4 + 1.6}>
-                <ellipse cx="450" cy="488" rx="46" ry="92" fill="#fbcfe8" opacity="0.8" filter={`url(#${pi})`} />
+                <ellipse cx="450" cy="488" rx="46" ry="92" fill="#a7f3d0" opacity="0.8" filter={`url(#${pi})`} />
               </Petal>
             ))}
             <div className={`${s.fill} ${s.pulse}`} style={{ transformOrigin: FLOWER_ORIGIN }}>
@@ -349,7 +349,7 @@ export function BloomCover() {
         </div>
       </div>
       {/* A warm glow that drifts in and out beside the flower. */}
-      <Blob sigma={90} wrap={s.crossfade} spec={{ cx: 620, cy: 760, rx: 170, ry: 150, color: "#fb923c", opacity: 0.35 }} drift={{ dx: "-30%", dy: "-20%", ds: 1.2, dxDur: 10, dyDur: 13 }} />
+      <Blob sigma={90} wrap={s.crossfade} spec={{ cx: 620, cy: 760, rx: 170, ry: 150, color: "#8b5cf6", opacity: 0.35 }} drift={{ dx: "-30%", dy: "-20%", ds: 1.2, dxDur: 10, dyDur: 13 }} />
     </Frame>
   );
 }
