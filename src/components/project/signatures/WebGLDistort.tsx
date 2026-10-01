@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { gsap } from "gsap";
@@ -8,13 +8,13 @@ import type { Project, Signature } from "@/data/projects";
 import { useScene } from "@/lib/use-scene";
 import { SectionLabel } from "../bits";
 import type { SceneState } from "./CorsaScene";
+import { usePreviewPlayer } from "./preview-player";
 
 type Data = Extract<Signature, { type: "webgl-distort" }>;
 
 // Three.js is only downloaded on pages that use this section, and only when it's near the viewport.
 const CorsaScene = dynamic(() => import("./CorsaScene"), { ssr: false });
 
-const TRACKS = ["[Track one]", "[Track two]", "[Track three]"]; // PLACEHOLDER
 
 function webglAvailable() {
   try {
@@ -28,11 +28,19 @@ function webglAvailable() {
 export function WebGLDistort({ data }: { project: Project; data: Data }) {
   const root = useRef<HTMLElement>(null);
   const pinned = useRef<HTMLDivElement>(null);
-  const state = useRef<SceneState>({ progress: 0, mouse: { x: 0.5, y: 0.5 }, active: 0 });
+  const state = useRef<SceneState>({ progress: 0, mouse: { x: 0.5, y: 0.5 }, active: 0, level: 0 });
   const [mode, setMode] = useState<"static" | "webgl">("static");
   const [near, setNear] = useState(false);
   const [visible, setVisible] = useState(false);
   const [mobile, setMobile] = useState(false);
+  const tracks = data.tracks ?? [];
+  const onLevel = useCallback((l: number) => {
+    state.current.level = l;
+  }, []);
+  const player = usePreviewPlayer(tracks, onLevel);
+  const [scrolled, setScrolled] = useState(0);
+  // The playing track leads; otherwise the one the scroll has reached.
+  const highlighted = player.playing ?? scrolled;
 
   // Decide once on the client: WebGL only with motion allowed and a GL context available.
   useEffect(() => {
@@ -55,9 +63,7 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
 
   useScene(root, ({ reduced, mobile }) => {
     if (reduced) return;
-    const q = gsap.utils.selector(root);
-    const items = q("[data-track]");
-    const bar = q("[data-track-bar]")[0];
+    const count = Math.max(1, tracks.length);
     let current = -1;
     const proxy = { p: 0 };
     gsap.to(proxy, {
@@ -66,11 +72,10 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
       scrollTrigger: { trigger: pinned.current, start: "top top", end: mobile ? "+=150%" : "+=220%", pin: true, scrub: 0.8 },
       onUpdate: () => {
         state.current.progress = proxy.p;
-        gsap.set(bar, { scaleX: proxy.p });
-        const idx = Math.min(items.length - 1, Math.round(proxy.p * (items.length - 1)));
+        const idx = Math.min(count - 1, Math.round(proxy.p * (count - 1)));
         if (idx !== current) {
           current = idx;
-          items.forEach((it, i) => it.toggleAttribute("data-active", i === idx));
+          setScrolled(idx);
         }
       },
     });
@@ -122,7 +127,7 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
           </div>
         )}
 
-        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between bg-linear-to-b from-black/50 via-transparent to-black/70 px-4 pt-28 pb-8 md:px-10 md:pt-28">
+        <div className="pointer-events-none absolute inset-0 flex flex-col justify-between bg-linear-to-b from-black/50 via-transparent to-black/70 px-4 pt-28 pb-24 md:px-10 md:pt-28">
           <div>
             <SectionLabel index="02">Signal</SectionLabel>
             <h2 id="corsa-title" className="font-display mt-4 max-w-[16ch] text-[clamp(1.6rem,4vw,3.75rem)] leading-[1.05] font-bold tracking-[0.02em] uppercase">
@@ -132,22 +137,59 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
 
           <div className="flex flex-wrap items-end justify-between gap-6">
             <div className="w-full max-w-sm">
-              <p className="font-mono text-[11px] tracking-widest text-[var(--p-muted)] uppercase">Now playing</p>
-              <ol className="mt-3 space-y-1.5">
-                {TRACKS.map((t, i) => (
-                  <li
-                    key={t}
-                    data-track
-                    data-active={i === 0 ? "" : undefined}
-                    className="font-display text-sm tracking-wider uppercase opacity-45 transition-opacity duration-300 data-[active]:text-[var(--p-accent)] data-[active]:opacity-100 md:text-base"
-                  >
-                    {String(i + 1).padStart(2, "0")} — {t}
-                  </li>
-                ))}
+              <p className="font-mono text-[11px] tracking-widest text-[var(--p-muted)] uppercase">{player.playing !== null ? "Now playing" : "Press play"}</p>
+              <ol className="pointer-events-auto mt-3 space-y-1">
+                {tracks.map((t, i) => {
+                  const on = i === highlighted;
+                  const isPlaying = player.playing === i;
+                  return (
+                    <li key={t.appleId}>
+                      <button
+                        type="button"
+                        onClick={() => (isPlaying ? player.stop() : player.play(i))}
+                        aria-label={`${isPlaying ? "Pause" : "Play"} preview: ${t.title} by ${t.artist}`}
+                        aria-pressed={isPlaying}
+                        className={`group flex w-full items-center gap-3 py-1 text-left transition-opacity duration-300 ${on ? "opacity-100" : "opacity-45 hover:opacity-80"}`}
+                      >
+                        <span
+                          aria-hidden="true"
+                          className={`grid h-8 w-8 shrink-0 place-items-center rounded-full border transition-colors ${isPlaying ? "border-[var(--p-accent)] bg-[var(--p-accent)] text-black" : "border-white/40 group-hover:border-[var(--p-accent)]"}`}
+                        >
+                          {isPlaying ? (
+                            <svg viewBox="0 0 12 12" className="h-3 w-3" fill="currentColor"><rect x="2" y="1.5" width="3" height="9" rx="0.6" /><rect x="7" y="1.5" width="3" height="9" rx="0.6" /></svg>
+                          ) : (
+                            <svg viewBox="0 0 12 12" className="ml-0.5 h-3 w-3" fill="currentColor"><path d="M3 1.5v9l7.5-4.5z" /></svg>
+                          )}
+                        </span>
+                        <span className="min-w-0">
+                          <span className={`font-display block truncate text-sm tracking-wider uppercase md:text-base ${on ? "text-[var(--p-accent)]" : ""}`}>
+                            {String(i + 1).padStart(2, "0")} — {t.title}
+                          </span>
+                          <span className="block truncate font-mono text-[11px] tracking-wide text-[var(--p-muted)]">
+                            {player.failed === i ? "Preview unavailable" : t.artist}
+                          </span>
+                        </span>
+                      </button>
+                    </li>
+                  );
+                })}
               </ol>
-              <div aria-hidden="true" className="mt-4 h-[2px] bg-white/15">
-                <div data-track-bar className="h-full origin-left scale-x-0 bg-[var(--p-accent)]" />
+              <div aria-hidden="true" className="mt-3 h-[2px] bg-white/15">
+                <div
+                  className="h-full origin-left bg-[var(--p-accent)] transition-transform duration-200 ease-linear"
+                  style={{ transform: `scaleX(${player.playing !== null ? player.progress : 0})` }}
+                />
               </div>
+              {tracks[highlighted] && (
+                <a
+                  href={tracks[highlighted].url}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="pointer-events-auto mt-3 inline-block font-mono text-[10px] tracking-widest text-[var(--p-muted)] uppercase hover:text-[var(--p-fg)]"
+                >
+                  Preview via Apple Music ↗<span className="sr-only"> (opens in a new tab)</span>
+                </a>
+              )}
             </div>
             <p className="max-w-[28ch] text-right font-mono text-xs tracking-wide text-[var(--p-muted)] uppercase">{data.caption}</p>
           </div>

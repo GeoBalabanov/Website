@@ -5,7 +5,7 @@ import { Canvas, useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
 /** Shared, mutable state written by the page (scroll + pointer) and read every frame. */
-export type SceneState = { progress: number; mouse: { x: number; y: number }; active: number };
+export type SceneState = { progress: number; mouse: { x: number; y: number }; active: number; level: number };
 
 const vertex = /* glsl */ `
   varying vec2 vUv;
@@ -24,6 +24,7 @@ const fragment = /* glsl */ `
   uniform float uMix;
   uniform float uTime;
   uniform float uHover;
+  uniform float uLevel;
   uniform float uAspect;
   uniform vec2 uMouse;
   uniform vec2 uCover;
@@ -51,13 +52,15 @@ const fragment = /* glsl */ `
     float n = noise(vUv * vec2(6.0, 3.0) + uTime * 0.15);
     float bend = sin(uMix * 3.14159);
     float m = smoothstep(0.0, 1.0, clamp(uMix * 1.6 - 0.3 + (n - 0.5) * 0.6, 0.0, 1.0));
+    // The music: the rings pulse outwards and the colour channels split with the beat.
+    p = (p - 0.5) * (1.0 - 0.06 * uLevel) + 0.5;
     vec2 base = (p - 0.5) * uCover + 0.5;
     vec2 uvA = base + vec2(0.0, bend * 0.08 * n);
     vec2 uvB = base - vec2(0.0, bend * 0.08 * (1.0 - n));
-    vec2 off = vec2(0.003 + 0.018 * uHover * exp(-dist * 3.0) + 0.012 * bend, 0.0);
+    vec2 off = vec2(0.003 + 0.018 * uHover * exp(-dist * 3.0) + 0.012 * bend + 0.02 * uLevel, 0.0);
 
     vec3 col = mix(rgb(tA, uvA, off), rgb(tB, uvB, off), m);
-    col *= 0.94 + 0.06 * sin(vUv.y * 900.0);
+    col *= (0.94 + 0.06 * sin(vUv.y * 900.0)) * (1.0 + 0.35 * uLevel);
     gl_FragColor = vec4(col, 1.0);
     #include <colorspace_fragment>
   }
@@ -82,6 +85,7 @@ function Screen({ srcs, state: stateRef }: { srcs: string[]; state: RefObject<Sc
       uMix: { value: 0 },
       uTime: { value: 0 },
       uHover: { value: 0 },
+      uLevel: { value: 0 },
       uAspect: { value: 1 },
       uMouse: { value: new THREE.Vector2(0.5, 0.5) },
       uCover: { value: new THREE.Vector2(1, 1) },
@@ -107,6 +111,7 @@ function Screen({ srcs, state: stateRef }: { srcs: string[]; state: RefObject<Sc
     u.uMouse.value.x += (state.mouse.x - u.uMouse.value.x) * k;
     u.uMouse.value.y += (state.mouse.y - u.uMouse.value.y) * k;
     u.uHover.value += (state.active - u.uHover.value) * k * 0.6;
+    u.uLevel.value += (state.level - u.uLevel.value) * Math.min(1, dt * 18);
     // object-fit: cover for the texture inside the screen.
     const aspect = size.width / size.height;
     const img = u.tA.value.image as HTMLImageElement | undefined;
