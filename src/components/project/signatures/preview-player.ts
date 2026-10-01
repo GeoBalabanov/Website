@@ -23,19 +23,20 @@ function previewUrl(id: number) {
   return previewCache.get(id)!;
 }
 
-export function usePreviewPlayer(tracks: PreviewTrack[], onLevel: (level: number) => void) {
+export function usePreviewPlayer(tracks: PreviewTrack[], onLevel: (level: number) => void, onProgress: (p: number) => void) {
   const [playing, setPlaying] = useState<number | null>(null);
   const [failed, setFailed] = useState<number | null>(null);
-  const [progress, setProgress] = useState(0);
   const audio = useRef<HTMLAudioElement | null>(null);
   const graph = useRef<{ ctx: AudioContext; analyser: AnalyserNode; data: Uint8Array<ArrayBuffer> } | null>(null);
   const raf = useRef(0);
   const level = useRef(onLevel);
+  const progress = useRef(onProgress);
   // Lets the "ended" handler start the next track without referring to `play` itself.
   const next = useRef<(i: number) => void>(() => {});
   useEffect(() => {
     level.current = onLevel;
-  }, [onLevel]);
+    progress.current = onProgress;
+  }, [onLevel, onProgress]);
 
   const stopMeter = () => {
     cancelAnimationFrame(raf.current);
@@ -44,6 +45,7 @@ export function usePreviewPlayer(tracks: PreviewTrack[], onLevel: (level: number
 
   const stop = useCallback(() => {
     audio.current?.pause();
+    progress.current(0);
     stopMeter();
     setPlaying(null);
   }, []);
@@ -75,7 +77,7 @@ export function usePreviewPlayer(tracks: PreviewTrack[], onLevel: (level: number
       const el = audio.current;
       el.pause();
       setPlaying(i);
-      setProgress(0);
+      progress.current(0);
       const url = await previewUrl(track.appleId);
       if (!url) {
         setFailed(i);
@@ -87,9 +89,12 @@ export function usePreviewPlayer(tracks: PreviewTrack[], onLevel: (level: number
         stopMeter();
         // Auto-advance to the next track; stop after the last one.
         if (i + 1 < tracks.length) next.current(i + 1);
-        else setPlaying(null);
+        else {
+          progress.current(0);
+          setPlaying(null);
+        }
       };
-      el.ontimeupdate = () => setProgress(el.duration ? el.currentTime / el.duration : 0);
+      el.ontimeupdate = () => progress.current(el.duration ? el.currentTime / el.duration : 0);
       el.onerror = () => {
         stopMeter();
         setFailed(i);
@@ -137,5 +142,5 @@ export function usePreviewPlayer(tracks: PreviewTrack[], onLevel: (level: number
     [],
   );
 
-  return { playing, failed, progress, play, stop };
+  return { playing, failed, play, stop };
 }

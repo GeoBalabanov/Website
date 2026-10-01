@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import dynamic from "next/dynamic";
 import Image from "next/image";
 import { gsap } from "gsap";
@@ -37,7 +37,12 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
   const onLevel = useCallback((l: number) => {
     state.current.level = l;
   }, []);
-  const player = usePreviewPlayer(tracks, onLevel);
+  const bar = useRef<HTMLDivElement>(null);
+  // The progress bar is moved directly, so playback never re-renders the scene.
+  const onProgress = useCallback((p: number) => {
+    if (bar.current) bar.current.style.transform = `scaleX(${p})`;
+  }, []);
+  const player = usePreviewPlayer(tracks, onLevel, onProgress);
   const [scrolled, setScrolled] = useState(0);
   // The playing track leads; otherwise the one the scroll has reached.
   const highlighted = player.playing ?? scrolled;
@@ -102,7 +107,8 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
     };
   });
 
-  const srcs = data.images.map((i) => i.src);
+  // Stable, so the scene keeps its textures across re-renders.
+  const srcs = useMemo(() => data.images.map((i) => i.src), [data.images]);
 
   return (
     <section ref={root} aria-labelledby="corsa-title">
@@ -175,10 +181,7 @@ export function WebGLDistort({ data }: { project: Project; data: Data }) {
                 })}
               </ol>
               <div aria-hidden="true" className="mt-3 h-[2px] bg-white/15">
-                <div
-                  className="h-full origin-left bg-[var(--p-accent)] transition-transform duration-200 ease-linear"
-                  style={{ transform: `scaleX(${player.playing !== null ? player.progress : 0})` }}
-                />
+                <div ref={bar} className="h-full origin-left bg-[var(--p-accent)] transition-transform duration-200 ease-linear" style={{ transform: "scaleX(0)" }} />
               </div>
               {tracks[highlighted] && (
                 <a
