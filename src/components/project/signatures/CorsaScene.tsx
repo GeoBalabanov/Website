@@ -53,11 +53,11 @@ const fragment = /* glsl */ `
     float bend = sin(uMix * 3.14159);
     float m = smoothstep(0.0, 1.0, clamp(uMix * 1.6 - 0.3 + (n - 0.5) * 0.6, 0.0, 1.0));
     // The music: the rings pulse outwards and the colour channels split with the beat.
-    p = (p - 0.5) * (1.0 - 0.06 * uLevel) + 0.5;
+    p = (p - 0.5) * (1.0 - 0.035 * uLevel) + 0.5;
     vec2 base = (p - 0.5) * uCover + 0.5;
     vec2 uvA = base + vec2(0.0, bend * 0.08 * n);
     vec2 uvB = base - vec2(0.0, bend * 0.08 * (1.0 - n));
-    vec2 off = vec2(0.003 + 0.018 * uHover * exp(-dist * 3.0) + 0.012 * bend + 0.02 * uLevel, 0.0);
+    vec2 off = vec2(0.003 + 0.018 * uHover * exp(-dist * 3.0) + 0.012 * bend + 0.012 * uLevel, 0.0);
 
     vec3 col = mix(rgb(tA, uvA, off), rgb(tB, uvB, off), m);
     col *= (0.94 + 0.06 * sin(vUv.y * 900.0)) * (1.0 + 0.35 * uLevel);
@@ -111,7 +111,7 @@ function Screen({ srcs, state: stateRef }: { srcs: string[]; state: RefObject<Sc
     u.uMouse.value.x += (state.mouse.x - u.uMouse.value.x) * k;
     u.uMouse.value.y += (state.mouse.y - u.uMouse.value.y) * k;
     u.uHover.value += (state.active - u.uHover.value) * k * 0.6;
-    u.uLevel.value += (state.level - u.uLevel.value) * Math.min(1, dt * 18);
+    u.uLevel.value += (state.level - u.uLevel.value) * Math.min(1, dt * 8);
     // object-fit: cover for the texture inside the screen.
     const aspect = size.width / size.height;
     const img = u.tA.value.image as HTMLImageElement | undefined;
