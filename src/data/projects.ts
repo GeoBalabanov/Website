@@ -132,6 +132,8 @@ export type Project = {
   subtitle: string;
   images: ProjectImage[];
   link?: string;
+  /** Shown instead of a link when the code can't be public, e.g. "Private repository · code on request". */
+  linkNote?: string;
   coverMotion?: CoverMotion;
   /** Wide image for the project page hero, when the portrait cover would crop badly (defaults to images[0]). */
   hero?: ProjectImage;
@@ -250,6 +252,8 @@ export const projects: Project[] = [
     number: "02",
     title: "AI Case Generator",
     subtitle: "Turning real social work cases into playable scenarios for the Social Work Game",
+    // The repository holds client material, so it stays private.
+    linkNote: "Private repository · code on request",
     coverMotion: "ai-book",
     hero: { src: "/projects/ai-case-generator-hero.svg", alt: "A glowing open book with iridescent pink, red, yellow and blue pages on deep navy" },
     images: [

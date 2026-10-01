@@ -141,6 +141,7 @@ export function Hero({ project }: { project: Project }) {
               {project.link.includes("github.com") ? "Code on GitHub" : "Visit live"} ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
+          {!project.link && project.linkNote && <span className="font-mono text-xs tracking-wide uppercase opacity-80">{project.linkNote}</span>}
         </div>
       </div>
 
