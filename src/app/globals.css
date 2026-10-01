@@ -133,6 +133,19 @@
 .bloom-sway {
   animation: bloom-sway 5s ease-in-out infinite;
 }
+@keyframes bloom-twinkle {
+  50% {
+    opacity: 0.2;
+  }
+}
+.bloom-twinkle {
+  animation: bloom-twinkle 4s ease-in-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .bloom-twinkle {
+    animation: none;
+  }
+}
 
 /* Hero title letters rise out of per-letter masks: clip vertically only, so slanted
    (italic) letters never lose their sides. */
