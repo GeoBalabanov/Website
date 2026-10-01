@@ -68,9 +68,11 @@ export type ProjectTheme = {
 export type RaceResult = {
   race: string;
   date: string;
-  time: string;
-  pace: string;
-  splits: { label: string; time: string }[];
+  /** Finish time. Leave out for a race that hasn't happened yet: it shows "Coming soon". */
+  time?: string;
+  pace?: string;
+  /** Key numbers shown as scoreboard tiles (splits, distance, elevation…). */
+  stats: { label: string; value: string }[];
 };
 
 export type Signature =
@@ -81,7 +83,14 @@ export type Signature =
       laps?: number;
       raceDate: { label: string; /** ISO date-time, e.g. "2027-04-18T08:00:00+03:00". Empty = countdown shows dashes. */ iso: string };
     }
-  | { type: "pulse-results"; restingBpm: number; peakBpm: number; results: RaceResult[] }
+  | {
+      type: "pulse-results";
+      restingBpm: number;
+      peakBpm: number;
+      /** The number in the top corner, e.g. { label: "Marathon PB", value: "4:09:12" }. */
+      headline: { label: string; value: string };
+      results: RaceResult[];
+    }
   | { type: "horizontal-steps"; steps: { title: string; text: string }[] }
   | { type: "kinetic-type"; words: string[]; caption: string }
   | {
@@ -487,42 +496,35 @@ export const projects: Project[] = [
       type: "pulse-results",
       restingBpm: 52,
       peakBpm: 178,
-      // PLACEHOLDER results
+      headline: { label: "Marathon PB", value: "4:09:12" },
+      // From Strava.
       results: [
         {
-          race: "[Race name] Marathon",
-          date: "Apr 2026",
-          time: "3:28:41",
-          pace: "4:57 /km",
-          splits: [
-            { label: "10K", time: "0:49:12" },
-            { label: "HALF", time: "1:43:55" },
-            { label: "30K", time: "2:28:04" },
-            { label: "FIN", time: "3:28:41" },
+          race: "Eindhoven Marathon",
+          date: "Oct 2026",
+          stats: [
+            { label: "Distance", value: "42.2 km" },
+            { label: "Goal", value: "New PB" },
           ],
         },
         {
-          race: "[Race name] Half",
-          date: "Oct 2025",
-          time: "1:36:18",
-          pace: "4:34 /km",
-          splits: [
-            { label: "5K", time: "0:22:51" },
-            { label: "10K", time: "0:45:40" },
-            { label: "15K", time: "1:08:22" },
-            { label: "FIN", time: "1:36:18" },
+          race: "Madrid Half Marathon",
+          date: "22 Mar 2026",
+          time: "1:49:45",
+          stats: [
+            { label: "Distance", value: "21.66 km" },
+            { label: "Pace", value: "5:04 /km" },
+            { label: "Elevation", value: "192 m" },
           ],
         },
         {
-          race: "[Race name] Marathon",
-          date: "Apr 2025",
-          time: "3:41:07",
-          pace: "5:15 /km",
-          splits: [
-            { label: "10K", time: "0:51:30" },
-            { label: "HALF", time: "1:49:47" },
-            { label: "30K", time: "2:36:15" },
-            { label: "FIN", time: "3:41:07" },
+          race: "Amsterdam Marathon",
+          date: "19 Oct 2025",
+          time: "4:09:12",
+          stats: [
+            { label: "Distance", value: "42.01 km" },
+            { label: "Pace", value: "5:56 /km" },
+            { label: "Elevation", value: "56 m" },
           ],
         },
       ],
@@ -553,13 +555,13 @@ export const projects: Project[] = [
         caption: "After the long run: catching my breath before the walk home.",
       },
     ],
-    // PLACEHOLDER numbers
     facts: [
-      { value: 6, label: "Marathons finished" },
-      { value: 3120, suffix: " km", label: "Run last year" },
-      { value: 3.28, decimals: 2, suffix: " h", label: "Marathon PB" },
-      { value: 178, suffix: " bpm", label: "Race-day peak" },
+      { value: 1, label: "Marathon finished: Amsterdam" },
+      { value: 1, label: "Half marathon: Madrid" },
+      { value: 42.01, decimals: 2, suffix: " km", label: "Longest run" },
+      { value: 192, suffix: " m", label: "Climbed in the Madrid Half" },
     ],
+    confirmed: ["facts"],
   },
   {
     slug: "plovdiv-marathon",
