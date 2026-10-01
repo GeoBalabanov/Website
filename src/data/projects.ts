@@ -169,6 +169,7 @@ export const projects: Project[] = [
     number: "01",
     title: "Corsa Car Audio",
     subtitle: "A voice-controlled music interface designed for safer driving",
+    link: "https://github.com/GeoBalabanov/Corsa",
     coverMotion: "head3d",
     heroScene: "corsa-head",
     images: [
