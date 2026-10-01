@@ -93,7 +93,7 @@ export type Signature =
       headline: { label: string; value: string };
       results: RaceResult[];
     }
-  | { type: "horizontal-steps"; steps: { title: string; text: string }[] }
+  | { type: "horizontal-steps"; /** Section heading (defaults to the AI Case Generator's). */ heading?: string; steps: { title: string; text: string }[] }
   | { type: "kinetic-type"; words: string[]; caption: string }
   | {
       type: "webgl-distort";
@@ -117,11 +117,12 @@ export type Signature =
  *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
  *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
  *   bloom  – a turning flower whose petals breathe open      (bloom-1)
+ *   sky    – clouds, their shadows and a glint of sun over a building photo (advantech-1)
  * They only match those exact covers. With your own cover image, use
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
+export type CoverMotion = "sky" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
 
 export type Project = {
   slug: string;
@@ -355,8 +356,43 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "bloom",
+    slug: "advantech-internship",
     number: "04",
+    title: "Internship at Advantech Europe",
+    subtitle: "What it's like to be a Solution Engineer",
+    coverMotion: "sky",
+    hero: { src: "/projects/advantech-hero.jpg", alt: "Advantech's red-brick office building with glass windows, a green roof garden and a blue sky with clouds" },
+    images: [{ src: "/projects/advantech-1.jpg", alt: "Advantech's red-brick office tower with tall glass windows and a green roof garden under a cloudy blue sky" }],
+    // PLACEHOLDER: everything below the cover until the real story is in.
+    year: "[Year]",
+    role: "Solution Engineer Intern",
+    location: "Eindhoven",
+    intro: "Placeholder: what a Solution Engineer does at Advantech Europe, what I worked on during the internship and what I took away from it.",
+    theme: { bg: "#0f1720", fg: "#eef2f6", muted: "#9aa8b6", accent: "#c2412d", accent2: "#5aa9e6", font: "grotesk" },
+    signature: {
+      type: "horizontal-steps",
+      heading: "A project, start to finish",
+      // PLACEHOLDER steps
+      steps: [
+        { title: "Listen", text: "Placeholder: understanding what the customer actually needs." },
+        { title: "Design", text: "Placeholder: turning it into a hardware and software solution." },
+        { title: "Build", text: "Placeholder: putting together a proof of concept." },
+        { title: "Present", text: "Placeholder: showing it to the customer and the team." },
+        { title: "Hand over", text: "Placeholder: documentation and what happens next." },
+      ],
+    },
+    gallery: [],
+    // PLACEHOLDER numbers
+    facts: [
+      { value: 0, label: "Placeholder 1" },
+      { value: 0, label: "Placeholder 2" },
+      { value: 0, label: "Placeholder 3" },
+      { value: 0, label: "Placeholder 4" },
+    ],
+  },
+  {
+    slug: "bloom",
+    number: "05",
     title: "Bloom",
     subtitle: "A collective feedback garden designed for art galleries",
     coverMotion: "bloom",
@@ -413,7 +449,7 @@ export const projects: Project[] = [
   },
   {
     slug: "madrid-exchange",
-    number: "05",
+    number: "06",
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
@@ -516,7 +552,7 @@ export const projects: Project[] = [
   },
   {
     slug: "marathon-running",
-    number: "06",
+    number: "07",
     kind: "For the mind, body & soul",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
@@ -607,7 +643,7 @@ export const projects: Project[] = [
   },
   {
     slug: "plovdiv-marathon",
-    number: "07",
+    number: "08",
     kind: "Event creator",
     title: "Plovdiv Marathon",
     subtitle: "Organizer · Plovdiv, Bulgaria",

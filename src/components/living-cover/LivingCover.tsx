@@ -6,6 +6,7 @@ import { BloomCover, DriftCover, LavaCover, RippleCover, TracksCover, TypingCove
 import { CardCover, DuskBloomCover, EmberCover, GridCover, NightTracksCover, PlaybackCover, RingsCover, RouteCover, WaveCover } from "./art-more";
 import { HillsCover, LoadedCover } from "./art-madrid";
 import { FlagWave } from "./FlagWave";
+import { SkyLife } from "./SkyLife";
 import { CollageCover } from "./CollageCover";
 import { HairWaveCover } from "./HairWaveCover";
 import { LayeredCover } from "./LayeredCover";
@@ -73,6 +74,7 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "ai-page" && <LayeredCover layers={AI_PAGE} bg={AI_BG} grain={AI_GRAIN} />}
       {motion === "hills" && <HillsCover />}
       {motion === "loaded" && <LoadedCover />}
+      {motion === "sky" && <SkyLife src={src} />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
       {motion === "head3d" && active && <CorsaStage paused={!running} />}
     </div>
