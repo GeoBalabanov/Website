@@ -14,7 +14,7 @@
 .app {
   position: absolute;
   top: 50%;
-  width: 21%;
+  width: 44%;
   aspect-ratio: 1;
   translate: -50% -50%;
   animation: float var(--float, 9s) ease-in-out infinite alternate;
@@ -36,7 +36,7 @@
 .icon {
   position: absolute;
   inset: 0;
-  filter: blur(var(--blur-far, 0.65cqw));
+  filter: blur(var(--blur-far, 2.6cqw));
   animation: focus 9s ease-in-out infinite;
   animation-delay: var(--focus-delay, 0s);
 }
@@ -74,16 +74,16 @@
 @keyframes focus {
   0%,
   100% {
-    filter: blur(var(--blur-far, 0.65cqw));
+    filter: blur(var(--blur-far, 2.6cqw));
     scale: 0.96;
   }
   16%,
   28% {
-    filter: blur(0px);
+    filter: blur(var(--blur-near, 0.7cqw));
     scale: 1;
   }
   45% {
-    filter: blur(var(--blur-far, 0.65cqw));
+    filter: blur(var(--blur-far, 2.6cqw));
     scale: 0.96;
   }
 }

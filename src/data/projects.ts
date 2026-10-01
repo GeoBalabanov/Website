@@ -216,7 +216,7 @@ export const projects: Project[] = [
         src: "/projects/corsa-car-audio-streaming-apps",
         living: "streaming-apps",
         alt: "The Spotify, Apple Music and YouTube Music icons glowing on a dark, grainy background, coming in and out of focus",
-        wide: true,
+        tall: true,
         caption: "No new library to learn: Corsa sits on top of the apps drivers already use. Spotify, Apple Music and YouTube Music, one voice for all three.",
       },
     ],

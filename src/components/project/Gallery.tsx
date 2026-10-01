@@ -48,18 +48,25 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
 
   // Where each item sits: wide items span the page, portraits pair up at staggered
   // heights, and runs of vertical videos go three across (the middle one dropped).
-  // A single vertical item (a phone screen) sits alone in the centre.
+  // A single vertical item (a phone screen) sits alone in the centre, two form a centred pair.
   const tallPlace = ["md:col-start-1", "md:col-start-5 md:mt-[16vh]", "md:col-start-9"];
   const places: string[] = [];
-  for (let i = 0, portrait = 0, tall = 0; i < project.gallery.length; i++) {
-    const item = project.gallery[i];
+  const g = project.gallery;
+  for (let i = 0, portrait = 0, tall = 0; i < g.length; i++) {
+    const item = g[i];
     tall = item.tall ? tall : 0;
+    // Exactly two vertical items in a row: a centred pair, the second one lower.
+    const pair = item.tall && (g[i - 1]?.tall ? !g[i - 2]?.tall && !g[i + 1]?.tall : g[i + 1]?.tall && !g[i + 2]?.tall);
+    if (pair) {
+      places.push(`col-span-6 md:col-span-4 md:w-[82%] md:justify-self-center ${g[i - 1]?.tall ? "md:col-start-7 md:mt-[16vh]" : "md:col-start-3"}`);
+      continue;
+    }
     places.push(
       item.wide
         ? item.compact
           ? "col-span-12 md:col-span-6 md:col-start-4"
           : "col-span-12 md:col-span-10 md:col-start-2"
-        : item.tall && !project.gallery[i - 1]?.tall && !project.gallery[i + 1]?.tall
+        : item.tall && !g[i - 1]?.tall && !g[i + 1]?.tall
           ? "col-span-8 col-start-3 md:col-span-4 md:col-start-5 md:w-[82%] md:justify-self-center"
           : item.tall
           ? `col-span-6 md:col-span-4 md:w-[82%] md:justify-self-center ${tallPlace[tall++ % 3]}`

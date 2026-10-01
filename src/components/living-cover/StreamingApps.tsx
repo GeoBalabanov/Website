@@ -4,7 +4,7 @@ import { useEffect, useRef } from "react";
 import s from "./StreamingApps.module.css";
 
 /**
- * Corsa gallery piece: the three apps Corsa plays from (Spotify, Apple Music,
+ * Corsa gallery piece (vertical, 9:16): the three apps Corsa plays from (Spotify, Apple Music,
  * YouTube Music) glowing on a grainy dark ground, while the camera slowly pulls
  * focus from one to the next. Plays only while on screen; reduced motion shows
  * the first frame.
@@ -15,8 +15,8 @@ type Vars = React.CSSProperties & Record<`--${string}`, string | number>;
 const APPS: { name: string; x: string; y: string; glow: string; vars: Record<string, string>; icon: React.ReactNode }[] = [
   {
     name: "Spotify",
-    x: "24%",
-    y: "54%",
+    x: "36%",
+    y: "27%",
     glow: "rgba(46, 204, 113, 0.9)",
     vars: { "--focus-delay": "0s", "--float": "8s", "--delay": "-3s", "--tilt-a": "-6deg", "--tilt-b": "2deg" },
     icon: (
@@ -32,8 +32,8 @@ const APPS: { name: string; x: string; y: string; glow: string; vars: Record<str
   },
   {
     name: "Apple Music",
-    x: "50%",
-    y: "46%",
+    x: "64%",
+    y: "50%",
     glow: "rgba(250, 60, 90, 0.9)",
     vars: { "--focus-delay": "-6s", "--float": "10s", "--delay": "-1s", "--tilt-a": "3deg", "--tilt-b": "-3deg" },
     icon: (
@@ -55,8 +55,8 @@ const APPS: { name: string; x: string; y: string; glow: string; vars: Record<str
   },
   {
     name: "YouTube Music",
-    x: "76%",
-    y: "55%",
+    x: "37%",
+    y: "73%",
     glow: "rgba(255, 50, 40, 0.9)",
     vars: { "--focus-delay": "-3s", "--float": "9s", "--delay": "-5s", "--tilt-a": "-2deg", "--tilt-b": "5deg" },
     icon: (
