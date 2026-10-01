@@ -5,7 +5,7 @@ export const site = {
   fullName: "Georgi Balabanov",
   tagline: "Design-Driven Developer",
   description:
-    "Georgi Balabanov is a design-driven developer and marathon runner, interested in fashion, brutalist design and turning concepts into usable products.",
+    "Georgi Balabanov is a Bulgarian design-driven developer and marathon runner based in the Netherlands, interested in fashion, brutalist design and turning concepts into usable products.",
 };
 
 /**
@@ -18,7 +18,7 @@ export const about: Segment[][] = [
   [
     { text: "Georgi Balabanov is a Design-Driven Developer, deeply interested in fashion, brutalist design and turning concepts into " },
     { text: "(actually) ", muted: true },
-    { text: "usable products — and more." },
+    { text: "usable products — and more. Originally from Bulgaria, he moved to the Netherlands in 2022 for his bachelor’s." },
   ],
   [
     { text: "He is also an athlete who runs marathons. For the past few months he has been organizing the " },
