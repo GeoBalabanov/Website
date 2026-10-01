@@ -310,6 +310,7 @@ export const projects: Project[] = [
     number: "03",
     title: "Dating App",
     subtitle: "A dating concept built around personality, music and voice",
+    link: "https://github.com/GeoBalabanov/Dating-App",
     coverMotion: "hairwave",
     hero: { src: "/projects/dating-app-hero.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
     images: [
