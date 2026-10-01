@@ -117,7 +117,7 @@ export type Signature =
  *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
  *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
  *   bloom  – a turning flower whose petals breathe open      (bloom-1)
- *   sky    – clouds, their shadows and a glint of sun over a building photo (advantech-1)
+ *   sky    – clouds and birds drifting behind the Advantech building (advantech-1)
  * They only match those exact covers. With your own cover image, use
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.

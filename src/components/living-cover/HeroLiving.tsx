@@ -6,7 +6,7 @@ import { CollageCover } from "./CollageCover";
 import { COLLAGE_LAYERS_WIDE } from "./collage-layers";
 import { HairWaveCover } from "./HairWaveCover";
 import { LayeredCover } from "./LayeredCover";
-import { SkyLife } from "./SkyLife";
+import { AdvantechSky } from "./AdvantechSky";
 import type { CoverMotion } from "@/data/projects";
 import s from "./LivingCover.module.css";
 
@@ -30,8 +30,7 @@ export function HeroLiving({ motion, wide, running }: { motion: CoverMotion; wid
   else if (motion === "collage") art = wide ? <CollageCover layers={COLLAGE_LAYERS_WIDE} viewBox="0 0 1600 1000" /> : portrait(<CollageCover />);
   else if (motion === "bloom") art = portrait(<BloomCover />);
   else if (motion === "lava") art = portrait(<LavaCover />);
-  // Only the light moves over the hero's own photo (portrait or wide), so no photo here.
-  else if (motion === "sky") art = <SkyLife />;
+  else if (motion === "sky") art = <AdvantechSky variant={wide ? "wide" : "portrait"} />;
   if (!art) return null;
   return (
     <div className={s.root} data-active="" data-paused={running ? undefined : ""} aria-hidden="true">
