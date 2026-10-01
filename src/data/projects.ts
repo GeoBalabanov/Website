@@ -84,7 +84,13 @@ export type Signature =
   | { type: "pulse-results"; restingBpm: number; peakBpm: number; results: RaceResult[] }
   | { type: "horizontal-steps"; steps: { title: string; text: string }[] }
   | { type: "kinetic-type"; words: string[]; caption: string }
-  | { type: "webgl-distort"; images: ProjectImage[]; caption: string }
+  | {
+      type: "webgl-distort";
+      images: ProjectImage[];
+      caption: string;
+      /** Real songs, played as official Apple Music previews (appleId = the iTunes track id). */
+      tracks?: { appleId: number; title: string; artist: string; url: string }[];
+    }
   | { type: "bloom-garden"; total: number; notes: string[] }
   | { type: "progress-journey"; milestones: { pct: number; kicker: string; title: string; text: string }[] };
 
@@ -165,7 +171,21 @@ export const projects: Project[] = [
         { src: "/projects/corsa-car-audio-2.svg", alt: "Playback bar" },
         { src: "/projects/corsa-car-audio-3.svg", alt: "Rings over horizon" },
       ],
-      caption: "Hover (or drag) to disturb the signal. Scroll to change track.",
+      caption: "Press play: the signal moves to the music. Hover or drag to disturb it.",
+      tracks: [
+        {
+          appleId: 1453336220,
+          title: "Bria's Interlude",
+          artist: "Drake feat. Omarion",
+          url: "https://music.apple.com/us/album/brias-interlude-feat-omarion/1453336206?i=1453336220",
+        },
+        {
+          appleId: 1511049656,
+          title: "Not You Too",
+          artist: "Drake feat. Chris Brown",
+          url: "https://music.apple.com/us/album/not-you-too-feat-chris-brown/1511049637?i=1511049656",
+        },
+      ],
     },
     gallery: [
       img("corsa-car-audio", "wide-1", "Placeholder: dashboard view", true, "In the dashboard: large type and high contrast, readable at a glance."),
