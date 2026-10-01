@@ -1,0 +1,130 @@
+/* Corsa gallery: Spotify, Apple Music and YouTube Music glowing out of the dark. */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(120% 90% at 50% 55%, #2a2b1f 0%, #1c1d14 60%, #12130e 100%);
+  /* Faded, filmic colour like an old photo of a screen. */
+  filter: saturate(0.6) contrast(0.92) brightness(0.92);
+  /* Blur scales with the frame, so phones see the same softness. */
+  container-type: size;
+}
+
+.app {
+  position: absolute;
+  top: 50%;
+  width: 21%;
+  aspect-ratio: 1;
+  translate: -50% -50%;
+  animation: float var(--float, 9s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+
+/* The coloured light around each icon. */
+.glow {
+  position: absolute;
+  inset: -45%;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, var(--glow) 0%, transparent 100%);
+  opacity: 0.35;
+  animation: glow 9s ease-in-out infinite;
+  animation-delay: var(--focus-delay, 0s);
+}
+
+/* Rack focus: the camera pulls focus from one icon to the next. */
+.icon {
+  position: absolute;
+  inset: 0;
+  filter: blur(var(--blur-far, 0.65cqw));
+  animation: focus 9s ease-in-out infinite;
+  animation-delay: var(--focus-delay, 0s);
+}
+.icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.grain {
+  position: absolute;
+  inset: -50%;
+  opacity: 0.45;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  animation: grain 0.9s steps(6) infinite;
+}
+
+.vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(90% 80% at 50% 50%, transparent 55%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+/* Paused (the first frame) until on screen, and for reduced motion. */
+.stage:not([data-running]) * {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+  }
+}
+
+@keyframes focus {
+  0%,
+  100% {
+    filter: blur(var(--blur-far, 0.65cqw));
+    scale: 0.96;
+  }
+  16%,
+  28% {
+    filter: blur(0px);
+    scale: 1;
+  }
+  45% {
+    filter: blur(var(--blur-far, 0.65cqw));
+    scale: 0.96;
+  }
+}
+@keyframes glow {
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+  16%,
+  28% {
+    opacity: 0.75;
+  }
+  45% {
+    opacity: 0.3;
+  }
+}
+@keyframes float {
+  from {
+    transform: translate(0, 2.5%) rotate(var(--tilt-a, -4deg));
+  }
+  to {
+    transform: translate(0, -2.5%) rotate(var(--tilt-b, 3deg));
+  }
+}
+@keyframes grain {
+  0% {
+    transform: translate(0, 0);
+  }
+  20% {
+    transform: translate(-6%, 4%);
+  }
+  40% {
+    transform: translate(5%, -7%);
+  }
+  60% {
+    transform: translate(-3%, 8%);
+  }
+  80% {
+    transform: translate(7%, 2%);
+  }
+  100% {
+    transform: translate(-5%, -4%);
+  }
+}
