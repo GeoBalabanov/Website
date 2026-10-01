@@ -36,7 +36,7 @@ export type MediaItem = ProjectImage & {
   /** A line or two under the item explaining the work. */
   caption?: string;
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps" | "connect-flow";
+  living?: "streaming-apps" | "connect-flow" | "bloom-flow";
 };
 
 export type Fact = {
@@ -378,10 +378,29 @@ export const projects: Project[] = [
       notes: ["“I stood here for ten minutes.”", "“The blue feels like home.”", "“Made me call my mother.”", "“Too loud — I loved it.”", "“I want to touch it.”", "“Quietly devastating.”"],
     },
     gallery: [
-      img("bloom", "wide-1", "Placeholder: garden wall", true, "The garden wall: every flower is a visitor's thought about an artwork."),
-      img("bloom", "1", "Placeholder: single bloom", false, "Each bloom's size and colour come from the feedback it grew from."),
-      img("bloom", "2", "Placeholder: garden at night", false, "By evening, the day's feedback has grown into a shared garden."),
-      img("bloom", "wide-2", "Placeholder: installation view", true, "The installation in the gallery, next to the works it responds to."),
+      {
+        kind: "video",
+        wide: true,
+        src: "/projects/bloom-concept-room.mp4",
+        poster: "/projects/bloom-concept-room.jpg",
+        alt: "Concept video: visitors walk into a dark gallery where a wall of glowing flowers grows, one of them holding a phone showing the garden",
+        caption: "Concept: the end of the exhibition. Visitors gather in front of one wall, where every reaction they planted on the way has grown into the same garden.",
+      },
+      {
+        src: "/projects/bloom-app-flow",
+        living: "bloom-flow",
+        alt: "The Bloom app clicking through itself: scan an installation, choose how it made you feel, watch the bud open, plant it, then see the shared garden and My Gardens",
+        tall: true,
+        caption: "The app in one loop: scan, answer one question, and your flower opens to match. Loved it, it was okay, or not for me each grow differently.",
+      },
+      {
+        kind: "video",
+        wide: true,
+        src: "/projects/bloom-concept-wall.mp4",
+        poster: "/projects/bloom-concept-wall.jpg",
+        alt: "Concept video: close-up of the garden wall with its counters, glowing flowers drifting slowly while silhouettes watch",
+        caption: "The garden wall up close: the flowers drift slowly and the counters show how the room felt, from full bloom to at rest.",
+      },
     ],
     // PLACEHOLDER numbers
     facts: [
