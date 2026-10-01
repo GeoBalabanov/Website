@@ -36,7 +36,7 @@ export type MediaItem = ProjectImage & {
   /** A line or two under the item explaining the work. */
   caption?: string;
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps";
+  living?: "streaming-apps" | "connect-flow";
 };
 
 export type Fact = {
@@ -214,6 +214,13 @@ export const projects: Project[] = [
         alt: "Corsa's welcome screen: \u201cJust speak. Corsa handles the rest.\u201d above a glossy 3D head lit by an iridescent streak, on violet",
         tall: true,
         caption: "The welcome screen sets the promise in one line: just speak, Corsa handles the rest. One link to register, nothing else to read.",
+      },
+      {
+        src: "/projects/corsa-car-audio-connect-flow",
+        living: "connect-flow",
+        alt: "Corsa's onboarding clicking through three screens: enter your Spotify, then Apple Music, then YouTube Music profile link, each tinted in the app's colour",
+        tall: true,
+        caption: "Connecting your music takes three screens: paste a profile link per app, tap Continue, or skip the apps you don't use.",
       },
       {
         src: "/projects/corsa-car-audio-streaming-apps",
