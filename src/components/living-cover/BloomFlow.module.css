@@ -1,0 +1,347 @@
+/* Bloom gallery: the feedback app, clicking itself through, with flowers that sway. */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: radial-gradient(120% 70% at 50% 35%, #12122a 0%, #0a0a18 60%, #07070f 100%);
+  color: #f1f0fb;
+  container-type: size;
+}
+
+.serif {
+  font-family: var(--p-display, Georgia, serif);
+  font-weight: 400;
+  letter-spacing: -0.01em;
+}
+
+/* Twinkling stars behind every screen. */
+.star {
+  position: absolute;
+  width: 0.6cqw;
+  height: 0.6cqw;
+  border-radius: 50%;
+  background: #c7c9ff;
+  animation: twinkle var(--t, 4s) ease-in-out infinite;
+  animation-delay: var(--d, 0s);
+}
+
+.screen {
+  position: absolute;
+  inset: 13% 6cqw;
+  /* (Not on .stage: cqw there would measure the page, not the phone.) */
+  font-size: 3.4cqw;
+  line-height: 1.35;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  transform: translateX(8%);
+  transition:
+    opacity 550ms ease,
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+  pointer-events: none;
+}
+.screen[data-on] {
+  opacity: 1;
+  transform: none;
+}
+
+.center {
+  text-align: center;
+}
+.muted {
+  color: rgba(225, 225, 245, 0.62);
+}
+.caps {
+  font-size: 2.5cqw;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.pill {
+  align-self: center;
+  display: flex;
+  align-items: center;
+  gap: 1.6cqw;
+  padding: 1.5cqw 3.4cqw;
+  border-radius: 99px;
+  border: 0.25cqw solid rgba(139, 92, 246, 0.45);
+  background: rgba(76, 29, 149, 0.25);
+}
+.dot {
+  width: 1.4cqw;
+  height: 1.4cqw;
+  border-radius: 50%;
+  background: #8b5cf6;
+  box-shadow: 0 0 2cqw #8b5cf6;
+}
+
+.flowerArea {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  min-height: 0;
+}
+.flowerArea svg {
+  height: 92%;
+  max-height: 64cqw;
+  overflow: visible;
+}
+
+.button {
+  height: 12cqw;
+  display: grid;
+  place-items: center;
+  border-radius: 3cqw;
+  font-size: 3.8cqw;
+  font-weight: 500;
+  background: linear-gradient(90deg, #6d4af0, #8b5cf6);
+  box-shadow: 0 1.5cqw 6cqw -1cqw rgba(124, 58, 237, 0.65);
+  transition:
+    transform 150ms,
+    filter 150ms,
+    opacity 300ms,
+    background 300ms,
+    box-shadow 300ms;
+}
+.button[data-off] {
+  background: rgba(30, 30, 52, 0.9);
+  box-shadow: none;
+  color: rgba(225, 225, 245, 0.35);
+}
+.pressed {
+  transform: scale(0.96);
+  filter: brightness(1.2);
+}
+
+.header {
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+}
+.back {
+  width: 7.5cqw;
+  height: 7.5cqw;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.07);
+  font-size: 3.2cqw;
+  transition: transform 150ms;
+}
+
+.option {
+  height: 11cqw;
+  display: flex;
+  align-items: center;
+  gap: 3cqw;
+  padding: 0 4cqw;
+  margin-top: 2.4cqw;
+  border-radius: 3cqw;
+  border: 0.25cqw solid transparent;
+  background: rgba(24, 24, 40, 0.9);
+  color: rgba(225, 225, 245, 0.62);
+  transition:
+    border-color 300ms,
+    background 300ms,
+    color 300ms,
+    transform 150ms;
+}
+.option i {
+  width: 2.4cqw;
+  height: 2.4cqw;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.16);
+  transition: background 300ms, box-shadow 300ms;
+}
+.option[data-picked] {
+  color: #fff;
+  border-color: var(--pick);
+  background: color-mix(in srgb, var(--pick) 14%, rgba(24, 24, 40, 0.9));
+}
+.option[data-picked] i {
+  background: var(--pick);
+  box-shadow: 0 0 2cqw var(--pick);
+}
+
+.field {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+}
+.field svg {
+  position: absolute;
+  overflow: visible;
+  translate: -50% -100%;
+}
+
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  padding: 4cqw 3cqw;
+  border-radius: 3.5cqw;
+  border: 0.25cqw solid rgba(255, 255, 255, 0.08);
+  background: rgba(20, 24, 34, 0.8);
+  text-align: center;
+}
+.stats b {
+  display: block;
+  font-size: 6cqw;
+  line-height: 1.1;
+}
+.stats span {
+  font-size: 2.3cqw;
+  color: rgba(225, 225, 245, 0.55);
+}
+
+.card {
+  display: flex;
+  gap: 3cqw;
+  height: 15.5cqw;
+  margin-top: 2.2cqw;
+  padding: 1.4cqw;
+  border-radius: 3cqw;
+  border: 0.25cqw solid rgba(255, 255, 255, 0.07);
+  background: rgba(22, 22, 38, 0.85);
+  opacity: 0;
+  transform: translateY(3cqw);
+  transition:
+    opacity 500ms,
+    transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+[data-on] .card {
+  opacity: 1;
+  transform: none;
+}
+.thumb {
+  position: relative;
+  width: 28cqw;
+  flex: none;
+  border-radius: 2cqw;
+  overflow: hidden;
+  background: #0d0d1c;
+}
+.thumb svg {
+  position: absolute;
+  top: 0;
+  width: 6cqw;
+  overflow: visible;
+}
+.tag {
+  display: inline-block;
+  margin-top: 1.2cqw;
+  padding: 0.5cqw 2cqw;
+  border-radius: 99px;
+  font-size: 2.3cqw;
+}
+
+.nav {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4cqw;
+  margin-top: 4cqw;
+  font-size: 2.6cqw;
+  text-align: center;
+  color: rgba(225, 225, 245, 0.5);
+}
+.nav > div {
+  padding: 2cqw 0;
+  border-radius: 3cqw;
+  transition: transform 150ms;
+}
+.navOn {
+  color: #fff;
+  border: 0.25cqw solid rgba(139, 92, 246, 0.5);
+  background: rgba(76, 29, 149, 0.3);
+}
+.navOnGreen {
+  color: #a7f3d0;
+  border: 0.25cqw solid rgba(16, 185, 129, 0.45);
+  background: rgba(6, 78, 59, 0.45);
+}
+
+/* The fingertip, like a screen recording's touch indicator. */
+.touch {
+  position: absolute;
+  width: 10cqw;
+  height: 10cqw;
+  margin: -5cqw 0 0 -5cqw;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  border: 0.5cqw solid rgba(255, 255, 255, 0.7);
+  pointer-events: none;
+  transition:
+    left 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    top 600ms cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 250ms,
+    transform 150ms;
+}
+.touch[data-pressed] {
+  transform: scale(0.8);
+  background: rgba(255, 255, 255, 0.55);
+}
+
+/* Flowers: sway on the stem, petals turn slowly, and opening eases. */
+.sway {
+  transform-origin: 50px 138px;
+  animation: sway var(--sway, 6s) ease-in-out infinite alternate;
+  animation-delay: var(--delay, 0s);
+}
+.spin {
+  transform-origin: 50px 50px;
+  animation: spin 40s linear infinite;
+  animation-delay: var(--delay, 0s);
+}
+.halo {
+  animation: breathe 4s ease-in-out infinite alternate;
+}
+.ease {
+  transition:
+    transform 1.4s cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 1.2s ease;
+}
+.grow {
+  transform-origin: 50% 100%;
+  animation: grow 1.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.stage:not([data-running]) * {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@keyframes sway {
+  from {
+    transform: rotate(-4deg);
+  }
+  to {
+    transform: rotate(4deg);
+  }
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@keyframes breathe {
+  to {
+    opacity: 0.12;
+  }
+}
+@keyframes twinkle {
+  50% {
+    opacity: 0.2;
+  }
+}
+@keyframes grow {
+  from {
+    transform: scale(0);
+    opacity: 0;
+  }
+}
