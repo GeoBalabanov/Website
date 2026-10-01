@@ -100,7 +100,7 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
         <SignatureSection project={project} />
       </div>
       {project.drive && <Drive project={project} index="03" />}
-      <Gallery project={project} index={n(3)} />
+      {project.gallery.length > 0 && <Gallery project={project} index={n(3)} />}
       <Facts project={project} index={n(4)} />
       <NextProject next={next} />
 

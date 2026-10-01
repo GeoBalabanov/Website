@@ -53,7 +53,7 @@ export function HorizontalSteps({ data }: { project: Project; data: Data }) {
               How it works
             </SectionLabel>
             <h2 id="steps-title" className="font-display mt-4 text-[clamp(2rem,4.5vw,4.5rem)] leading-[0.95] font-bold tracking-[-0.03em]">
-              From case file to board game
+              {data.heading ?? "From case file to board game"}
             </h2>
           </div>
           <p className="font-mono text-xs text-[var(--p-muted)] uppercase">{data.steps.length} steps →</p>
