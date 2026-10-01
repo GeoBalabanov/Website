@@ -1,0 +1,72 @@
+.root {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* Cloud layers: two 1400-unit tiles slide left by one tile, then repeat. */
+.drift {
+  animation: drift linear infinite;
+}
+@keyframes drift {
+  to {
+    transform: translateX(-1400px);
+  }
+}
+
+/* The flock enters on the left, crosses the sky slightly rising, and leaves on the right. */
+.flock {
+  /* Starts off-screen, so the first frame matches the still. */
+  animation: fly 26s linear infinite;
+}
+@keyframes fly {
+  0% {
+    transform: translate(-120px, 120px);
+  }
+  55% {
+    transform: translate(1120px, 30px);
+  }
+  100% {
+    transform: translate(1120px, 30px);
+  }
+}
+.bob {
+  animation: bob 2.6s ease-in-out infinite alternate;
+}
+@keyframes bob {
+  to {
+    transform: translateY(-6px);
+  }
+}
+/* Wing beats: the V flattens and folds. */
+.wings {
+  transform-box: fill-box;
+  transform-origin: center bottom;
+  animation: flap 0.45s ease-in-out infinite alternate;
+}
+@keyframes flap {
+  to {
+    transform: scaleY(-0.7);
+  }
+}
+
+/* Cloud shadows slide across the facades, the same way as the clouds. */
+.shadow {
+  animation: shadow linear infinite;
+}
+@keyframes shadow {
+  from {
+    transform: translateX(1400px);
+  }
+  to {
+    transform: translateX(-400px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root * {
+    animation: none !important;
+  }
+}
