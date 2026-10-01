@@ -138,7 +138,7 @@ export function Hero({ project }: { project: Project }) {
           <span className="max-w-[40ch]">{project.subtitle}</span>
           {project.link && (
             <a href={project.link} target="_blank" rel="noreferrer" className="nav-link">
-              Visit live ↗<span className="sr-only"> (opens in a new tab)</span>
+              {project.link.includes("github.com") ? "Code on GitHub" : "Visit live"} ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
         </div>
