@@ -50,7 +50,7 @@ export const footer: { title: string; items: FooterItem[] }[] = [
   },
   {
     title: "Inspiration",
-    items: [{ label: "Swiss Design" }, { label: "Archival Fashion" }, { label: "Brutalist Architecture" }, { label: "Long-distance Running" }],
+    items: [{ label: "Industrial Design" }, { label: "Avant-garde Fashion" }, { label: "Brutalist Architecture" }, { label: "Long-distance Running" }],
   },
   {
     title: "Typography",
