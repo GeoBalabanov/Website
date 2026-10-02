@@ -7,6 +7,7 @@ import { CardCover, DuskBloomCover, EmberCover, GridCover, NightTracksCover, Pla
 import { HillsCover, LoadedCover } from "./art-madrid";
 import { FlagWave } from "./FlagWave";
 import { AdvantechPoster } from "./AdvantechPoster";
+import { AdvantechNetworkCover, AdvantechStepsCover } from "./AdvantechTiles";
 import { CollageCover } from "./CollageCover";
 import { HairWaveCover } from "./HairWaveCover";
 import { LayeredCover } from "./LayeredCover";
@@ -75,6 +76,8 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "hills" && <HillsCover />}
       {motion === "loaded" && <LoadedCover />}
       {motion === "sky" && <AdvantechPoster variant="portrait" />}
+      {motion === "adv-steps" && <AdvantechStepsCover />}
+      {motion === "adv-network" && <AdvantechNetworkCover />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
       {motion === "head3d" && active && <CorsaStage paused={!running} />}
     </div>
