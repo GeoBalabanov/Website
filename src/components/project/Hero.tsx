@@ -138,7 +138,7 @@ export function Hero({ project }: { project: Project }) {
           <span className="max-w-[40ch]">{project.subtitle}</span>
           {project.link && (
             <a href={project.link} target="_blank" rel="noreferrer" className="nav-link">
-              {project.link.includes("github.com") ? "Code on GitHub" : "Visit live"} ↗<span className="sr-only"> (opens in a new tab)</span>
+              {project.linkLabel ?? (project.link.includes("github.com") ? "Code on GitHub" : "Visit live")} ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
           {!project.link && project.linkNote && <span className="font-mono text-xs tracking-wide uppercase opacity-80">{project.linkNote}</span>}

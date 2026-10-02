@@ -142,6 +142,8 @@ export type Project = {
   subtitle: string;
   images: ProjectImage[];
   link?: string;
+  /** Overrides the link's label (defaults to "Code on GitHub" or "Visit live"). */
+  linkLabel?: string;
   /** Shown instead of a link when the code can't be public, e.g. "Private repository · code on request". */
   linkNote?: string;
   coverMotion?: CoverMotion;
@@ -375,6 +377,8 @@ export const projects: Project[] = [
     year: "2025",
     role: "Solution Engineer Intern · IoT & Automation",
     location: "Eindhoven",
+    link: "/projects/advantech-project-plan.pdf",
+    linkLabel: "In-depth project plan (PDF)",
     intro:
       "Advantech builds the industrial IoT behind factories, transport and smart cities. In its IoT & Automation team I owned the Demo Box: a portable rig of ADAM modules, sensors, pumps, valves and SCADA that shows partners and customers how it all works together. My goal was to make it run entirely on its own, and it does.",
     // Paper, brick and sky: the building on the poster.
