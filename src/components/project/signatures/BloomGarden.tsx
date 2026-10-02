@@ -106,7 +106,7 @@ export function BloomGarden({ data }: { project: Project; data: Data }) {
       <div ref={pinned} className="relative flex h-dvh flex-col overflow-hidden px-4 pt-28 md:px-10 md:pt-28">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div>
-            <SectionLabel index="02" placeholder>
+            <SectionLabel index="02">
               The garden
             </SectionLabel>
             <h2 id="bloom-title" className="font-display mt-4 text-[clamp(2.25rem,5vw,5rem)] leading-[0.95] tracking-[-0.02em]">

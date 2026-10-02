@@ -48,7 +48,7 @@ export function Facts({ project, index = "04" }: { project: Project; index?: str
 
   return (
     <section ref={root} className="px-4 py-[16vh] md:px-10">
-      <SectionLabel index={index} placeholder={!project.confirmed?.includes("facts")}>
+      <SectionLabel index={index}>
         In numbers
       </SectionLabel>
       <dl className="mt-12 grid grid-cols-2 gap-x-6 gap-y-14 lg:grid-cols-4">

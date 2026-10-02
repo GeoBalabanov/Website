@@ -29,7 +29,7 @@ export type MediaItem = ProjectImage & {
   poster?: string;
   /** Landscape item (16:10) instead of portrait (3:4). */
   wide?: boolean;
-  /** A wide item shown smaller (centred, about half the page), for photos that would blur at full width. */
+  /** Shown smaller and centred: a wide photo that would blur at full width (about half the page), or a lone portrait like a logo. */
   compact?: boolean;
   /** Vertical phone video (9:16). Consecutive tall items sit side by side. */
   tall?: boolean;
@@ -160,7 +160,7 @@ export type Project = {
   signature: Signature;
   gallery: MediaItem[];
   facts: Fact[];
-  /** Sections whose content is final, so they drop their "Placeholder" tag. */
+  /** Sections whose content is final (a to-do marker for the data; not shown on the page). */
   confirmed?: ("intro" | "facts")[];
   /** Optional story section after the signature: moments of a use scenario, then the personas behind it. */
   drive?: {
@@ -353,10 +353,10 @@ export const projects: Project[] = [
       caption: "Move your cursor (or finger) through the letters.",
     },
     gallery: [
-      img("dating-app", "wide-1", "Placeholder: voice match screen", true, "The match screen: you hear a voice note before you see a face."),
-      img("dating-app", "1", "Placeholder: profile", false, "Profiles lead with personality and music taste. Photos come last."),
-      img("dating-app", "2", "Placeholder: waveform detail", false, "The voice note waveform, the first thing you see of someone."),
-      img("dating-app", "wide-2", "Placeholder: music taste rings", true, "Overlapping rings show how much two people's music taste has in common."),
+      img("dating-app", "wide-1", "The voice match screen", true, "The match screen: you hear a voice note before you see a face."),
+      img("dating-app", "1", "A profile screen", false, "Profiles lead with personality and music taste. Photos come last."),
+      img("dating-app", "2", "A voice note waveform, close up", false, "The voice note waveform, the first thing you see of someone."),
+      img("dating-app", "wide-2", "Overlapping music taste rings", true, "Overlapping rings show how much two people's music taste has in common."),
     ],
     // PLACEHOLDER numbers
     facts: [
@@ -717,8 +717,12 @@ export const projects: Project[] = [
         caption: "Testing the pace on the track: every stretch of the course is run before it is planned.",
         wide: true,
       },
-      img("plovdiv-marathon", "2", "Placeholder: route sketch", false, "Early route sketches: finding a loop that passes the city's landmarks and stays fast."),
-      img("plovdiv-marathon", "3", "Placeholder: runners at dusk", false, "Runners at dusk: the atmosphere the whole race is built around."),
+      {
+        src: "/projects/plovdiv-run-logo.jpg",
+        compact: true,
+        alt: "The Plovdiv Run logo: PLOVDIV RUN in navy with the U drawn as gold running-track lanes, above the words Plovdiv Marathon Weekend",
+        caption: "The identity: Plovdiv Run, the Plovdiv Marathon Weekend, with the U drawn as the lanes of a track.",
+      },
       {
         kind: "video",
         src: "/projects/plovdiv-marathon-video-2.mp4",
