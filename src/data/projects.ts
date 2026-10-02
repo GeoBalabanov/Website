@@ -36,7 +36,7 @@ export type MediaItem = ProjectImage & {
   /** A line or two under the item explaining the work. */
   caption?: string;
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps" | "connect-flow" | "bloom-flow";
+  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box";
 };
 
 export type Fact = {
@@ -93,7 +93,14 @@ export type Signature =
       headline: { label: string; value: string };
       results: RaceResult[];
     }
-  | { type: "horizontal-steps"; /** Section heading (defaults to the AI Case Generator's). */ heading?: string; steps: { title: string; text: string }[] }
+  | {
+      type: "horizontal-steps";
+      /** Section heading (defaults to the AI Case Generator's). */
+      heading?: string;
+      /** Card illustrations: document steps (default) or engineering tools. */
+      icons?: "documents" | "engineering";
+      steps: { title: string; text: string }[];
+    }
   | { type: "kinetic-type"; words: string[]; caption: string }
   | {
       type: "webgl-distort";
@@ -363,32 +370,41 @@ export const projects: Project[] = [
     coverMotion: "sky",
     hero: { src: "/projects/advantech-hero.jpg", alt: "Advantech's red-brick office building with glass windows, a green roof garden and a blue sky with clouds" },
     images: [{ src: "/projects/advantech-1.jpg", alt: "Advantech's red-brick office tower with tall glass windows and a green roof garden under a cloudy blue sky" }],
-    // PLACEHOLDER: everything below the cover until the real story is in.
-    year: "[Year]",
-    role: "Solution Engineer Intern",
+    year: "2025",
+    role: "Solution Engineer Intern · IoT & Automation",
     location: "Eindhoven",
-    intro: "Placeholder: what a Solution Engineer does at Advantech Europe, what I worked on during the internship and what I took away from it.",
-    theme: { bg: "#0f1720", fg: "#eef2f6", muted: "#9aa8b6", accent: "#c2412d", accent2: "#5aa9e6", font: "grotesk" },
+    intro:
+      "Advantech builds the industrial IoT behind factories, transport and smart cities. In its IoT & Automation team I owned the Demo Box: a portable rig of ADAM modules, sensors, pumps, valves and SCADA that shows partners and customers how it all works together. My goal was to make it run entirely on its own, and it does.",
+    // Paper, brick and sky: the building on the poster.
+    theme: { bg: "#f3f1ec", fg: "#17212b", muted: "#55606b", accent: "#b8452f", accent2: "#3f74b0", font: "grotesk" },
     signature: {
       type: "horizontal-steps",
-      heading: "A project, start to finish",
-      // PLACEHOLDER steps
+      heading: "Building the Demo Box",
+      icons: "engineering",
       steps: [
-        { title: "Listen", text: "Placeholder: understanding what the customer actually needs." },
-        { title: "Design", text: "Placeholder: turning it into a hardware and software solution." },
-        { title: "Build", text: "Placeholder: putting together a proof of concept." },
-        { title: "Present", text: "Placeholder: showing it to the customer and the team." },
-        { title: "Hand over", text: "Placeholder: documentation and what happens next." },
+        { title: "Learn", text: "Finished the IoT Academy's 20+ modules and trained on Visio, the ADAM/Apax Utility and WebAccess SCADA, reviewing every course with my mentor." },
+        { title: "Map", text: "Got to know every part: ADAM modules, the Liquicap M FMI51 level sensor, power and WAGO connectors. Then drew the wiring and the logic in Visio." },
+        { title: "Fix", text: "The sensor stayed dark. Tracing its 4–20 mA loop with a multimeter showed a misrouted +24 V wire and a floating Vin−. Rewired, it lit up at once." },
+        { title: "Automate", text: "My own proposal: GCL rules inside the ADAM modules that fill at ≤ 5.6 mA and drain at ≥ 17.2 mA, never both at once, within three outputs per rule." },
+        { title: "Document", text: "A full system breakdown, a calibration guide, a troubleshooting plan and a video of every test, so whoever picks up the Demo Box next can just start." },
       ],
     },
-    gallery: [],
-    // PLACEHOLDER numbers
-    facts: [
-      { value: 0, label: "Placeholder 1" },
-      { value: 0, label: "Placeholder 2" },
-      { value: 0, label: "Placeholder 3" },
-      { value: 0, label: "Placeholder 4" },
+    gallery: [
+      {
+        src: "/projects/advantech-demo-box",
+        living: "demo-box",
+        wide: true,
+        alt: "A SCADA-style view of the Demo Box running on its own: the tank fills until the level sensor reads 17.2 mA, drains back to 5.6 mA and repeats, with pumps, valves and the active GCL rule lighting up",
+        caption: "Remote mode: the Demo Box filling and draining by itself, driven by the level sensor's 4–20 mA signal and my GCL rules. Built with guidance from my mentor Guilherme, and Steve and Jay in the lab.",
+      },
     ],
+    facts: [
+      { value: 20, suffix: "+", label: "IoT Academy modules" },
+      { value: 4, label: "Days a week in the team" },
+      { value: 6, label: "GCL rules run the loop" },
+      { value: 0, label: "Manual inputs during a demo" },
+    ],
+    confirmed: ["intro", "facts"],
   },
   {
     slug: "bloom",

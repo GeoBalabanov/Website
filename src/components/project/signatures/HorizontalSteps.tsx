@@ -74,7 +74,7 @@ export function HorizontalSteps({ data }: { project: Project; data: Data }) {
                   {String(i + 1).padStart(2, "0")}
                 </span>
                 <div data-illo className="h-20 w-24 md:h-24 md:w-28">
-                  <StepIllustration index={i} />
+                  <StepIllustration index={i} set={data.icons} />
                 </div>
               </div>
               <div>
@@ -93,7 +93,7 @@ export function HorizontalSteps({ data }: { project: Project; data: Data }) {
   );
 }
 
-function StepIllustration({ index }: { index: number }) {
+function StepIllustration({ index, set = "documents" }: { index: number; set?: Data["icons"] }) {
   const stroke = { fill: "none", stroke: "var(--p-accent)", strokeWidth: 2.5, strokeLinecap: "round" as const, strokeLinejoin: "round" as const };
   const doc = <rect x="30" y="8" width="50" height="66" rx="4" {...stroke} />;
   const shapes = [
@@ -122,9 +122,41 @@ function StepIllustration({ index }: { index: number }) {
       <path d="M40 62 H70" {...stroke} strokeWidth={3} />
     </g>,
   ];
+  // Engineering: learn (book), map (diagram), fix (multimeter), automate (fill/drain loop), document.
+  const engineering = [
+    <g key="learn">
+      <path d="M55 20 C45 12 30 12 20 16 V66 C30 62 45 62 55 70 C65 62 80 62 90 66 V16 C80 12 65 12 55 20 Z M55 20 V70" {...stroke} />
+      <path d="M28 28 H46 M28 38 H46 M64 28 H82 M64 38 H82" {...stroke} strokeWidth={2} />
+    </g>,
+    <g key="map">
+      <rect x="14" y="10" width="26" height="18" rx="3" {...stroke} />
+      <rect x="70" y="10" width="26" height="18" rx="3" {...stroke} />
+      <rect x="42" y="54" width="26" height="18" rx="3" fill="var(--p-accent)" />
+      <path d="M27 28 V40 H55 V54 M83 28 V40 H55" {...stroke} />
+    </g>,
+    <g key="fix">
+      <rect x="36" y="6" width="38" height="56" rx="6" {...stroke} />
+      <rect x="43" y="13" width="24" height="12" rx="2" fill="var(--p-accent-2)" />
+      <circle cx="55" cy="42" r="9" {...stroke} />
+      <path d="M55 42 L60 36" {...stroke} />
+      <path d="M46 62 C40 72 26 70 18 76 M64 62 C70 72 84 70 92 76" {...stroke} strokeWidth={2} />
+    </g>,
+    <g key="automate">
+      <path d="M30 41 A25 25 0 0 1 76 27 M80 41 A25 25 0 0 1 34 55" {...stroke} />
+      <path d="M70 18 L77 27 L67 31 M40 64 L33 55 L43 51" {...stroke} />
+      <path d="M55 30 C50 38 47 42 47 47 A8 8 0 0 0 63 47 C63 42 60 38 55 30 Z" fill="var(--p-accent-2)" />
+    </g>,
+    <g key="document">
+      <path d="M32 6 H66 L80 20 V76 H32 Z M66 6 V20 H80" {...stroke} />
+      <path d="M40 34 H72 M40 44 H72 M40 54 H62" {...stroke} strokeWidth={2} />
+      <circle cx="82" cy="64" r="14" fill="var(--p-accent)" />
+      <path d="M75 64 l5 5 9 -10" fill="none" stroke="#fff" strokeWidth={3} strokeLinecap="round" strokeLinejoin="round" />
+    </g>,
+  ];
+  const list = set === "engineering" ? engineering : shapes;
   return (
     <svg viewBox="0 0 110 82" className="h-full w-full" aria-hidden="true">
-      {shapes[index % shapes.length]}
+      {list[index % list.length]}
     </svg>
   );
 }
