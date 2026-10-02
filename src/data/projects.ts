@@ -35,6 +35,8 @@ export type MediaItem = ProjectImage & {
   tall?: boolean;
   /** A line or two under the item explaining the work. */
   caption?: string;
+  /** Show the whole image on white instead of filling (and cropping) the frame, e.g. for diagrams. */
+  fit?: "contain";
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
   living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box";
 };
@@ -396,6 +398,21 @@ export const projects: Project[] = [
         wide: true,
         alt: "A SCADA-style view of the Demo Box running on its own: the tank fills until the level sensor reads 17.2 mA, drains back to 5.6 mA and repeats, with pumps, valves and the active GCL rule lighting up",
         caption: "Remote mode: the Demo Box filling and draining by itself, driven by the level sensor's 4–20 mA signal and my GCL rules. Built with guidance from my mentor Guilherme, and Steve and Jay in the lab.",
+      },
+      {
+        src: "/projects/advantech-wiring.jpg",
+        wide: true,
+        fit: "contain",
+        alt: "Wiring diagram of the Demo Box drawn in Microsoft Visio: the valve and level sensor into the ADAM-6017, the ADAM-6050 through a terminal block to the relay, the relay and Wago connectors to both pumps, and everything on one power supply with the EKI-5525 switch",
+        caption: "The Demo Box's wiring, drawn in Visio: power (+Vs/−Vs), ground and every signal from the valve and level sensor through the ADAM modules and the relay to both pumps.",
+      },
+      {
+        src: "/projects/advantech-ethernet.jpg",
+        wide: true,
+        compact: true,
+        fit: "contain",
+        alt: "Network diagram: the ADAM-6050 and ADAM-6017 connected over Ethernet to the EKI-5525 switch, which links to the PPC screen and to a laptop running WebAccess/SCADA",
+        caption: "How it talks: both ADAM modules on the EKI-5525 switch, with the PPC screen and the WebAccess/SCADA laptop on the same Ethernet.",
       },
     ],
     facts: [

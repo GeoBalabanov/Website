@@ -152,7 +152,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
       fill
       sizes={sizes ?? (item.wide ? (item.compact ? "(min-width: 768px) 50vw, 100vw" : "(min-width: 768px) 80vw, 100vw") : "(min-width: 768px) 33vw, 50vw")}
       unoptimized={item.src.endsWith(".svg")}
-      className="object-cover"
+      className={item.fit === "contain" ? "bg-white object-contain p-[3%]" : "object-cover"}
     />
   );
 }
