@@ -1,17 +1,48 @@
 .root {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
+  overflow: hidden;
+  container-type: size;
   /* One day, looping forever. 0% is midday (the still). */
   --day: 48s;
 }
 
-/* ---------- The hours ---------- */
-/* Day 0–16% · sunset ~25% · night 38–56% · dawn ~66% · day again from 76%. */
-.dawn {
+/* The scene box covers the frame like object-fit: cover, in the view's aspect ratio. */
+.scene {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: max(100cqw, calc(100cqh * var(--ar)));
+  translate: -50% -50%;
+  container-type: inline-size;
+  /* One photo pixel, in CSS. */
+  --u: calc(100cqw / var(--vw));
+  overflow: hidden;
+}
+.fill {
+  position: absolute;
+  inset: 0;
+}
+.world {
+  position: absolute;
+  width: 0;
+  height: 0;
+}
+.world > *,
+.clouds > * {
+  position: absolute;
+}
+
+/* Only opacity and transform animate below: cheap for the GPU. */
+.dawn,
+.sunset,
+.night,
+.dusk,
+.daylight {
   opacity: 0;
+  will-change: opacity;
+}
+.dawn {
   animation: dawn var(--day) linear infinite;
 }
 @keyframes dawn {
@@ -28,8 +59,8 @@
     opacity: 0;
   }
 }
-.sunset {
-  opacity: 0;
+.sunset,
+.dusk {
   animation: sunset var(--day) linear infinite;
 }
 @keyframes sunset {
@@ -46,10 +77,32 @@
     opacity: 0;
   }
 }
-.night,
-.stars,
-.windows {
-  opacity: 0;
+/* The dusk-tinted building also lights the dawn a little. */
+.dusk {
+  animation-name: duskGround;
+}
+@keyframes duskGround {
+  0%,
+  14% {
+    opacity: 0;
+  }
+  24%,
+  30% {
+    opacity: 1;
+  }
+  40%,
+  58% {
+    opacity: 0;
+  }
+  66% {
+    opacity: 0.6;
+  }
+  78%,
+  100% {
+    opacity: 0;
+  }
+}
+.night {
   animation: night var(--day) linear infinite;
 }
 @keyframes night {
@@ -66,86 +119,69 @@
     opacity: 0;
   }
 }
-.windows {
-  mix-blend-mode: screen;
-}
-.twinkle {
-  animation: twinkle 3.2s ease-in-out infinite alternate;
-}
-@keyframes twinkle {
-  to {
-    opacity: 0.25;
-  }
+
+.stars {
+  background-size: 100% 100%;
 }
 
-/* The buildings take on the light: white (no change), warm, deep blue, peach. */
-.grade {
-  mix-blend-mode: multiply;
-  fill: #ffffff;
-  animation: grade var(--day) linear infinite;
-}
-@keyframes grade {
-  0%,
-  14% {
-    fill: #ffffff;
-  }
-  25% {
-    fill: #ffb894;
-  }
-  32% {
-    fill: #9a7ea8;
-  }
-  40%,
-  56% {
-    fill: #3a4677;
-  }
-  64% {
-    fill: #d4a9b6;
-  }
-  68% {
-    fill: #ffd0b4;
-  }
-  78%,
-  100% {
-    fill: #ffffff;
-  }
+.ground {
+  left: 0;
+  top: 0;
+  width: calc(998 * var(--u));
+  height: calc(668 * var(--u));
+  background-size: 100% 100%;
 }
 
-/* The sun arcs from the left horizon (dawn), over the top (midday = 0%), down behind the tower (sunset). */
+/* The sun: a soft glow (radius 150 photo units) on an arc. Midday (0%) is the still. */
+.sun,
+.moon {
+  left: calc(-150 * var(--u));
+  top: calc(-150 * var(--u));
+  width: calc(300 * var(--u));
+  height: calc(300 * var(--u));
+  border-radius: 50%;
+  will-change: transform;
+}
 .sun {
+  background: radial-gradient(closest-side, #fffaf0 0%, #fff3d6 18%, rgba(255, 231, 184, 0.55) 22%, rgba(255, 217, 160, 0) 100%);
   animation: sun var(--day) linear infinite;
 }
 @keyframes sun {
   0% {
-    transform: translate(560px, -290px);
+    transform: translate(calc(560 * var(--u)), calc(-290 * var(--u)));
   }
   10% {
-    transform: translate(760px, -200px);
+    transform: translate(calc(760 * var(--u)), calc(-200 * var(--u)));
   }
   20% {
-    transform: translate(900px, 40px);
+    transform: translate(calc(900 * var(--u)), calc(40 * var(--u)));
   }
   27% {
-    transform: translate(960px, 380px);
+    transform: translate(calc(960 * var(--u)), calc(380 * var(--u)));
   }
   27.1%,
   58% {
-    transform: translate(40px, 800px);
+    transform: translate(calc(40 * var(--u)), calc(800 * var(--u)));
   }
   66% {
-    transform: translate(70px, 330px);
+    transform: translate(calc(70 * var(--u)), calc(330 * var(--u)));
   }
   76% {
-    transform: translate(220px, 20px);
+    transform: translate(calc(220 * var(--u)), calc(20 * var(--u)));
   }
   88% {
-    transform: translate(400px, -230px);
+    transform: translate(calc(400 * var(--u)), calc(-230 * var(--u)));
   }
   100% {
-    transform: translate(560px, -290px);
+    transform: translate(calc(560 * var(--u)), calc(-290 * var(--u)));
   }
 }
 .moon {
+  width: calc(140 * var(--u));
+  height: calc(140 * var(--u));
+  left: calc(-70 * var(--u));
+  top: calc(-70 * var(--u));
+  background: radial-gradient(closest-side, #f4f1ff 0%, #e9e6fb 20%, rgba(207, 214, 255, 0.35) 25%, rgba(207, 214, 255, 0) 100%);
   opacity: 0;
   animation: moon var(--day) linear infinite;
 }
@@ -153,42 +189,36 @@
   0%,
   30% {
     opacity: 0;
-    transform: translate(120px, 120px);
+    transform: translate(calc(120 * var(--u)), calc(120 * var(--u)));
   }
   38% {
     opacity: 1;
-    transform: translate(260px, -120px);
+    transform: translate(calc(260 * var(--u)), calc(-120 * var(--u)));
   }
   56% {
     opacity: 1;
-    transform: translate(720px, -170px);
+    transform: translate(calc(720 * var(--u)), calc(-170 * var(--u)));
   }
   64%,
   100% {
     opacity: 0;
-    transform: translate(860px, 60px);
+    transform: translate(calc(860 * var(--u)), calc(60 * var(--u)));
   }
 }
 
-/* Clouds glow in the colour of the hour, and thin out at night. */
+/* Clouds: two tiles side by side slide left by one tile, then repeat. Thinner at night. */
 .clouds {
-  mix-blend-mode: screen;
   animation: clouds var(--day) linear infinite;
+  will-change: opacity;
 }
 @keyframes clouds {
   0%,
   16% {
     opacity: 1;
   }
-  26% {
-    opacity: 0.85;
-  }
   40%,
   56% {
-    opacity: 0.3;
-  }
-  66% {
-    opacity: 0.85;
+    opacity: 0.35;
   }
   78%,
   100% {
@@ -196,15 +226,18 @@
   }
 }
 .drift {
+  left: 0;
+  background-repeat: repeat-x;
+  will-change: transform;
   animation: drift linear infinite;
 }
 @keyframes drift {
   to {
-    transform: translateX(-1400px);
+    transform: translateX(-50%);
   }
 }
 
-/* Birds and cloud shadows only in daylight. */
+/* Birds in daylight: the flock glides across every 26 s. */
 .daylight {
   animation: daylight var(--day) linear infinite;
 }
@@ -222,53 +255,21 @@
     opacity: 1;
   }
 }
-
-/* The flock enters on the left, crosses the sky slightly rising, and leaves on the right. */
 .flock {
-  /* Starts off-screen, so the first frame matches the still. */
+  position: absolute;
+  left: calc(-60 * var(--u));
+  top: calc(-40 * var(--u));
+  overflow: visible;
+  will-change: transform;
   animation: fly 26s linear infinite;
 }
 @keyframes fly {
   0% {
-    transform: translate(-120px, 120px);
+    transform: translate(calc(-120 * var(--u)), calc(120 * var(--u)));
   }
-  55% {
-    transform: translate(1120px, 30px);
-  }
+  55%,
   100% {
-    transform: translate(1120px, 30px);
-  }
-}
-.bob {
-  animation: bob 2.6s ease-in-out infinite alternate;
-}
-@keyframes bob {
-  to {
-    transform: translateY(-6px);
-  }
-}
-/* Wing beats: the V flattens and folds. */
-.wings {
-  transform-box: fill-box;
-  transform-origin: center bottom;
-  animation: flap 0.45s ease-in-out infinite alternate;
-}
-@keyframes flap {
-  to {
-    transform: scaleY(-0.7);
-  }
-}
-
-/* Cloud shadows slide across the facades, the same way as the clouds. */
-.shadow {
-  animation: shadow linear infinite;
-}
-@keyframes shadow {
-  from {
-    transform: translateX(1400px);
-  }
-  to {
-    transform: translateX(-400px);
+    transform: translate(calc(1120 * var(--u)), calc(30 * var(--u)));
   }
 }
 
@@ -277,6 +278,6 @@
     animation: none !important;
   }
   .sun {
-    transform: translate(560px, -290px);
+    transform: translate(calc(560 * var(--u)), calc(-290 * var(--u)));
   }
 }
