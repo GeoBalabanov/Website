@@ -345,6 +345,12 @@ export function ProjectSlider({ projects }: Props) {
       <div className="flex h-full items-center justify-center px-4 md:px-6">
         {/* On phones, leave room on the right for the index so the pair is centred together. */}
         <div className="relative -mt-6 pr-[4.5rem] md:mt-0 md:pr-0">
+          {/* What the slider holds; the half that matches the current slide is darker. */}
+          <p className="absolute bottom-full left-0 mb-4 font-mono text-[11px] tracking-wide uppercase">
+            <span className={`transition-colors duration-500 ${active.kind ? "text-mute-ink" : "text-ink"}`}>Projects</span>
+            <span className="text-mute-ink"> &amp; </span>
+            <span className={`transition-colors duration-500 ${active.kind ? "text-ink" : "text-mute-ink"}`}>Personal life</span>
+          </p>
           <div className="relative">
             <OpenProjectLink project={active}>
               <div
