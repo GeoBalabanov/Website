@@ -9,6 +9,7 @@ import { SectionLabel } from "./bits";
 import { StreamingApps } from "@/components/living-cover/StreamingApps";
 import { ConnectFlow } from "@/components/living-cover/ConnectFlow";
 import { BloomFlow } from "@/components/living-cover/BloomFlow";
+import { DemoBox } from "@/components/living-cover/DemoBox";
 
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
@@ -128,6 +129,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
   if (item.living === "streaming-apps") return <StreamingApps label={item.alt} />;
   if (item.living === "connect-flow") return <ConnectFlow label={item.alt} />;
   if (item.living === "bloom-flow") return <BloomFlow label={item.alt} />;
+  if (item.living === "demo-box") return <DemoBox label={item.alt} />;
   if (item.kind === "video") {
     return (
       <video

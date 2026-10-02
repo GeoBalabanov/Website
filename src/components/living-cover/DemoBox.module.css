@@ -1,0 +1,136 @@
+.stage {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #0d1824;
+}
+.stage svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+}
+
+.caps {
+  fill: #e8edf3;
+  font-size: 15px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.small {
+  fill: #8ea1b3;
+  font-size: 12px;
+}
+.readout {
+  fill: #5cc8f0;
+  font-size: 30px;
+  font-variant-numeric: tabular-nums;
+}
+.level {
+  fill: #e8edf3;
+  font-size: 20px;
+  font-variant-numeric: tabular-nums;
+}
+.state {
+  font-size: 22px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.module {
+  fill: #101f2d;
+  stroke: #24384c;
+  stroke-width: 1.5;
+}
+.wire {
+  fill: none;
+  stroke: #2b4258;
+  stroke-width: 2;
+}
+/* The 4–20 mA signal pulsing from the sensor to the module. */
+.signal {
+  fill: none;
+  stroke: #f0a35c;
+  stroke-width: 2;
+  stroke-dasharray: 6 18;
+  animation: signal 1.2s linear infinite;
+}
+@keyframes signal {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+.pipe {
+  fill: none;
+  stroke: #24384c;
+  stroke-width: 10;
+  stroke-linejoin: round;
+}
+/* Liquid moving through a pipe while its pump runs. */
+.flow {
+  fill: none;
+  stroke: #5cc8f0;
+  stroke-width: 4;
+  stroke-dasharray: 8 12;
+  stroke-linejoin: round;
+  opacity: 0;
+  transition: opacity 400ms;
+}
+.flowOn {
+  opacity: 0.9;
+  animation: flow 0.8s linear infinite;
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.threshold {
+  fill: none;
+  stroke: #e8edf3;
+  stroke-opacity: 0.35;
+  stroke-dasharray: 4 5;
+}
+
+.spin {
+  animation: spin 0.7s linear infinite;
+}
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+.led {
+  filter: drop-shadow(0 0 4px #3ddc84);
+}
+.blink {
+  animation: blink 1.6s ease-in-out infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.25;
+  }
+}
+/* The rules that just fired flash once. */
+.fired {
+  animation: fired 0.9s ease-out;
+}
+@keyframes fired {
+  0%,
+  40% {
+    filter: drop-shadow(0 0 10px #5cc8f0) brightness(1.4);
+  }
+}
+
+.stage:not([data-running]) * {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+    transition: none !important;
+  }
+}
