@@ -14,6 +14,9 @@ const mono = JetBrains_Mono({ subsets: ["latin"], variable: "--font-mono-face", 
 export const metadata: Metadata = {
   title: { default: `${site.fullName} — ${site.tagline}`, template: `%s — ${site.fullName}` },
   description: site.description,
+  // Link previews (LinkedIn, X, chats); the image is app/opengraph-image.jpg.
+  openGraph: { type: "website", siteName: site.fullName, title: `${site.fullName} — ${site.tagline}`, description: site.description },
+  twitter: { card: "summary_large_image" },
 };
 
 export const viewport: Viewport = {
