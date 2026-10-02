@@ -1,0 +1,538 @@
+/* "Remote mode": the Demo Box as a living poster. Only transform and opacity animate. */
+
+.root {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: #0b1621;
+  container-type: size;
+  /* One loop: fill (first half), drain (second half). */
+  --cycle: 14s;
+}
+
+/* The scene keeps its aspect ratio and covers the frame (like object-fit: cover). */
+.scene {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  translate: -50% -50%;
+  container-type: inline-size;
+  overflow: hidden;
+}
+.portrait .scene {
+  aspect-ratio: 3 / 4;
+  width: max(100cqw, calc(100cqh * 0.75));
+}
+.wide .scene {
+  aspect-ratio: 16 / 10;
+  width: max(100cqw, calc(100cqh * 1.6));
+}
+.scene > * {
+  position: absolute;
+}
+
+/* ---------- Ground: engineering grid and two soft lights ---------- */
+.grid {
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(232, 237, 243, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(232, 237, 243, 0.05) 1px, transparent 1px);
+  background-size: 5cqw 5cqw;
+}
+.glow {
+  border-radius: 50%;
+  will-change: transform;
+  animation: drift 18s ease-in-out infinite alternate;
+}
+.glowBrick {
+  background: radial-gradient(closest-side, rgba(194, 65, 45, 0.55), rgba(194, 65, 45, 0));
+}
+.glowCyan {
+  background: radial-gradient(closest-side, rgba(76, 195, 239, 0.32), rgba(76, 195, 239, 0));
+  animation-duration: 23s;
+  animation-direction: alternate-reverse;
+}
+@keyframes drift {
+  to {
+    transform: translate(6%, -5%) scale(1.08);
+  }
+}
+
+.label {
+  margin: 0;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(232, 237, 243, 0.7);
+  white-space: nowrap;
+}
+.mode {
+  color: #e8edf3;
+}
+.dot {
+  display: inline-block;
+  width: 0.9em;
+  height: 0.9em;
+  margin-right: 0.4em;
+  vertical-align: -0.05em;
+  border-radius: 50%;
+  background: #3ddc84;
+  box-shadow: 0 0 0.8em #3ddc84;
+  animation: blink 1.6s ease-in-out infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.3;
+  }
+}
+
+/* ---------- Tank ---------- */
+.tank {
+  overflow: hidden;
+  border: 0.45cqw solid rgba(232, 237, 243, 0.42);
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.015) 40%, rgba(255, 255, 255, 0.07));
+  box-shadow:
+    inset 0 0 4cqw rgba(76, 195, 239, 0.12),
+    0 0 6cqw rgba(76, 195, 239, 0.08);
+}
+/* The liquid is as tall as the tank; moving it down shows less of it. */
+.liquid {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  animation: level var(--cycle) infinite;
+  /* Start part-way into filling, so the first frame (the still) shows a half-full tank. */
+  animation-delay: calc(var(--cycle) * -0.3);
+}
+@keyframes level {
+  0% {
+    transform: translateY(88%);
+    animation-timing-function: ease-in-out;
+  }
+  50% {
+    transform: translateY(17.5%);
+    animation-timing-function: ease-in-out;
+  }
+  100% {
+    transform: translateY(88%);
+  }
+}
+.wave {
+  top: 0;
+  left: 0;
+  position: absolute;
+  width: 200%;
+  height: 3cqw;
+  background-size: 25% 100%;
+  background-repeat: repeat-x;
+  will-change: transform;
+  animation: wave 3.2s linear infinite;
+}
+@keyframes wave {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.body {
+  position: absolute;
+  top: 2.9cqw;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(180deg, #78d6f5 0%, #3aa7dc 30%, #1d6fa8 100%);
+}
+.bubble {
+  position: absolute;
+  bottom: 4%;
+  width: 1cqw;
+  height: 1cqw;
+  border-radius: 50%;
+  border: 0.2cqw solid rgba(255, 255, 255, 0.6);
+  will-change: transform, opacity;
+  animation: bubble 5.2s linear infinite;
+}
+@keyframes bubble {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 0.9;
+  }
+  80% {
+    opacity: 0.6;
+  }
+  100% {
+    transform: translateY(-2000%);
+    opacity: 0;
+  }
+}
+.probe {
+  position: absolute;
+  background: linear-gradient(90deg, #9fb0c1, #e8edf3 50%, #9fb0c1);
+  border-radius: 1cqw;
+}
+.probeHead {
+  position: absolute;
+  background: #e8edf3;
+  border-radius: 0.6cqw;
+}
+
+/* ---------- Thresholds: they glow as the level reaches them ---------- */
+.threshold {
+  border-top: 0.3cqw dashed rgba(232, 237, 243, 0.35);
+}
+.threshold span {
+  position: absolute;
+  left: 100%;
+  top: 0;
+  translate: 0 -55%;
+  padding-left: 1.6cqw;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: rgba(232, 237, 243, 0.55);
+  white-space: nowrap;
+}
+.threshold::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -0.3cqw;
+  height: 0.3cqw;
+  background: #f0a35c;
+  box-shadow: 0 0 1.6cqw #f0a35c;
+  opacity: 0;
+  will-change: opacity;
+  animation: hitLow var(--cycle) linear infinite;
+  animation-delay: calc(var(--cycle) * -0.3);
+}
+/* (Keyframe names are written out, not passed via variables: CSS Modules renames them.) */
+.high::after {
+  animation-name: hitHigh;
+}
+@keyframes hitHigh {
+  0%,
+  40%,
+  62%,
+  100% {
+    opacity: 0;
+  }
+  48%,
+  54% {
+    opacity: 1;
+  }
+}
+@keyframes hitLow {
+  0%,
+  6%,
+  88% {
+    opacity: 1;
+  }
+  14%,
+  80% {
+    opacity: 0;
+  }
+  96%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ---------- Pipes and pumps ---------- */
+.pipe {
+  background: rgba(232, 237, 243, 0.14);
+  border-radius: 1cqw;
+}
+.pump {
+  border-radius: 50%;
+  background: #0b1621;
+  border: 0.4cqw solid rgba(232, 237, 243, 0.3);
+}
+.pumpRing {
+  position: absolute;
+  inset: -0.45cqw;
+  border-radius: 50%;
+  border: 0.45cqw solid #3ddc84;
+  box-shadow: 0 0 2cqw rgba(61, 220, 132, 0.5);
+}
+.rotor {
+  position: absolute;
+  inset: 22%;
+  background:
+    linear-gradient(rgba(232, 237, 243, 0.55), rgba(232, 237, 243, 0.55)) center / 100% 14% no-repeat,
+    linear-gradient(rgba(232, 237, 243, 0.55), rgba(232, 237, 243, 0.55)) center / 14% 100% no-repeat;
+}
+.rotorSpin {
+  background:
+    linear-gradient(#3ddc84, #3ddc84) center / 100% 14% no-repeat,
+    linear-gradient(#3ddc84, #3ddc84) center / 14% 100% no-repeat;
+  will-change: transform, opacity;
+  animation:
+    spin 0.9s linear infinite,
+    fillTurn var(--cycle) linear infinite;
+  animation-delay: 0s, calc(var(--cycle) * -0.3);
+}
+.rotorSpin.drainOn {
+  animation-name: spin, drainTurn;
+}
+.pumpRing.fillOn,
+.pumpRing.drainOn {
+  will-change: opacity;
+  animation: fillTurn var(--cycle) linear infinite;
+  animation-delay: calc(var(--cycle) * -0.3);
+}
+.pumpRing.drainOn {
+  animation-name: drainTurn;
+}
+@keyframes spin {
+  to {
+    rotate: 360deg;
+  }
+}
+@keyframes fillTurn {
+  0%,
+  49% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes drainTurn {
+  0%,
+  49% {
+    opacity: 0;
+  }
+  51%,
+  100% {
+    opacity: 1;
+  }
+}
+
+/* ---------- The 4–20 mA trace: one loop wide, scrolling in step with the tank ---------- */
+.signal {
+  overflow: hidden;
+  border-top: 0.2cqw solid rgba(232, 237, 243, 0.12);
+  border-bottom: 0.2cqw solid rgba(232, 237, 243, 0.12);
+}
+.trace {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: 200%;
+  background-size: 50% 100%;
+  background-repeat: repeat-x;
+  will-change: transform;
+  animation: trace var(--cycle) linear infinite;
+  animation-delay: calc(var(--cycle) * -0.3);
+}
+@keyframes trace {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ================= Portrait (3:4): scene width = 100cqw, height = 133.3cqw ================= */
+.portrait .label {
+  font-size: 2.6cqw;
+}
+.portrait .title {
+  left: 7cqw;
+  top: 7cqw;
+}
+.portrait .mode {
+  right: 7cqw;
+  top: 7cqw;
+}
+.portrait .glowBrick {
+  left: -30cqw;
+  top: 70cqw;
+  width: 110cqw;
+  height: 110cqw;
+}
+.portrait .glowCyan {
+  left: 40cqw;
+  top: -10cqw;
+  width: 90cqw;
+  height: 90cqw;
+}
+.portrait .tank {
+  left: 32cqw;
+  top: 20cqw;
+  width: 36cqw;
+  height: 80cqw;
+  border-radius: 6cqw;
+}
+.portrait .probe {
+  left: 74%;
+  top: -2%;
+  width: 1.6cqw;
+  height: 86%;
+}
+.portrait .probeHead {
+  left: calc(74% - 1.4cqw);
+  top: 0;
+  width: 4.4cqw;
+  height: 3cqw;
+}
+/* Thresholds at 82.5% and 10% of the tank (y = 20 + 80 × (1 − level)). */
+.portrait .threshold {
+  left: 28cqw;
+  width: 44cqw;
+}
+.portrait .high {
+  top: 34cqw;
+}
+.portrait .low {
+  top: 92cqw;
+}
+.portrait .threshold span {
+  font-size: 2.4cqw;
+}
+.portrait .pipe {
+  top: 96.5cqw;
+  height: 1.8cqw;
+}
+.portrait .pipeIn {
+  left: 15cqw;
+  width: 22cqw;
+}
+.portrait .pipeOut {
+  left: 63cqw;
+  width: 22cqw;
+}
+.portrait .pump {
+  top: 92cqw;
+  width: 11cqw;
+  height: 11cqw;
+}
+.portrait .pumpIn {
+  left: 6cqw;
+}
+.portrait .pumpOut {
+  left: 83cqw;
+}
+.portrait .signal {
+  left: 7cqw;
+  right: 7cqw;
+  top: 110cqw;
+  height: 13cqw;
+}
+.portrait .signalLabel {
+  left: 7cqw;
+  top: 125.5cqw;
+}
+
+/* ================= Wide (16:10): scene width = 100cqw, height = 62.5cqw ================= */
+.wide .label {
+  font-size: 1.05cqw;
+}
+.wide .title {
+  left: 62cqw;
+  top: 8cqw;
+}
+.wide .mode {
+  right: 4cqw;
+  top: 8cqw;
+}
+.wide .glowBrick {
+  left: -15cqw;
+  top: 20cqw;
+  width: 70cqw;
+  height: 70cqw;
+}
+.wide .glowCyan {
+  left: 55cqw;
+  top: -15cqw;
+  width: 55cqw;
+  height: 55cqw;
+}
+.wide .tank {
+  left: 68cqw;
+  top: 13cqw;
+  width: 15cqw;
+  height: 34cqw;
+  border-radius: 2.6cqw;
+  border-width: 0.25cqw;
+}
+.wide .probe {
+  left: 74%;
+  top: -2%;
+  width: 0.7cqw;
+  height: 86%;
+}
+.wide .probeHead {
+  left: calc(74% - 0.6cqw);
+  top: 0;
+  width: 1.9cqw;
+  height: 1.3cqw;
+}
+.wide .wave {
+  height: 1.3cqw;
+}
+.wide .body {
+  top: 1.25cqw;
+}
+.wide .bubble {
+  width: 0.45cqw;
+  height: 0.45cqw;
+  border-width: 0.1cqw;
+}
+/* y = 13 + 34 × (1 − level) */
+.wide .threshold {
+  left: 66cqw;
+  width: 19cqw;
+  border-top-width: 0.15cqw;
+}
+.wide .high {
+  top: 18.95cqw;
+}
+.wide .low {
+  top: 43.6cqw;
+}
+.wide .threshold span {
+  font-size: 1cqw;
+  padding-left: 0.8cqw;
+  /* Above the line, clear of the drain pump. */
+  translate: 0 -130%;
+}
+.wide .pipe {
+  top: 45.6cqw;
+  height: 0.8cqw;
+}
+.wide .pipeIn {
+  left: 61cqw;
+  width: 10cqw;
+}
+.wide .pipeOut {
+  left: 80cqw;
+  width: 10cqw;
+}
+.wide .pump {
+  top: 43.5cqw;
+  width: 5cqw;
+  height: 5cqw;
+  border-width: 0.2cqw;
+}
+.wide .pumpIn {
+  left: 57cqw;
+}
+.wide .pumpOut {
+  left: 89cqw;
+}
+.wide .signal {
+  left: 4cqw;
+  width: 50cqw;
+  top: 14cqw;
+  height: 9cqw;
+}
+.wide .signalLabel {
+  left: 4cqw;
+  top: 24.5cqw;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .root * {
+    animation-play-state: paused !important;
+  }
+}
