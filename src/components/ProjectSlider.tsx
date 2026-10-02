@@ -7,6 +7,7 @@ import { prefersReducedMotion } from "@/lib/motion";
 import { ProjectImage } from "./ProjectImage";
 import { OpenProjectLink } from "./transition/OpenProjectLink";
 import { LivingCover } from "./living-cover/LivingCover";
+import { CornerTape } from "./CornerTape";
 import { SliderStrip } from "./slider-strip";
 
 const MINOR_TICKS = 5;
@@ -364,6 +365,7 @@ export function ProjectSlider({ projects }: Props) {
                     <div className="absolute inset-0 will-change-transform">
                       <ProjectImage image={p.images[0]} sizes="(min-width: 768px) 40vw, 70vw" priority={i === 0} />
                       {p.coverMotion && <LivingCover motion={p.coverMotion} src={p.images[0].src} active={i === index} />}
+                      {p.underConstruction && <CornerTape bg={p.theme.accent} fg={p.theme.bg} />}
                     </div>
                   </div>
                 ))}
