@@ -53,7 +53,8 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
 
   // Where each item sits: wide items span the page, portraits pair up at staggered
   // heights, and runs of vertical videos go three across (the middle one dropped).
-  // A single vertical item (a phone screen) sits alone in the centre, two form a centred pair.
+  // A single vertical item (a phone screen) sits alone in the centre, two form a centred pair;
+  // a `compact` portrait (a logo, say) is centred on its own too.
   // (On phones the third of a run sits centred on its own row.)
   const tallPlace = ["md:col-start-1", "md:col-start-5 md:mt-[16vh]", "col-start-4 md:col-start-9"];
   const places: string[] = [];
@@ -76,13 +77,15 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
           ? "col-span-8 col-start-3 md:col-span-4 md:col-start-5 md:w-[82%] md:justify-self-center"
           : item.tall
           ? `col-span-6 md:col-span-4 md:w-[82%] md:justify-self-center ${tallPlace[tall++ % 3]}`
+          : item.compact
+          ? "col-span-8 col-start-3 md:col-span-4 md:col-start-5"
           : `col-span-6 md:col-span-4 ${portrait++ % 2 === 0 ? "md:col-start-2" : "md:col-start-8 md:mt-[22vh]"}`,
     );
   }
 
   return (
     <section ref={root} id="gallery" className="px-4 py-[14vh] md:px-10">
-      <SectionLabel index={index} placeholder={project.gallery.some((m) => m.alt.startsWith("Placeholder"))}>
+      <SectionLabel index={index}>
         Gallery
       </SectionLabel>
       <div className="mt-10 grid grid-cols-12 gap-x-4 gap-y-[12vh] md:gap-x-8">

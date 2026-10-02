@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { gsap } from "gsap";
 import type { Project, Signature } from "@/data/projects";
 import { useScene } from "@/lib/use-scene";
-import { PlaceholderTag, SectionLabel } from "../bits";
+import { SectionLabel } from "../bits";
 
 type Data = Extract<Signature, { type: "route-map" }>;
 
@@ -207,9 +207,7 @@ export function RouteMap({ data }: { project: Project; data: Data }) {
 
           <div className="shrink-0">
             <div className="flex justify-between font-mono text-[11px] tracking-wide text-[var(--p-muted)] uppercase">
-              <span className="flex items-center gap-2">
-                Elevation <PlaceholderTag />
-              </span>
+              <span>Elevation</span>
               <span data-elev className="tabular-nums text-[var(--p-fg)]">
                 160 m
               </span>
@@ -262,7 +260,6 @@ function RaceDay({ data }: { data: Data }) {
       <div className="flex flex-wrap items-center gap-3 font-mono text-xs tracking-wide text-[var(--p-muted)] uppercase">
         <span>Race day</span>
         <span className="text-[var(--p-fg)]">{data.raceDate.label}</span>
-        {!data.raceDate.iso && <PlaceholderTag>Set raceDate.iso to start the countdown</PlaceholderTag>}
       </div>
       <div className="mt-6 grid grid-cols-4 gap-2 md:max-w-4xl md:gap-4" role="timer" aria-label="Countdown to race day">
         {parts.map(([label, v]) => (
