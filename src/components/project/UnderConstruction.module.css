@@ -1,0 +1,180 @@
+/* "Under construction": crossing tapes and a voice note that keeps recording. */
+
+.stage {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: min(78vh, 760px);
+  margin-top: 4vh;
+}
+
+/* ---------- Tapes ---------- */
+.tape {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 140vw;
+  overflow: hidden;
+  padding: 0.9em 0;
+  font-family: var(--p-display);
+  font-weight: 800;
+  font-size: clamp(18px, 2.6vw, 38px);
+  line-height: 1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+  color: var(--p-bg);
+}
+.tapeA {
+  background: var(--p-accent);
+  transform: translate(-50%, -50%) translateY(-9vh) rotate(-7deg);
+}
+.tapeB {
+  background: var(--p-accent-2);
+  transform: translate(-50%, -50%) translateY(10vh) rotate(5deg);
+}
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 38s linear infinite;
+}
+.tapeB .track {
+  animation-direction: reverse;
+  animation-duration: 46s;
+}
+.run {
+  display: flex;
+  gap: 0.9em;
+  padding-right: 0.9em;
+}
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+/* ---------- Voice note card ---------- */
+.card {
+  position: relative;
+  width: min(82vw, 460px);
+  padding: 22px 24px 26px;
+  /* The title scales with the card, so "Construction" always fits. */
+  container-type: inline-size;
+  border-radius: 22px;
+  background: var(--p-bg);
+  border: 1px solid color-mix(in srgb, var(--p-fg) 18%, transparent);
+  box-shadow: 0 30px 80px -20px rgb(0 0 0 / 0.6);
+}
+.cardTop {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--p-muted);
+}
+.cardName {
+  margin-left: auto;
+}
+.rec {
+  width: 9px;
+  height: 9px;
+  border-radius: 50%;
+  background: var(--p-accent);
+  box-shadow: 0 0 10px var(--p-accent);
+  animation: blink 1.2s steps(2, jump-none) infinite;
+}
+@keyframes blink {
+  50% {
+    opacity: 0.2;
+  }
+}
+
+.wave {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  height: 64px;
+  margin-top: 18px;
+}
+.wave span {
+  flex: 1;
+  height: 100%;
+  border-radius: 3px;
+  background: linear-gradient(var(--p-accent), var(--p-accent-2));
+  transform: scaleY(calc(var(--h) * 0.55));
+  animation: talk 1.4s ease-in-out infinite alternate;
+}
+@keyframes talk {
+  from {
+    transform: scaleY(calc(var(--h) * 0.55));
+  }
+  to {
+    transform: scaleY(calc(var(--h) * 0.18 + 0.06));
+  }
+}
+
+.progress {
+  height: 2px;
+  margin-top: 16px;
+  overflow: hidden;
+  border-radius: 2px;
+  background: color-mix(in srgb, var(--p-fg) 15%, transparent);
+}
+.progress span {
+  display: block;
+  height: 100%;
+  background: var(--p-fg);
+  transform-origin: left;
+  transform: scaleX(0.35);
+  animation: fill 9s cubic-bezier(0.45, 0, 0.55, 1) infinite;
+}
+@keyframes fill {
+  0% {
+    transform: scaleX(0.05);
+  }
+  85% {
+    transform: scaleX(0.92);
+  }
+  100% {
+    transform: scaleX(0.92);
+    opacity: 0;
+  }
+}
+
+.title {
+  margin: 22px 0 0;
+  font-family: var(--p-display);
+  font-weight: 800;
+  font-size: 6.9cqw;
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+}
+.note {
+  margin: 12px 0 0;
+  font-size: 15px;
+  line-height: 1.45;
+  color: var(--p-muted);
+}
+
+/* Phones: the tapes cross above and below the card instead of behind it. */
+@media (max-width: 640px) {
+  .stage {
+    min-height: 620px;
+  }
+  .tapeA {
+    transform: translate(-50%, -50%) translateY(-215px) rotate(-8deg);
+  }
+  .tapeB {
+    transform: translate(-50%, -50%) translateY(215px) rotate(6deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+  }
+}
