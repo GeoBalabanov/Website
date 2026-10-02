@@ -324,42 +324,8 @@ export const projects: Project[] = [
     confirmed: ["intro", "facts"],
   },
   {
-    slug: "dating-app",
-    number: "03",
-    title: "Dating App",
-    subtitle: "A dating concept built around personality, music and voice",
-    link: "https://github.com/GeoBalabanov/Dating-App",
-    coverMotion: "hairwave",
-    hero: { src: "/projects/dating-app-hero.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
-    images: [
-      { src: "/projects/dating-app-1.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
-      { src: "/projects/dating-app-2.svg", alt: "Dark voice waveform on a soft pink background", motion: "wave" },
-    ],
-    year: "2025",
-    role: "Concept & UI Design",
-    location: "Eindhoven",
-    // PLACEHOLDER intro
-    intro:
-      "What if you heard someone before you saw them? This concept matches people on personality, the music they love and a short voice note, and only then reveals photos.",
-    theme: { bg: "#23091e", fg: "#ffe8ef", muted: "#e0a9bd", accent: "#ff5c8a", accent2: "#ff9a62", font: "syne", titleClass: "font-extrabold", heroTone: "light", heroInk: "#2a0f24", heroPaper: "#f5f1f2" },
-    signature: {
-      type: "kinetic-type",
-      words: ["Personality", "Music", "Voice"],
-      caption: "Move your cursor (or finger) through the letters.",
-    },
-    gallery: [],
-    underConstruction: "The screens are still being designed. Check back soon to hear how it sounds.",
-    // PLACEHOLDER numbers
-    facts: [
-      { value: 30, suffix: " s", label: "Voice intro" },
-      { value: 3, label: "Songs per profile" },
-      { value: 12, label: "Personality prompts" },
-      { value: 1, label: "Photo, revealed last" },
-    ],
-  },
-  {
     slug: "advantech-internship",
-    number: "04",
+    number: "03",
     title: "Internship at Advantech Europe",
     subtitle: "What it's like to be a Solution Engineer",
     coverMotion: "sky",
@@ -423,7 +389,7 @@ export const projects: Project[] = [
   },
   {
     slug: "bloom",
-    number: "05",
+    number: "04",
     title: "Bloom",
     subtitle: "A collective feedback garden designed for art galleries",
     coverMotion: "bloom",
@@ -480,7 +446,7 @@ export const projects: Project[] = [
   },
   {
     slug: "madrid-exchange",
-    number: "06",
+    number: "05",
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
@@ -583,7 +549,7 @@ export const projects: Project[] = [
   },
   {
     slug: "marathon-running",
-    number: "07",
+    number: "06",
     kind: "For the mind, body & soul",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
@@ -674,7 +640,7 @@ export const projects: Project[] = [
   },
   {
     slug: "plovdiv-marathon",
-    number: "08",
+    number: "07",
     kind: "Event creator",
     title: "Plovdiv Marathon",
     subtitle: "Organizer · Plovdiv, Bulgaria",
@@ -729,6 +695,40 @@ export const projects: Project[] = [
       { value: 1500, suffix: "+", label: "Runners expected" },
       { value: 6, label: "Hills of Plovdiv" },
       { value: 200, suffix: "+", label: "Volunteers" },
+    ],
+  },
+  {
+    slug: "dating-app",
+    number: "08",
+    title: "Dating App",
+    subtitle: "A dating concept built around personality, music and voice",
+    link: "https://github.com/GeoBalabanov/Dating-App",
+    coverMotion: "hairwave",
+    hero: { src: "/projects/dating-app-hero.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
+    images: [
+      { src: "/projects/dating-app-1.jpg", alt: "A sound wave drawn from thousands of fine plum strands on off-white" },
+      { src: "/projects/dating-app-2.svg", alt: "Dark voice waveform on a soft pink background", motion: "wave" },
+    ],
+    year: "2025",
+    role: "Concept & UI Design",
+    location: "Eindhoven",
+    // PLACEHOLDER intro
+    intro:
+      "What if you heard someone before you saw them? This concept matches people on personality, the music they love and a short voice note, and only then reveals photos.",
+    theme: { bg: "#23091e", fg: "#ffe8ef", muted: "#e0a9bd", accent: "#ff5c8a", accent2: "#ff9a62", font: "syne", titleClass: "font-extrabold", heroTone: "light", heroInk: "#2a0f24", heroPaper: "#f5f1f2" },
+    signature: {
+      type: "kinetic-type",
+      words: ["Personality", "Music", "Voice"],
+      caption: "Move your cursor (or finger) through the letters.",
+    },
+    gallery: [],
+    underConstruction: "The screens are still being designed. Check back soon to hear how it sounds.",
+    // PLACEHOLDER numbers
+    facts: [
+      { value: 30, suffix: " s", label: "Voice intro" },
+      { value: 3, label: "Songs per profile" },
+      { value: 12, label: "Personality prompts" },
+      { value: 1, label: "Photo, revealed last" },
     ],
   },
 ];

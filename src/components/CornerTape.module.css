@@ -1,0 +1,46 @@
+/* Corner tape: sized from the cover it sits on (container units). */
+.root {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  overflow: hidden;
+  pointer-events: none;
+  container-type: size;
+}
+.tape {
+  position: absolute;
+  top: 18cqw;
+  right: -21cqw;
+  width: 90cqw;
+  padding: 1.6cqw 0;
+  overflow: hidden;
+  transform: rotate(45deg);
+  box-shadow: 0 1cqw 3cqw rgb(0 0 0 / 0.25);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 3.6cqw;
+  font-weight: 700;
+  line-height: 1;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 16s linear infinite;
+}
+.run {
+  display: flex;
+  gap: 0.8em;
+  padding-right: 0.8em;
+}
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}

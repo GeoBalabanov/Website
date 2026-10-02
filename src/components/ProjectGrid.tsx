@@ -9,6 +9,7 @@ import { ProjectImage } from "./ProjectImage";
 import { OpenProjectLink } from "./transition/OpenProjectLink";
 import type { ProjectSection } from "./transition/ProjectTransition";
 import { LivingCover } from "./living-cover/LivingCover";
+import { CornerTape } from "./CornerTape";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -123,6 +124,7 @@ function GridMedia({ image, project, cover }: { image: ProjectImageType; project
     >
       <ProjectImage image={image} sizes="(min-width: 1024px) 14vw, (min-width: 640px) 26vw, 46vw" />
       {motion && <LivingCover motion={motion} src={image.src} active={inView} />}
+      {cover && project.underConstruction && <CornerTape bg={project.theme.accent} fg={project.theme.bg} />}
     </div>
   );
 }
