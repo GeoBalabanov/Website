@@ -131,7 +131,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "sky" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
+export type CoverMotion = "sky" | "adv-steps" | "adv-network" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
 
 export type Project = {
   slug: string;
@@ -373,7 +373,11 @@ export const projects: Project[] = [
     subtitle: "What it's like to be a Solution Engineer",
     coverMotion: "sky",
     hero: { src: "/projects/advantech-hero.jpg", alt: "Remote mode: a glass tank on a dark engineering grid, half full, with its level sensor, two pumps and a 4–20 mA signal trace" },
-    images: [{ src: "/projects/advantech-1.jpg", alt: "Remote mode: a glass tank on a dark engineering grid, half full, with its level sensor, two pumps and a 4–20 mA signal trace" }],
+    images: [
+      { src: "/projects/advantech-1.jpg", alt: "Remote mode: a glass tank on a dark engineering grid, half full, with its level sensor, two pumps and a 4–20 mA signal trace" },
+      { src: "/projects/advantech-2.jpg", alt: "A build log on a dark grid: Learn, Map, Fix, Automate and Document, ticked off one by one", motion: "adv-steps" },
+      { src: "/projects/advantech-3.jpg", alt: "The Demo Box network: two ADAM modules, the EKI-5525 switch and the SCADA laptop, with readings travelling up and commands down", motion: "adv-network" },
+    ],
     year: "2025",
     role: "Solution Engineer Intern · IoT & Automation",
     location: "Eindhoven",
