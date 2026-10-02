@@ -91,7 +91,8 @@ export function WiringDiagram({ label }: { label: string }) {
 
   return (
     <div ref={stage} role="img" aria-label={label} className={s.stage}>
-      <svg viewBox="0 0 1000 680" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
+      {/* Generous margins: the gallery frame drifts (parallax) and must never clip the drawing. */}
+      <svg viewBox="-110 -120 1220 920" preserveAspectRatio="xMidYMid meet" aria-hidden="true">
         <text x="40" y="44" className={s.title}>
           Demo Box · wiring
         </text>
