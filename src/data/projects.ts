@@ -160,6 +160,8 @@ export type Project = {
   signature: Signature;
   gallery: MediaItem[];
   facts: Fact[];
+  /** Shown in place of the gallery while the project is still being made (the note under "Under construction"). */
+  underConstruction?: string;
   /** Sections whose content is final (a to-do marker for the data; not shown on the page). */
   confirmed?: ("intro" | "facts")[];
   /** Optional story section after the signature: moments of a use scenario, then the personas behind it. */
@@ -169,13 +171,6 @@ export type Project = {
     people: { name: string; about: string; quote: string }[];
   };
 };
-
-const img = (slug: string, name: string, alt: string, wide = false, caption?: string): MediaItem => ({
-  src: `/projects/${slug}-${name}.svg`,
-  alt,
-  wide,
-  caption,
-});
 
 export const projects: Project[] = [
   {
@@ -352,12 +347,8 @@ export const projects: Project[] = [
       words: ["Personality", "Music", "Voice"],
       caption: "Move your cursor (or finger) through the letters.",
     },
-    gallery: [
-      img("dating-app", "wide-1", "The voice match screen", true, "The match screen: you hear a voice note before you see a face."),
-      img("dating-app", "1", "A profile screen", false, "Profiles lead with personality and music taste. Photos come last."),
-      img("dating-app", "2", "A voice note waveform, close up", false, "The voice note waveform, the first thing you see of someone."),
-      img("dating-app", "wide-2", "Overlapping music taste rings", true, "Overlapping rings show how much two people's music taste has in common."),
-    ],
+    gallery: [],
+    underConstruction: "The screens are still being designed. Check back soon to hear how it sounds.",
     // PLACEHOLDER numbers
     facts: [
       { value: 30, suffix: " s", label: "Voice intro" },
