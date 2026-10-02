@@ -38,7 +38,7 @@ export type MediaItem = ProjectImage & {
   /** Show the whole image on white instead of filling (and cropping) the frame, e.g. for diagrams. */
   fit?: "contain";
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box";
+  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network";
 };
 
 export type Fact = {
@@ -126,7 +126,7 @@ export type Signature =
  *   voice  – live waveform bars, glow pulsing with the sound (dating-app-1)
  *   ripple – rings rippling out from a pulsing centre         (corsa-car-audio-1)
  *   bloom  – a turning flower whose petals breathe open      (bloom-1)
- *   sky    – clouds and birds drifting behind the Advantech building (advantech-1)
+ *   sky    – "Remote mode": the Demo Box tank filling and draining (advantech-1)
  * They only match those exact covers. With your own cover image, use
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
@@ -370,8 +370,8 @@ export const projects: Project[] = [
     title: "Internship at Advantech Europe",
     subtitle: "What it's like to be a Solution Engineer",
     coverMotion: "sky",
-    hero: { src: "/projects/advantech-hero.jpg", alt: "Advantech's red-brick office building with glass windows, a green roof garden and a blue sky with clouds" },
-    images: [{ src: "/projects/advantech-1.jpg", alt: "Advantech's red-brick office tower with tall glass windows and a green roof garden under a cloudy blue sky" }],
+    hero: { src: "/projects/advantech-hero.jpg", alt: "Remote mode: a glass tank on a dark engineering grid, half full, with its level sensor, two pumps and a 4–20 mA signal trace" },
+    images: [{ src: "/projects/advantech-1.jpg", alt: "Remote mode: a glass tank on a dark engineering grid, half full, with its level sensor, two pumps and a 4–20 mA signal trace" }],
     year: "2025",
     role: "Solution Engineer Intern · IoT & Automation",
     location: "Eindhoven",
@@ -400,19 +400,18 @@ export const projects: Project[] = [
         caption: "Remote mode: the Demo Box filling and draining by itself, driven by the level sensor's 4–20 mA signal and my GCL rules. Built with guidance from my mentor Guilherme, and Steve and Jay in the lab.",
       },
       {
-        src: "/projects/advantech-wiring.jpg",
+        src: "/projects/advantech-wiring",
+        living: "wiring",
         wide: true,
-        fit: "contain",
         alt: "Wiring diagram of the Demo Box drawn in Microsoft Visio: the valve and level sensor into the ADAM-6017, the ADAM-6050 through a terminal block to the relay, the relay and Wago connectors to both pumps, and everything on one power supply with the EKI-5525 switch",
-        caption: "The Demo Box's wiring, drawn in Visio: power (+Vs/−Vs), ground and every signal from the valve and level sensor through the ADAM modules and the relay to both pumps.",
+        caption: "The wiring I drew in Visio, one layer at a time: power, the sensor signal, the outputs that switch the pumps, and ground.",
       },
       {
-        src: "/projects/advantech-ethernet.jpg",
+        src: "/projects/advantech-ethernet",
+        living: "network",
         wide: true,
-        compact: true,
-        fit: "contain",
         alt: "Network diagram: the ADAM-6050 and ADAM-6017 connected over Ethernet to the EKI-5525 switch, which links to the PPC screen and to a laptop running WebAccess/SCADA",
-        caption: "How it talks: both ADAM modules on the EKI-5525 switch, with the PPC screen and the WebAccess/SCADA laptop on the same Ethernet.",
+        caption: "How it talks: both ADAM modules, the PPC screen and the WebAccess/SCADA laptop on one EKI-5525 switch. Readings go up, commands come back down.",
       },
     ],
     facts: [

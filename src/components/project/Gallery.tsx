@@ -10,6 +10,8 @@ import { StreamingApps } from "@/components/living-cover/StreamingApps";
 import { ConnectFlow } from "@/components/living-cover/ConnectFlow";
 import { BloomFlow } from "@/components/living-cover/BloomFlow";
 import { DemoBox } from "@/components/living-cover/DemoBox";
+import { WiringDiagram } from "@/components/living-cover/WiringDiagram";
+import { NetworkDiagram } from "@/components/living-cover/NetworkDiagram";
 
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
@@ -130,6 +132,8 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
   if (item.living === "connect-flow") return <ConnectFlow label={item.alt} />;
   if (item.living === "bloom-flow") return <BloomFlow label={item.alt} />;
   if (item.living === "demo-box") return <DemoBox label={item.alt} />;
+  if (item.living === "wiring") return <WiringDiagram label={item.alt} />;
+  if (item.living === "network") return <NetworkDiagram label={item.alt} />;
   if (item.kind === "video") {
     return (
       <video

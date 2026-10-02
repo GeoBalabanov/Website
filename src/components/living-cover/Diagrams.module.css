@@ -1,0 +1,170 @@
+/* Animated Advantech diagrams: paper, ink and the Visio wire colours. */
+
+.stage {
+  position: absolute;
+  inset: 0;
+  background: #fbfaf7;
+}
+.stage svg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  font-family: ui-sans-serif, system-ui, sans-serif;
+}
+
+.title {
+  fill: #17212b;
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/* Blocks: dim until the current step involves them. */
+.block rect,
+.blockOn rect {
+  fill: #ffffff;
+  stroke: #17212b;
+  stroke-width: 1.5;
+  transition:
+    stroke-opacity 400ms,
+    fill 400ms;
+}
+.block rect {
+  stroke-opacity: 0.25;
+}
+.block text {
+  opacity: 0.4;
+  transition: opacity 400ms;
+}
+.blockOn rect {
+  stroke-width: 2;
+}
+.blockLabel {
+  fill: #17212b;
+  font-size: 16px;
+  font-weight: 600;
+}
+.blockSub {
+  fill: #55606b;
+  font-size: 12px;
+}
+
+/* Wires: grey until their step, then their colour with current flowing. */
+.stage [data-kind="plus"] {
+  --wire: #e08a3c;
+}
+.stage [data-kind="minus"] {
+  --wire: #3aa7dc;
+}
+.stage [data-kind="signal"] {
+  --wire: #c2412d;
+}
+.stage [data-kind="out"] {
+  --wire: #7a3b2a;
+}
+.stage [data-kind="gnd"] {
+  --wire: #9ab81c;
+}
+.base,
+.current {
+  fill: none;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+.wire .base {
+  stroke: #17212b;
+  stroke-opacity: 0.12;
+}
+.wire .current {
+  opacity: 0;
+}
+.wireOn .base {
+  stroke: var(--wire);
+  stroke-opacity: 0.35;
+}
+.wireOn .current {
+  stroke: var(--wire);
+  stroke-dasharray: 10 14;
+  animation: flow 0.9s linear infinite;
+}
+[data-kind="gnd"].wireOn .base,
+[data-kind="gnd"].wire .base {
+  stroke-dasharray: 10 8;
+}
+@keyframes flow {
+  to {
+    stroke-dashoffset: -24;
+  }
+}
+
+/* Step tabs and caption */
+.tab rect {
+  fill: none;
+  stroke: #17212b;
+  stroke-opacity: 0.2;
+}
+.tab text {
+  fill: #55606b;
+  font-size: 12px;
+}
+.tabOn rect {
+  fill: #17212b;
+}
+.tabOn text {
+  fill: #fbfaf7;
+  font-size: 12px;
+  font-weight: 600;
+}
+.stepNo {
+  fill: #b8452f;
+  font-size: 28px;
+  font-weight: 700;
+}
+.stepTitle {
+  fill: #17212b;
+  font-size: 18px;
+  font-weight: 600;
+}
+.stepText {
+  fill: #55606b;
+  font-size: 14px;
+}
+.legend text {
+  fill: #55606b;
+  font-size: 12px;
+}
+.legendLine {
+  stroke: var(--wire);
+  stroke-width: 3;
+}
+[data-kind="gnd"] .legendLine {
+  stroke-dasharray: 8 6;
+}
+
+/* Ethernet */
+.cable {
+  fill: none;
+  stroke: #17212b;
+  stroke-opacity: 0.2;
+  stroke-width: 4;
+  stroke-linejoin: round;
+}
+.packet {
+  stroke: #fbfaf7;
+  stroke-width: 2;
+}
+
+.stage:not([data-running]) .wireOn .current {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .stage * {
+    animation: none !important;
+    transition: none !important;
+  }
+  .packets {
+    display: none;
+  }
+}
