@@ -653,6 +653,8 @@ export const projects: Project[] = [
     year: "2026",
     role: "Organizer",
     location: "Plovdiv, Bulgaria",
+    link: "https://plovdiv.run/en",
+    linkLabel: "Visit the race site",
     // PLACEHOLDER intro
     intro:
       "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The loop runs from the Rowing Canal along the Maritsa and through the centre, and every kilometre is planned for runners and for the city that hosts them.",
