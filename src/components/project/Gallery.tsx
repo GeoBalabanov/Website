@@ -12,6 +12,7 @@ import { BloomFlow } from "@/components/living-cover/BloomFlow";
 import { DemoBox } from "@/components/living-cover/DemoBox";
 import { WiringDiagram } from "@/components/living-cover/WiringDiagram";
 import { NetworkDiagram } from "@/components/living-cover/NetworkDiagram";
+import { SiteTour } from "@/components/living-cover/SiteTour";
 
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
@@ -137,6 +138,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
   if (item.living === "demo-box") return <DemoBox label={item.alt} />;
   if (item.living === "wiring") return <WiringDiagram label={item.alt} />;
   if (item.living === "network") return <NetworkDiagram label={item.alt} />;
+  if (item.living === "site-tour") return <SiteTour label={item.alt} url="plovdiv.run/en" />;
   if (item.kind === "video") {
     return (
       <video

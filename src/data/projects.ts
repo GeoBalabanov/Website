@@ -38,7 +38,7 @@ export type MediaItem = ProjectImage & {
   /** Show the whole image on white instead of filling (and cropping) the frame, e.g. for diagrams. */
   fit?: "contain";
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network";
+  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network" | "site-tour";
 };
 
 export type Fact = {
@@ -675,6 +675,13 @@ export const projects: Project[] = [
         alt: "A runner in black jogging on the red track of an empty stadium",
         caption: "Testing the pace on the track: every stretch of the course is run before it is planned.",
         wide: true,
+      },
+      {
+        src: "/projects/plovdiv-run-site",
+        living: "site-tour",
+        wide: true,
+        alt: "A walk through plovdiv.run: a cursor clicks through the menu while the page scrolls from the hero to the distances, programme, course map, prices, the city, its history and the email sign-up",
+        caption: "plovdiv.run, the race website I built with a family friend: distances, the weekend programme, the course, prices and the city, all in one place.",
       },
       {
         src: "/projects/plovdiv-run-logo.jpg",
