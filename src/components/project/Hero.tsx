@@ -18,6 +18,7 @@ export function Hero({ project }: { project: Project }) {
   const light = project.theme.heroTone === "light";
   const cover = project.images[0];
   const hero = project.hero ?? cover;
+  const tall = project.heroTall ?? cover;
   // A theme may bring its own title size (wide faces need smaller type).
   const custom = project.theme.titleClass ?? "";
   const titleClass = custom.includes("text-[") ? custom : `text-[clamp(3.25rem,11vw,11.5rem)] ${custom}`;
@@ -85,15 +86,15 @@ export function Hero({ project }: { project: Project }) {
     >
       <div data-hero-media className="absolute inset-0">
         <div data-hero-img className="absolute inset-0 will-change-transform">
-          {/* A project with a separate wide hero uses it from tablet width up; phones keep the portrait cover. */}
+          {/* A project with a separate wide hero uses it from tablet width up; phones keep the portrait cover (or heroTall). */}
           {project.hero && (
             <Image
-              src={cover.src}
-              alt={cover.alt}
+              src={tall.src}
+              alt={tall.alt}
               fill
               priority
               sizes="100vw"
-              unoptimized={cover.src.endsWith(".svg")}
+              unoptimized={tall.src.endsWith(".svg")}
               className="object-cover md:hidden"
               onLoad={() => heroReady(project.slug)}
             />

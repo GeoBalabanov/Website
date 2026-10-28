@@ -49,7 +49,7 @@ export type Fact = {
   suffix?: string;
 };
 
-export type FontKey = "fraunces" | "barlow" | "grotesk" | "syne" | "syncopate" | "instrument" | "bricolage" | "anton";
+export type FontKey = "fraunces" | "barlow" | "grotesk" | "syne" | "syncopate" | "instrument" | "bricolage" | "anton" | "tinos";
 
 export type ProjectTheme = {
   bg: string;
@@ -112,7 +112,15 @@ export type Signature =
       tracks?: { appleId: number; title: string; artist: string; url: string }[];
     }
   | { type: "bloom-garden"; total: number; notes: string[] }
-  | { type: "progress-journey"; milestones: { pct: number; kicker: string; title: string; text: string }[] };
+  | {
+      type: "progress-journey";
+      /** Section heading and label (default "Loading a semester" / "The journey"). */
+      heading?: string;
+      label?: string;
+      /** What the counter shows: 0 → max, instead of the default 0 → 100 % "Loaded". */
+      meter?: { max: number; decimals: number; suffix: string; caption: string };
+      milestones: { pct: number; kicker: string; title: string; text: string }[];
+    };
 
 /**
  * "Living poster" loop for the project's cover in the Slider and the Grid
@@ -149,6 +157,8 @@ export type Project = {
   coverMotion?: CoverMotion;
   /** Wide image for the project page hero, when the portrait cover would crop badly (defaults to images[0]). */
   hero?: ProjectImage;
+  /** Portrait hero for phones, when the cover carries its own text (defaults to images[0]). */
+  heroTall?: ProjectImage;
   /** A live 3D scene that plays over the hero image on the project page. */
   heroScene?: "corsa-head" | "flag-wind";
 
@@ -445,8 +455,141 @@ export const projects: Project[] = [
     ],
   },
   {
-    slug: "madrid-exchange",
+    slug: "concorde",
     number: "05",
+    title: "Concorde",
+    subtitle: "A virtual supersonic flight from London to New York, as a tribute to a design icon",
+    link: "https://concordewebsite.vercel.app/",
+    linkLabel: "Board the flight",
+    coverMotion: "drift",
+    hero: { src: "/projects/concorde-hero.jpg", alt: "A white Concorde climbing above the clouds over a red, white and blue ribbon" },
+    heroTall: { src: "/projects/concorde-hero-tall.jpg", alt: "A white Concorde climbing above the clouds over a red, white and blue ribbon" },
+    images: [
+      {
+        src: "/projects/concorde-cover.jpg",
+        alt: "A 1970s airline-style poster: a white Concorde climbs over clouds and a red, white and blue ribbon under the line Twice the speed of sound. Half the size of the world.",
+      },
+      { src: "/projects/concorde-top.jpg", alt: "Concorde seen from directly above, its white delta wing on a cream background", motion: "drift" },
+      { src: "/projects/concorde-style.jpg", alt: "The style page: black, paper and grey swatches, one reheat-orange accent and heavy Archivo type" },
+    ],
+    year: "2026",
+    role: "Concept, UX Design & Development",
+    location: "Eindhoven",
+    intro:
+      "The Fontys brief: pay tribute to a piece of design. Concorde crossed the Atlantic in about three and a half hours, and nobody can fly it any more. So instead of telling its story, this site lets you take the flight. Check in, take seat 1A, walk the cabin in 3D, watch the nose droop for take-off and break the sound barrier on the way from London to New York.",
+    // A 1970s transatlantic airline ad: deep sky blue, a red, white and blue ribbon, bold white serif headlines.
+    theme: { bg: "#0b2f6b", fg: "#ffffff", muted: "#b8c9e6", accent: "#ff5a67", accent2: "#9fd0ff", font: "tinos", titleClass: "font-bold tracking-[-0.02em]" },
+    signature: {
+      type: "progress-journey",
+      label: "The flight",
+      heading: "London to New York, in one scroll",
+      meter: { max: 3.5, decimals: 1, suffix: " h", caption: "Flight time · LHR → JFK" },
+      milestones: [
+        {
+          pct: 0,
+          kicker: "Boarding",
+          title: "Seat 1A, by the window",
+          text: "Check in with your own boarding pass, then scroll to open the window shade. The windows are tiny, and the site tells you why: the pressure at 60,000 ft.",
+        },
+        {
+          pct: 15,
+          kicker: "Cabin",
+          title: "Walk the aisle",
+          text: "Step inside in 3D: four seats across, a narrow cabin, a Machmeter on the wall and three crew up front in the flight deck.",
+        },
+        {
+          pct: 32,
+          kicker: "Take-off",
+          title: "The nose that bows",
+          text: "The long nose drops 5° for take-off and 12.5° for landing, so the pilots can see past it. I sketched three ways to show it, scroll, drag and tap, before choosing one.",
+        },
+        {
+          pct: 52,
+          kicker: "Supersonic",
+          title: "Through the sound barrier",
+          text: "Reheat on, past Mach 0.95 and through Mach 1. The sonic boom is why Concorde only flew supersonic over water.",
+        },
+        {
+          pct: 74,
+          kicker: "Cruise",
+          title: "Mach 2 at 60,000 ft",
+          text: "Twice the speed of sound, high enough to see the curve of the Earth, with the nose heating up to about 127°C.",
+        },
+        {
+          pct: 100,
+          kicker: "Arrival",
+          title: "New York, and a keepsake",
+          text: "Landing at JFK ends with the last commercial flight, 24 October 2003, a certificate for your flight, and one question: would you give up comfort, money or quiet skies to fly this fast again?",
+        },
+      ],
+    },
+    gallery: [
+      {
+        kind: "video",
+        wide: true,
+        src: "/projects/concorde-demo.mp4",
+        poster: "/projects/concorde-demo.jpg",
+        alt: "Screen recording of the Concorde site: a boarding pass, the window seat, the cabin, the flight deck, the nose drooping on the runway, the climb through the clouds, Mach 2 and the Earth from 60,000 ft",
+        caption: "The whole flight in a minute: from the boarding pass and the window seat to the cabin, the droop nose, the sound barrier and Mach 2.",
+      },
+      {
+        src: "/projects/concorde-style.jpg",
+        alt: "Style page: black, paper and grey swatches, one reheat-orange accent, Archivo display type and IBM Plex Mono body text, and a 12-column grid",
+        caption: "The first style: high-end brutalist. Big bold type, a strict grid, black and white and one accent, reheat orange, for anything that moves.",
+      },
+      {
+        src: "/projects/concorde-lofi-droop.jpg",
+        wide: true,
+        alt: "Lo-fi frame: a black Concorde silhouette on a runway with DROOP in huge grey type and an orange cone showing the pilot's line of sight",
+        caption: "Lo-fi: every scene sketched as start, middle and end frames, with notes on what moves on scroll.",
+      },
+      {
+        src: "/projects/concorde-concept-drag.jpg",
+        wide: true,
+        alt: "Concept B, drag: the nose readout shows 9.0° while the nose of a black Concorde silhouette is dragged down, with a zoomed nose detail around its hinge",
+        caption: "Three proofs of concept for the droop nose: scroll, drag or tap. Scroll costs nothing to learn, drag is the most memorable, tap is the most accessible.",
+      },
+      {
+        src: "/projects/concorde-mobile.jpg",
+        tall: true,
+        alt: "Mobile frame of the take-off scene with the nose angle readout and a slider to move it from 5° to 12.5°",
+        caption: "On mobile the nose gets a big slider with a 44 px thumb.",
+      },
+      {
+        src: "/projects/concorde-lofi-boom.jpg",
+        wide: true,
+        alt: "Lo-fi frame on orange: BOOM in huge black type over the cone of the shock waves, with the rule that supersonic flight was only allowed over water",
+        caption: "The sound barrier as a full orange flash, the one loud moment in the rhythm of dark and light scenes.",
+      },
+      {
+        src: "/projects/concorde-hifi-takeoff.jpg",
+        wide: true,
+        alt: "Hi-fi frame: a photo of Concorde taking off under DROOP, with a 5° fact card and a vector detail of the nose angles",
+        caption: "Hi-fi: real imagery in, with an exact vector detail where the photo can't show the angle.",
+      },
+      {
+        src: "/projects/concorde-hifi-mach.jpg",
+        wide: true,
+        alt: "Hi-fi frame: Concorde seen from above, wings spread, between MACH and 1.7 in huge type",
+        caption: "Mach 1.7 and climbing: the plane from above, splitting the headline in two.",
+      },
+      {
+        src: "/projects/concorde-hifi-arrival.jpg",
+        wide: true,
+        alt: "Hi-fi frame: a dark globe with the arc from London to New York and a boarding-pass card reading 3.5 h, LHR to JFK",
+        caption: "Arrival: the arc from London to New York, about 3.5 hours instead of 7 or more.",
+      },
+    ],
+    facts: [
+      { value: 2, prefix: "Mach ", label: "Cruise speed" },
+      { value: 60000, suffix: " ft", label: "Cruise altitude" },
+      { value: 3.5, decimals: 1, suffix: " h", label: "London to New York" },
+      { value: 3, label: "Droop-nose concepts" },
+    ],
+  },
+  {
+    slug: "madrid-exchange",
+    number: "06",
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
@@ -549,7 +692,7 @@ export const projects: Project[] = [
   },
   {
     slug: "marathon-running",
-    number: "06",
+    number: "07",
     kind: "For the mind, body & soul",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
@@ -640,7 +783,7 @@ export const projects: Project[] = [
   },
   {
     slug: "plovdiv-marathon",
-    number: "07",
+    number: "08",
     kind: "Event creator",
     title: "Plovdiv Marathon",
     subtitle: "Organizer · Plovdiv, Bulgaria",
@@ -708,7 +851,7 @@ export const projects: Project[] = [
   },
   {
     slug: "dating-app",
-    number: "08",
+    number: "09",
     title: "Dating App",
     subtitle: "A dating concept built around personality, music and voice",
     link: "https://github.com/GeoBalabanov/Dating-App",
