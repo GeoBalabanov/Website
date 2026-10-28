@@ -40,7 +40,7 @@ export type MediaItem = ProjectImage & {
   /** Show the whole image on white instead of filling (and cropping) the frame, e.g. for diagrams. */
   fit?: "contain";
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network" | "site-tour" | "droop-nose";
+  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network" | "site-tour" | "droop-concepts";
 };
 
 export type Fact = {
@@ -538,11 +538,12 @@ export const projects: Project[] = [
         caption: "The whole flight in a minute: from the boarding pass and the window seat to the cabin, the droop nose, the sound barrier and Mach 2.",
       },
       {
-        src: "/projects/concorde-droop",
-        living: "droop-nose",
+        src: "/projects/concorde-concepts",
+        living: "droop-concepts",
         wide: true,
-        alt: "A black Concorde silhouette on a runway: its nose hinges down from 0° to 5° for take-off and 12.5° for landing and back up, carrying an orange cone for the pilots' line of sight, while a readout follows the angle",
-        caption: "The droop nose, the scene I prototyped three ways: 0° for fast flight, 5° for take-off and 12.5° for landing, so the pilots can see past it.",
+        whole: true,
+        alt: "Three Figma prototypes of the droop nose side by side, each lowering the nose from 5° through 9° to 12.5°: A by scrolling, B by dragging the nose handle, C by tapping Take-off or Landing",
+        caption: "Three proofs of concept for the droop nose: scroll, drag or tap. Same scene, three ways to move the nose, tested against each other.",
       },
       {
         kind: "video",
