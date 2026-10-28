@@ -1,4 +1,4 @@
-import { Anton, Barlow_Condensed, Bricolage_Grotesque, Fraunces, Instrument_Serif, Space_Grotesk, Syncopate, Syne } from "next/font/google";
+import { Anton, Barlow_Condensed, Bricolage_Grotesque, Fraunces, Instrument_Serif, Space_Grotesk, Syncopate, Syne, Tinos } from "next/font/google";
 import type { FontKey } from "@/data/projects";
 
 // Display fonts for the project pages. Not preloaded: each page only downloads the one it uses.
@@ -28,7 +28,10 @@ const bricolage = Bricolage_Grotesque({ subsets: ["latin"], variable: "--font-br
 // Anton: the closest free match to Nike's condensed campaign lettering (Nike's own faces are licensed only to Nike).
 const anton = Anton({ subsets: ["latin"], weight: "400", variable: "--font-anton", display: "swap", preload: false });
 
-const fonts = { fraunces, barlow, grotesk, syne, syncopate, instrument, bricolage, anton };
+// Tinos: a Times-style bold serif, for the 1970s airline-ad headlines of the Concorde page.
+const tinos = Tinos({ subsets: ["latin"], weight: ["400", "700"], style: ["normal", "italic"], variable: "--font-tinos", display: "swap", preload: false });
+
+const fonts = { fraunces, barlow, grotesk, syne, syncopate, instrument, bricolage, anton, tinos };
 
 /** Class that defines the CSS variable, and the family to use for display text. */
 export function projectFont(key: FontKey) {
