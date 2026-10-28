@@ -11,10 +11,10 @@
   --color-mute-ink: #64646d;
   --color-faint: #c9c9c2;
 
-  /* Warm gradient (cream → peach → pink) */
+  /* Dirty-white gradient (cream → dust → smudge): paper that has been handled */
   --color-cream: #f7f7f2;
-  --color-peach: #f7e0cf;
-  --color-blush: #f3d4d8;
+  --color-dust: #ebe8df;
+  --color-smudge: #dcd8cc;
 
   /* Type */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -23,6 +23,17 @@
 
   /* Motion */
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Dark look: the same tokens, inverted. Project pages keep their own themes. */
+html[data-look="dark"] {
+  --color-paper: #0f0f0e;
+  --color-ink: #f2f0eb;
+  --color-mute: #8e8e96;
+  /* Small secondary text on dark: AA at 7.8:1. */
+  --color-mute-ink: #a7a7ae;
+  --color-faint: #3b3b38;
+  color-scheme: dark;
 }
 
 @layer base {

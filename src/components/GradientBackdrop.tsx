@@ -1,11 +1,11 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useGradient } from "@/lib/gradient-store";
+import { useLook } from "@/lib/look-store";
 
-/** Soft warm gradient rising from the bottom of the page. Fades with the Plain / Gradient toggle. */
+/** Soft dirty-white gradient rising from the bottom of the page. Fades with the Plain / Gradient / Dark switch. */
 export function GradientBackdrop() {
-  const gradient = useGradient();
+  const gradient = useLook() === "gradient";
   const pathname = usePathname();
   // Project pages have their own colors.
   const on = gradient && !pathname.startsWith("/projects/");
@@ -16,7 +16,7 @@ export function GradientBackdrop() {
       style={{
         opacity: on ? 1 : 0,
         background:
-          "linear-gradient(to bottom, rgb(247 247 242 / 0) 0%, var(--color-cream) 18%, var(--color-peach) 62%, var(--color-blush) 100%)",
+          "linear-gradient(to bottom, rgb(247 247 242 / 0) 0%, var(--color-cream) 18%, var(--color-dust) 62%, var(--color-smudge) 100%)",
       }}
     />
   );

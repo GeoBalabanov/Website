@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { EB_Garamond, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import { GradientBackdrop } from "@/components/GradientBackdrop";
+import { LOOK_SCRIPT } from "@/lib/look-script";
 import { Header } from "@/components/Header";
 import { SmoothScroll } from "@/components/SmoothScroll";
 import { ProjectTransitionProvider } from "@/components/transition/ProjectTransition";
@@ -25,7 +26,11 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${jakarta.variable} ${garamond.variable} ${mono.variable}`}>
+    <html lang="en" className={`${jakarta.variable} ${garamond.variable} ${mono.variable}`} suppressHydrationWarning>
+      <head>
+        {/* Apply the saved look (plain / gradient / dark) before the first paint. */}
+        <script dangerouslySetInnerHTML={{ __html: LOOK_SCRIPT }} />
+      </head>
       <body className="font-sans text-ink">
         <a
           href="#main"
