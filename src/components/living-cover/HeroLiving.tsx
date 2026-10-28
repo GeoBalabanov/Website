@@ -7,11 +7,12 @@ import { COLLAGE_LAYERS_WIDE } from "./collage-layers";
 import { HairWaveCover } from "./HairWaveCover";
 import { LayeredCover } from "./LayeredCover";
 import { AdvantechPoster } from "./AdvantechPoster";
+import { LoopVideo } from "./LoopVideo";
 import type { CoverMotion } from "@/data/projects";
 import s from "./LivingCover.module.css";
 
 /** Which cover animations can also play full-screen behind a project hero. */
-export const HERO_LIVING: CoverMotion[] = ["ai-book", "hairwave", "bloom", "collage", "lava", "sky"];
+export const HERO_LIVING: CoverMotion[] = ["ai-book", "hairwave", "bloom", "collage", "lava", "sky", "concorde"];
 
 /**
  * A project's living cover, playing behind its page hero. `wide`: the hero shows
@@ -31,6 +32,13 @@ export function HeroLiving({ motion, wide, running }: { motion: CoverMotion; wid
   else if (motion === "bloom") art = portrait(<BloomCover />);
   else if (motion === "lava") art = portrait(<LavaCover />);
   else if (motion === "sky") art = <AdvantechPoster variant={wide ? "wide" : "portrait"} />;
+  // The hero shows the poster without its text: wide from tablet up, tall on phones.
+  else if (motion === "concorde")
+    art = wide ? (
+      <LoopVideo src="/projects/concorde-hero" poster="/projects/concorde-hero.jpg" running={running} />
+    ) : (
+      <LoopVideo src="/projects/concorde-hero-tall" poster="/projects/concorde-hero-tall.jpg" running={running} />
+    );
   if (!art) return null;
   return (
     <div className={s.root} data-active="" data-paused={running ? undefined : ""} aria-hidden="true">

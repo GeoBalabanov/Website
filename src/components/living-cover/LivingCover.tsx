@@ -11,6 +11,7 @@ import { AdvantechNetworkCover, AdvantechStepsCover } from "./AdvantechTiles";
 import { CollageCover } from "./CollageCover";
 import { HairWaveCover } from "./HairWaveCover";
 import { LayeredCover } from "./LayeredCover";
+import { LoopVideo } from "./LoopVideo";
 import { AI_BG, AI_BOOK, AI_FLOW, AI_GRAIN, AI_PAGE } from "./ai-layers";
 import { CorsaStage } from "@/components/project/hero-scenes/CorsaStage";
 import s from "./LivingCover.module.css";
@@ -78,6 +79,8 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "sky" && <AdvantechPoster variant="portrait" />}
       {motion === "adv-steps" && <AdvantechStepsCover />}
       {motion === "adv-network" && <AdvantechNetworkCover />}
+      {/* Concorde: a pre-rendered loop of the poster, the flag waving and the plane riding the air. */}
+      {motion === "concorde" && <LoopVideo src="/projects/concorde-cover" poster={src} running={running} />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
       {motion === "head3d" && active && <CorsaStage paused={!running} />}
     </div>
