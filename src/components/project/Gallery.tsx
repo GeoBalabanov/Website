@@ -45,6 +45,7 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
         { scale: mobile ? 0.94 : 0.84 },
         { scale: 1, ease: "none", scrollTrigger: { trigger: frame, start: "top bottom", end: "top 35%", scrub: true } },
       );
+      if (!media) return;
       gsap.fromTo(
         media,
         { yPercent: -9 },
@@ -95,8 +96,12 @@ export function Gallery({ project, index = "03" }: { project: Project; index?: s
           const place = places[i];
           return (
             <figure key={item.src} className={place}>
-              <div data-frame className={`relative overflow-hidden will-change-transform ${item.wide ? "aspect-[16/10]" : item.tall ? "aspect-[9/16]" : "aspect-[3/4]"}`}>
-                <div data-media className="absolute -inset-y-[10%] inset-x-0 will-change-transform">
+              <div
+                data-frame
+                className={`relative overflow-hidden will-change-transform ${item.whole ? "aspect-video" : item.wide ? "aspect-[16/10]" : item.tall ? "aspect-[9/16]" : "aspect-[3/4]"}`}
+              >
+                {/* `whole` media is shown uncropped at 16:9, so it gets no parallax overscan. */}
+                <div data-media={item.whole ? undefined : ""} className={`absolute will-change-transform ${item.whole ? "inset-0" : "-inset-y-[10%] inset-x-0"}`}>
                   <Media item={item} />
                 </div>
               </div>

@@ -35,6 +35,8 @@ export type MediaItem = ProjectImage & {
   tall?: boolean;
   /** A line or two under the item explaining the work. */
   caption?: string;
+  /** A 16:9 video or image shown whole: framed at 16:9 with no parallax crop (screen recordings). */
+  whole?: boolean;
   /** Show the whole image on white instead of filling (and cropping) the frame, e.g. for diagrams. */
   fit?: "contain";
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
@@ -136,11 +138,12 @@ export type Signature =
  *   bloom  – a turning flower whose petals breathe open      (bloom-1)
  *   sky    – "Remote mode": the Demo Box tank filling and draining (advantech-1)
  *   concorde – the vintage poster as a pre-rendered loop: the flag waves, the plane rides the air (concorde-cover)
+ *   concorde-top / concorde-route – loops of the top view (banking, vapour trails) and the LHR → JFK arc drawing itself
  * They only match those exact covers. With your own cover image, use
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "sky" | "concorde" | "adv-steps" | "adv-network" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
+export type CoverMotion = "sky" | "concorde" | "concorde-top" | "concorde-route" | "adv-steps" | "adv-network" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
 
 export type Project = {
   slug: string;
@@ -470,8 +473,8 @@ export const projects: Project[] = [
         src: "/projects/concorde-cover.jpg",
         alt: "A 1970s airline-style poster: a white Concorde climbs over a waving Union Jack under the line Twice the speed of sound. Half the size of the world, above the words Fly it again!",
       },
-      { src: "/projects/concorde-top.jpg", alt: "Concorde seen from directly above, its white delta wing on a cream background", motion: "drift" },
-      { src: "/projects/concorde-mach.jpg", alt: "Concorde seen from above, wings spread, between MACH and 1.7 in huge type" },
+      { src: "/projects/concorde-top.jpg", alt: "Concorde seen from directly above on cream, banking gently with vapour trails from its four engines, at Mach 2 and 60,000 ft", motion: "concorde-top" },
+      { src: "/projects/concorde-route.jpg", alt: "A dark globe with the London to New York arc drawing itself in orange while a clock counts up to 3.5 hours", motion: "concorde-route" },
     ],
     year: "2026",
     role: "Concept, UX Design & Development",
@@ -528,6 +531,7 @@ export const projects: Project[] = [
       {
         kind: "video",
         wide: true,
+        whole: true,
         src: "/projects/concorde-demo.mp4",
         poster: "/projects/concorde-demo.jpg",
         alt: "Screen recording of the Concorde site: a boarding pass, the window seat, the cabin, the flight deck, the nose drooping on the runway, the climb through the clouds, Mach 2 and the Earth from 60,000 ft",
