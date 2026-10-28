@@ -38,7 +38,7 @@ export type MediaItem = ProjectImage & {
   /** Show the whole image on white instead of filling (and cropping) the frame, e.g. for diagrams. */
   fit?: "contain";
   /** A code-drawn, animated piece shown instead of `src` (which then only serves as its key). */
-  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network" | "site-tour";
+  living?: "streaming-apps" | "connect-flow" | "bloom-flow" | "demo-box" | "wiring" | "network" | "site-tour" | "droop-nose";
 };
 
 export type Fact = {
@@ -471,15 +471,15 @@ export const projects: Project[] = [
         alt: "A 1970s airline-style poster: a white Concorde climbs over a waving Union Jack under the line Twice the speed of sound. Half the size of the world, above the words Fly it again!",
       },
       { src: "/projects/concorde-top.jpg", alt: "Concorde seen from directly above, its white delta wing on a cream background", motion: "drift" },
-      { src: "/projects/concorde-style.jpg", alt: "The style page: black, paper and grey swatches, one reheat-orange accent and heavy Archivo type" },
+      { src: "/projects/concorde-mach.jpg", alt: "Concorde seen from above, wings spread, between MACH and 1.7 in huge type" },
     ],
     year: "2026",
     role: "Concept, UX Design & Development",
     location: "Eindhoven",
     intro:
       "The Fontys brief: pay tribute to a piece of design. Concorde crossed the Atlantic in about three and a half hours, and nobody can fly it any more. So instead of telling its story, this site lets you take the flight. Check in, take seat 1A, walk the cabin in 3D, watch the nose droop for take-off and break the sound barrier on the way from London to New York.",
-    // A 1970s transatlantic airline ad: deep sky blue, a red, white and blue ribbon, bold white serif headlines.
-    theme: { bg: "#0b2f6b", fg: "#ffffff", muted: "#b8c9e6", accent: "#ff5a67", accent2: "#9fd0ff", font: "tinos", titleClass: "font-bold tracking-[-0.02em]" },
+    // The Concorde site's own palette: ink, paper and one reheat orange, with the 1970s ad's bold serif for titles.
+    theme: { bg: "#0a0a0a", fg: "#f2f0eb", muted: "#a3a19b", accent: "#ff4f00", accent2: "#f2f0eb", font: "tinos", titleClass: "font-bold tracking-[-0.02em]" },
     signature: {
       type: "progress-journey",
       label: "The flight",
@@ -534,39 +534,11 @@ export const projects: Project[] = [
         caption: "The whole flight in a minute: from the boarding pass and the window seat to the cabin, the droop nose, the sound barrier and Mach 2.",
       },
       {
-        src: "/projects/concorde-style.jpg",
-        alt: "Style page: black, paper and grey swatches, one reheat-orange accent, Archivo display type and IBM Plex Mono body text, and a 12-column grid",
-        caption: "The first style: high-end brutalist. Big bold type, a strict grid, black and white and one accent, reheat orange, for anything that moves.",
-      },
-      {
-        src: "/projects/concorde-lofi-droop.jpg",
+        src: "/projects/concorde-droop",
+        living: "droop-nose",
         wide: true,
-        alt: "Lo-fi frame: a black Concorde silhouette on a runway with DROOP in huge grey type and an orange cone showing the pilot's line of sight",
-        caption: "Lo-fi: every scene sketched as start, middle and end frames, with notes on what moves on scroll.",
-      },
-      {
-        src: "/projects/concorde-concept-drag.jpg",
-        wide: true,
-        alt: "Concept B, drag: the nose readout shows 9.0° while the nose of a black Concorde silhouette is dragged down, with a zoomed nose detail around its hinge",
-        caption: "Three proofs of concept for the droop nose: scroll, drag or tap. Scroll costs nothing to learn, drag is the most memorable, tap is the most accessible.",
-      },
-      {
-        src: "/projects/concorde-mobile.jpg",
-        tall: true,
-        alt: "Mobile frame of the take-off scene with the nose angle readout and a slider to move it from 5° to 12.5°",
-        caption: "On mobile the nose gets a big slider with a 44 px thumb.",
-      },
-      {
-        src: "/projects/concorde-lofi-boom.jpg",
-        wide: true,
-        alt: "Lo-fi frame on orange: BOOM in huge black type over the cone of the shock waves, with the rule that supersonic flight was only allowed over water",
-        caption: "The sound barrier as a full orange flash, the one loud moment in the rhythm of dark and light scenes.",
-      },
-      {
-        src: "/projects/concorde-hifi-takeoff.jpg",
-        wide: true,
-        alt: "Hi-fi frame: a photo of Concorde taking off under DROOP, with a 5° fact card and a vector detail of the nose angles",
-        caption: "Hi-fi: real imagery in, with an exact vector detail where the photo can't show the angle.",
+        alt: "A black Concorde silhouette on a runway: its nose hinges down from 0° to 5° for take-off and 12.5° for landing and back up, carrying an orange cone for the pilots' line of sight, while a readout follows the angle",
+        caption: "The droop nose, the scene I prototyped three ways: 0° for fast flight, 5° for take-off and 12.5° for landing, so the pilots can see past it.",
       },
       {
         src: "/projects/concorde-hifi-mach.jpg",
