@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { site } from "@/data/site";
-import { setLook, useLook, type Look } from "@/lib/look-store";
+import { setGradient, setTheme, useGradient, useTheme } from "@/lib/look-store";
 
 export function Header() {
   const pathname = usePathname();
-  const look = useLook();
+  const gradient = useGradient();
+  const theme = useTheme();
 
   // Project pages have their own colors: the header floats over them in difference mode.
   const overlay = pathname.startsWith("/projects/");
@@ -28,18 +29,27 @@ export function Header() {
 
         <nav aria-label="Main" className="flex flex-wrap items-center justify-end gap-x-4 gap-y-1 md:justify-center md:gap-x-6">
           <div role="group" aria-label="Background" className="flex items-center gap-1.5">
-            {(["plain", "gradient", "dark"] as Look[]).map((l, i) => (
-              <span key={l} className="flex items-center gap-1.5">
-                {i > 0 && (
-                  <span aria-hidden="true" className={overlay ? "opacity-60" : "text-mute"}>
-                    /
-                  </span>
-                )}
-                <button type="button" className={toggle(look === l)} aria-pressed={look === l} onClick={() => setLook(l)}>
-                  {l[0].toUpperCase() + l.slice(1)}
-                </button>
-              </span>
-            ))}
+            <button type="button" className={toggle(!gradient)} aria-pressed={!gradient} onClick={() => setGradient(false)}>
+              Plain
+            </button>
+            <span aria-hidden="true" className={overlay ? "opacity-60" : "text-mute"}>
+              /
+            </span>
+            <button type="button" className={toggle(gradient)} aria-pressed={gradient} onClick={() => setGradient(true)}>
+              Gradient
+            </button>
+          </div>
+
+          <div role="group" aria-label="Colour theme" className="flex items-center gap-1.5">
+            <button type="button" className={toggle(theme === "light")} aria-pressed={theme === "light"} onClick={() => setTheme("light")}>
+              Light
+            </button>
+            <span aria-hidden="true" className={overlay ? "opacity-60" : "text-mute"}>
+              /
+            </span>
+            <button type="button" className={toggle(theme === "dark")} aria-pressed={theme === "dark"} onClick={() => setTheme("dark")}>
+              Dark
+            </button>
           </div>
 
           <div role="group" aria-label="Project view" className="flex items-center gap-1.5">

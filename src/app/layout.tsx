@@ -28,7 +28,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${jakarta.variable} ${garamond.variable} ${mono.variable}`} suppressHydrationWarning>
       <head>
-        {/* Apply the saved look (plain / gradient / dark) before the first paint. */}
+        {/* Apply the saved light / dark theme before the first paint. */}
         <script dangerouslySetInnerHTML={{ __html: LOOK_SCRIPT }} />
       </head>
       <body className="font-sans text-ink">

@@ -1,0 +1,62 @@
+/* The gradient backdrop: a dirty-white haze rising from the bottom, with soft smudges drifting in it. */
+
+.root {
+  position: fixed;
+  inset: auto 0 0 0;
+  z-index: 0;
+  height: 55dvh;
+  overflow: hidden;
+  pointer-events: none;
+  background: linear-gradient(to bottom, transparent 0%, var(--haze-a) 18%, var(--haze-b) 62%, var(--haze-c) 100%);
+  transition: opacity 1200ms var(--ease-out-soft);
+}
+
+/* Silhouettes: big, blurred, slow. Only transform moves. */
+.smudge {
+  position: absolute;
+  border-radius: 50%;
+  background: var(--smudge);
+  filter: blur(60px);
+  will-change: transform;
+  animation: drift var(--dur) ease-in-out infinite alternate;
+}
+.s1 {
+  --dur: 26s;
+  left: -8%;
+  bottom: -18%;
+  width: 46vw;
+  height: 30dvh;
+}
+.s2 {
+  --dur: 32s;
+  left: 38%;
+  bottom: -10%;
+  width: 34vw;
+  height: 22dvh;
+  animation-delay: -9s;
+}
+.s3 {
+  --dur: 29s;
+  right: -10%;
+  bottom: -20%;
+  width: 40vw;
+  height: 34dvh;
+  animation-delay: -17s;
+}
+@keyframes drift {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  to {
+    transform: translate3d(6vw, -4dvh, 0) scale(1.15);
+  }
+}
+
+.root:not([data-on]) .smudge {
+  animation-play-state: paused;
+}
+@media (prefers-reduced-motion: reduce) {
+  .smudge {
+    animation: none;
+  }
+}
