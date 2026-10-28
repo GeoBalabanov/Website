@@ -11,10 +11,10 @@
   --color-mute-ink: #64646d;
   --color-faint: #c9c9c2;
 
-  /* Dirty-white gradient (cream → dust → smudge): paper that has been handled */
+  /* Warm gradient for light (cream → peach → pink) */
   --color-cream: #f7f7f2;
-  --color-dust: #ebe8df;
-  --color-smudge: #dcd8cc;
+  --color-peach: #f7e0cf;
+  --color-blush: #f3d4d8;
 
   /* Type */
   --font-sans: var(--font-jakarta), ui-sans-serif, system-ui, sans-serif;
@@ -25,10 +25,10 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* The gradient's haze and smudges: dirty white rising from the bottom. */
+/* The gradient: warm and colourful on light (cream → peach → pink), a dirty-white glow on dark. */
 :root {
-  --haze: linear-gradient(to bottom, transparent 0%, var(--color-cream) 18%, var(--color-dust) 62%, var(--color-smudge) 100%);
-  --smudge: rgb(190 184 168 / 0.3);
+  --haze: linear-gradient(to bottom, transparent 0%, var(--color-cream) 18%, var(--color-peach) 62%, var(--color-blush) 100%);
+  --smudge: rgb(240 196 186 / 0.35);
   --grain: 0.35;
 }
 

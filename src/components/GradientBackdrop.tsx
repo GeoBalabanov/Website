@@ -5,8 +5,8 @@ import { useGradient } from "@/lib/look-store";
 import s from "./GradientBackdrop.module.css";
 
 /**
- * Dirty-white gradient rising from the bottom of the page, with soft smudges drifting in it.
- * Works on light and dark (the haze colours follow the theme). Fades with the Plain / Gradient switch.
+ * Gradient rising from the bottom of the page, with soft smudges drifting in it: warm cream →
+ * peach → pink on light, a dirty-white glow on dark. Fades with the Plain / Gradient switch.
  */
 export function GradientBackdrop() {
   const gradient = useGradient();
