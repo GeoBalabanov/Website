@@ -81,6 +81,8 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "adv-network" && <AdvantechNetworkCover />}
       {/* Concorde: a pre-rendered loop of the poster, the flag waving and the plane riding the air. */}
       {motion === "concorde" && <LoopVideo src="/projects/concorde-cover" poster={src} running={running} />}
+      {motion === "concorde-top" && <LoopVideo src="/projects/concorde-top" poster={src} running={running} />}
+      {motion === "concorde-route" && <LoopVideo src="/projects/concorde-route" poster={src} running={running} />}
       {/* Live 3D: only mounted while its cover is the active one (one WebGL scene at a time). */}
       {motion === "head3d" && active && <CorsaStage paused={!running} />}
     </div>
