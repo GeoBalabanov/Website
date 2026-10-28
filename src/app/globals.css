@@ -40,8 +40,8 @@ html[data-theme="dark"] {
   /* Small secondary text on dark: AA at 7.8:1. */
   --color-mute-ink: #a7a7ae;
   --color-faint: #3b3b38;
-  /* On dark the haze is a low glow, like light on the horizon: neutral dirty white, tight to the bottom. */
-  --haze: radial-gradient(110% 70% at 50% 115%, rgb(232 229 222 / 0.26) 0%, rgb(232 229 222 / 0.1) 40%, rgb(232 229 222 / 0.03) 62%, transparent 80%);
+  /* On dark: the light gradient's shape (an even wash from mid-page to the bottom), in dirty white. */
+  --haze: linear-gradient(to bottom, transparent 0%, rgb(232 229 222 / 0.05) 18%, rgb(232 229 222 / 0.13) 62%, rgb(232 229 222 / 0.22) 100%);
   --smudge: rgb(236 233 226 / 0.07);
   --grain: 0.4;
   color-scheme: dark;
