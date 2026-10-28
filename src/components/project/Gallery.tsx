@@ -13,7 +13,7 @@ import { DemoBox } from "@/components/living-cover/DemoBox";
 import { WiringDiagram } from "@/components/living-cover/WiringDiagram";
 import { NetworkDiagram } from "@/components/living-cover/NetworkDiagram";
 import { SiteTour } from "@/components/living-cover/SiteTour";
-import { DroopNose } from "@/components/living-cover/DroopNose";
+import { ConceptTrio } from "@/components/living-cover/ConceptTrio";
 
 /**
  * Editorial gallery: wide items span the page, portrait items sit in pairs at
@@ -139,7 +139,7 @@ export function Media({ item, sizes }: { item: MediaItem; sizes?: string }) {
   }, []);
 
   if (item.living === "streaming-apps") return <StreamingApps label={item.alt} />;
-  if (item.living === "droop-nose") return <DroopNose label={item.alt} />;
+  if (item.living === "droop-concepts") return <ConceptTrio label={item.alt} />;
   if (item.living === "connect-flow") return <ConnectFlow label={item.alt} />;
   if (item.living === "bloom-flow") return <BloomFlow label={item.alt} />;
   if (item.living === "demo-box") return <DemoBox label={item.alt} />;
