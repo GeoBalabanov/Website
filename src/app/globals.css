@@ -25,12 +25,11 @@
   --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-/* The gradient's haze and smudges: dirty white, deeper on light, a glow on dark. */
+/* The gradient's haze and smudges: dirty white rising from the bottom. */
 :root {
-  --haze-a: var(--color-cream);
-  --haze-b: var(--color-dust);
-  --haze-c: var(--color-smudge);
-  --smudge: rgb(190 184 168 / 0.35);
+  --haze: linear-gradient(to bottom, transparent 0%, var(--color-cream) 18%, var(--color-dust) 62%, var(--color-smudge) 100%);
+  --smudge: rgb(190 184 168 / 0.3);
+  --grain: 0.35;
 }
 
 /* Dark: the same tokens, inverted. Project pages keep their own themes. */
@@ -41,10 +40,10 @@ html[data-theme="dark"] {
   /* Small secondary text on dark: AA at 7.8:1. */
   --color-mute-ink: #a7a7ae;
   --color-faint: #3b3b38;
-  --haze-a: rgb(220 216 204 / 0.04);
-  --haze-b: rgb(220 216 204 / 0.12);
-  --haze-c: rgb(220 216 204 / 0.24);
-  --smudge: rgb(236 232 220 / 0.14);
+  /* On dark the haze is a low glow, like light on the horizon: neutral dirty white, tight to the bottom. */
+  --haze: radial-gradient(110% 70% at 50% 115%, rgb(232 229 222 / 0.26) 0%, rgb(232 229 222 / 0.1) 40%, rgb(232 229 222 / 0.03) 62%, transparent 80%);
+  --smudge: rgb(236 233 226 / 0.07);
+  --grain: 0.4;
   color-scheme: dark;
 }
 
