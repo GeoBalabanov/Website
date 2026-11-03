@@ -1,0 +1,75 @@
+/* "Built with": a ticker of the project's skills, then the skills grouped as a spec sheet. */
+
+.ticker {
+  overflow: hidden;
+  border-block: 1px solid color-mix(in srgb, var(--p-fg) 16%, transparent);
+  padding-block: 0.35em;
+}
+.track {
+  display: flex;
+  width: max-content;
+  animation: slide 40s linear infinite;
+}
+.run {
+  display: flex;
+  align-items: center;
+  gap: 0.5em;
+  padding-right: 0.5em;
+  font-family: var(--p-display);
+  font-size: clamp(2.4rem, 7vw, 6.5rem);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  white-space: nowrap;
+}
+.star {
+  color: var(--p-accent);
+  font-size: 0.6em;
+}
+.ghost {
+  color: transparent;
+  -webkit-text-stroke: 1px var(--p-fg);
+}
+@keyframes slide {
+  to {
+    transform: translateX(-50%);
+  }
+}
+.ticker:hover .track {
+  animation-play-state: paused;
+}
+
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5em;
+  border: 1px solid color-mix(in srgb, var(--p-fg) 22%, transparent);
+  border-radius: 999px;
+  padding: 0.5em 1em;
+  font-size: 0.95rem;
+  line-height: 1;
+  transition:
+    background-color 250ms ease,
+    color 250ms ease,
+    border-color 250ms ease;
+}
+.chip::before {
+  content: "";
+  width: 0.4em;
+  height: 0.4em;
+  border-radius: 50%;
+  background: var(--p-accent);
+}
+.chip:hover {
+  background: var(--p-accent);
+  border-color: var(--p-accent);
+  color: var(--p-bg);
+}
+.chip:hover::before {
+  background: var(--p-bg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .track {
+    animation: none;
+  }
+}
