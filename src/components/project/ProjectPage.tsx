@@ -8,6 +8,7 @@ import { useProjectTransition } from "@/components/transition/ProjectTransition"
 import { scrollToImmediate } from "@/components/SmoothScroll";
 import { Hero } from "./Hero";
 import { Intro } from "./Intro";
+import { Skills } from "./Skills";
 import { Gallery } from "./Gallery";
 import { UnderConstruction } from "./UnderConstruction";
 import { Facts } from "./Facts";
@@ -96,6 +97,7 @@ export function ProjectPage({ project, next }: { project: Project; next: Project
       }
     >
       <Hero project={project} />
+      <Skills project={project} />
       <Intro project={project} />
       <div id="story">
         <SignatureSection project={project} />

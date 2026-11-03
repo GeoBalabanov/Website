@@ -168,6 +168,8 @@ export type Project = {
 
   year: string;
   role: string;
+  /** "Built with" under the poster: skills grouped (e.g. Design, Code, Tools), shown as a ticker and a spec sheet. */
+  skills?: { label: string; items: string[] }[];
   location: string;
   intro: string;
   theme: ProjectTheme;
@@ -202,6 +204,7 @@ export const projects: Project[] = [
     ],
     year: "2025",
     role: "Interaction Design & SwiftUI Development",
+    skills: [{ label: "Design", items: ["Interaction design", "Voice UI", "Prototyping"] }, { label: "Code", items: ["Swift", "SwiftUI", "Voice control"] }, { label: "Team", items: ["Team of two", "Design & build"] }],
     location: "Eindhoven",
     intro:
       "Most music apps are built for the sofa, not the driver's seat: small buttons, playlists and pop-ups that pull your eyes off the road. As a team of two we designed and built Corsa in SwiftUI, a car audio player that only does what a driver needs: play, pause and skip, with big controls, your voice and almost nothing to look at.",
@@ -291,6 +294,7 @@ export const projects: Project[] = [
     ],
     year: "2025–2026",
     role: "UX Design & SwiftUI Development",
+    skills: [{ label: "Design", items: ["UX design", "Six-step cases"] }, { label: "Code", items: ["Swift", "SwiftUI", "AI / LLM integration", "PDF export"] }, { label: "Team", items: ["Fontys team", "Client: Tweekracht"] }],
     location: "Eindhoven",
     intro:
       "Every new case for Tweekracht's Social Work Game took hours of turning interviews and reports into game cards by hand. Our Fontys team built a SwiftUI app where AI does that work: a playable six-step case, ready to edit and print.",
@@ -351,6 +355,7 @@ export const projects: Project[] = [
     ],
     year: "2025",
     role: "Solution Engineer Intern · IoT & Automation",
+    skills: [{ label: "Engineering", items: ["Industrial IoT", "ADAM modules", "Sensors & pumps", "SCADA"] }, { label: "Systems", items: ["Wiring", "Networking", "Automation"] }, { label: "Ways of working", items: ["Project plan", "Documentation", "Customer demos"] }],
     location: "Eindhoven",
     link: "/projects/advantech-project-plan.pdf",
     linkLabel: "In-depth project plan (PDF)",
@@ -413,6 +418,7 @@ export const projects: Project[] = [
     ],
     year: "2026",
     role: "Concept & Development",
+    skills: [{ label: "Design", items: ["Concept", "Interaction design", "Gallery experience"] }, { label: "Motion", items: ["Generative motion", "Flower growth"] }, { label: "Build", items: ["App prototype", "Feedback garden"] }],
     location: "Eindhoven",
     // PLACEHOLDER intro
     intro:
@@ -478,6 +484,7 @@ export const projects: Project[] = [
     ],
     year: "2026",
     role: "Concept, UX Design & Development",
+    skills: [{ label: "Design", items: ["Human Centered Design", "Figma", "Lo-fi to hi-fi", "Proofs of concept"] }, { label: "Code", items: ["JavaScript", "Three.js", "WebGL 3D", "Scroll-driven animation"] }, { label: "Assets", items: ["Sketchfab model", "Mixamo", "Poly Haven"] }],
     location: "Eindhoven",
     intro:
       "The Fontys brief: pay tribute to a piece of design. Concorde crossed the Atlantic in about three and a half hours, and nobody can fly it any more. So instead of telling its story, this site lets you take the flight. Check in, take seat 1A, walk the cabin in 3D, watch the nose droop for take-off and break the sound barrier on the way from London to New York.",
@@ -586,6 +593,7 @@ export const projects: Project[] = [
     ],
     year: "2026",
     role: "Exchange student",
+    skills: [{ label: "Studied", items: ["Economics", "International relations", "Finance"] }, { label: "Picked up", items: ["Spanish", "Living abroad"] }, { label: "Kept up", items: ["Half-marathon training"] }],
     location: "Madrid, Spain",
     intro:
       "In January I swapped Eindhoven for Madrid and ICT for Economics for International Relations at URJC. Five months later: a new way of seeing the world, a half-marathon PB twenty minutes faster, and friends from the Sahara. Small trip, big change.",
@@ -688,6 +696,7 @@ export const projects: Project[] = [
     ],
     year: "Ongoing",
     role: "Athlete",
+    skills: [{ label: "Mind", items: ["Discipline", "Patience", "Consistency"] }, { label: "Body", items: ["Endurance", "Pacing"] }, { label: "Method", items: ["Training plans", "Long Sundays"] }],
     location: "The Netherlands & abroad",
     // PLACEHOLDER intro
     intro:
@@ -779,6 +788,7 @@ export const projects: Project[] = [
     ],
     year: "2026",
     role: "Organizer",
+    skills: [{ label: "Organizing", items: ["Event planning", "Course planning", "The city as host"] }, { label: "Web", items: ["Race website", "plovdiv.run"] }, { label: "Team", items: ["Built with a family friend"] }],
     location: "Plovdiv, Bulgaria",
     link: "https://plovdiv.run/en",
     linkLabel: "Visit the race site",
@@ -847,6 +857,7 @@ export const projects: Project[] = [
     ],
     year: "2025",
     role: "Concept & UI Design",
+    skills: [{ label: "Design", items: ["Concept", "UI design", "Voice-first UX"] }, { label: "Matching on", items: ["Personality", "Music", "Voice notes"] }],
     location: "Eindhoven",
     // PLACEHOLDER intro
     intro:
