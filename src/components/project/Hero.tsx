@@ -144,6 +144,11 @@ export function Hero({ project }: { project: Project }) {
               {project.linkLabel ?? (project.link.includes("github.com") ? "Code on GitHub" : "Visit live")} ↗<span className="sr-only"> (opens in a new tab)</span>
             </a>
           )}
+          {project.moreLinks?.map((l) => (
+            <a key={l.href} href={l.href} target="_blank" rel="noreferrer" className="nav-link">
+              {l.label} ↗<span className="sr-only"> (opens in a new tab)</span>
+            </a>
+          ))}
           {!project.link && project.linkNote && <span className="font-mono text-xs tracking-wide uppercase opacity-80">{project.linkNote}</span>}
         </div>
         {/* Built with: the project's skills as small tags along the bottom of the poster. */}

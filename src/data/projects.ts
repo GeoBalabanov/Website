@@ -154,6 +154,8 @@ export type Project = {
   subtitle: string;
   images: ProjectImage[];
   link?: string;
+  /** Extra links next to the main one on the poster, e.g. the project's Instagram. */
+  moreLinks?: { href: string; label: string }[];
   /** Overrides the link's label (defaults to "Code on GitHub" or "Visit live"). */
   linkLabel?: string;
   /** Shown instead of a link when the code can't be public, e.g. "Private repository · code on request". */
@@ -711,11 +713,13 @@ export const projects: Project[] = [
       // From Strava.
       results: [
         {
-          race: "Eindhoven Marathon",
+          race: "Eindhoven Half Marathon",
           date: "Oct 2026",
+          time: "1:40",
           stats: [
-            { label: "Distance", value: "42.2 km" },
-            { label: "Goal", value: "New PB" },
+            { label: "Distance", value: "21.1 km" },
+            { label: "Pace", value: "4:44 /km" },
+            { label: "Result", value: "Half PB" },
           ],
         },
         {
@@ -768,7 +772,7 @@ export const projects: Project[] = [
     ],
     facts: [
       { value: 1, label: "Marathon finished: Amsterdam" },
-      { value: 1, label: "Half marathon: Madrid" },
+      { value: 2, label: "Half marathons: Madrid, Eindhoven" },
       { value: 42.01, decimals: 2, suffix: " km", label: "Longest run" },
       { value: 192, suffix: " m", label: "Climbed in the Madrid Half" },
     ],
@@ -788,13 +792,14 @@ export const projects: Project[] = [
     ],
     year: "2026",
     role: "Organizer",
-    skills: [{ label: "Organizing", items: ["Event planning", "Course planning", "The city as host"] }, { label: "Web", items: ["Race website", "plovdiv.run"] }, { label: "Team", items: ["Built with a family friend"] }],
+    skills: [{ label: "Organizing", items: ["Event planning", "Course planning", "The city as host"] }, { label: "Social media", items: ["TikTok", "Instagram", "Facebook"] }, { label: "Web", items: ["Race website, built with a family friend"] }],
     location: "Plovdiv, Bulgaria",
     link: "https://plovdiv.run/en",
     linkLabel: "Visit the race site",
+    moreLinks: [{ href: "https://www.instagram.com/plovdiv.run/", label: "Instagram" }],
     // PLACEHOLDER intro
     intro:
-      "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The loop runs from the Rowing Canal along the Maritsa and through the centre, and every kilometre is planned for runners and for the city that hosts them.",
+      "Organizing a full marathon through Plovdiv, one of the oldest continuously inhabited cities in Europe. The loop runs from the Rowing Canal along the Maritsa and through the centre, and every kilometre is planned for runners and for the city that hosts them. I also run all of its social media myself, on TikTok, Instagram and Facebook.",
     // Night-blue with gold: the route and numbers in gold, the river and runner in sky blue.
     theme: { bg: "#0d1b33", fg: "#edf1f7", muted: "#9fb0c9", accent: "#f2b441", accent2: "#6cb8ff", font: "fraunces" },
     signature: {
