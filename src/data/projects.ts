@@ -168,7 +168,7 @@ export type Project = {
 
   year: string;
   role: string;
-  /** "Built with" under the poster: skills grouped (e.g. Design, Code, Tools), shown as a ticker and a spec sheet. */
+  /** "Built with": skills grouped (e.g. Design, Code, Tools), shown as small tags along the bottom of the poster. */
   skills?: { label: string; items: string[] }[];
   location: string;
   intro: string;

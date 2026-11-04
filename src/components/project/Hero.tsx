@@ -19,6 +19,7 @@ export function Hero({ project }: { project: Project }) {
   const cover = project.images[0];
   const hero = project.hero ?? cover;
   const tall = project.heroTall ?? cover;
+  const skills = (project.skills ?? []).flatMap((g) => g.items);
   // A theme may bring its own title size (wide faces need smaller type).
   const custom = project.theme.titleClass ?? "";
   const titleClass = custom.includes("text-[") ? custom : `text-[clamp(3.25rem,11vw,11.5rem)] ${custom}`;
@@ -122,7 +123,8 @@ export function Hero({ project }: { project: Project }) {
         <div aria-hidden="true" className="absolute inset-0 bg-linear-to-t from-black/70 via-black/10 to-black/30" />
       )}
 
-      <div data-hero-copy className="absolute inset-x-0 bottom-0 px-4 pb-8 md:px-10 md:pb-12">
+      {/* Bottom padding clears the floating "Back to projects" button. */}
+      <div data-hero-copy className="absolute inset-x-0 bottom-0 px-4 pb-20 md:px-10 md:pb-24">
         <p data-meta className="mb-4 flex flex-wrap gap-x-4 gap-y-1 font-mono text-xs tracking-wide uppercase opacity-85 md:text-sm">
           <span>{project.kind ?? project.number}</span>
           <span>{project.year}</span>
@@ -144,9 +146,28 @@ export function Hero({ project }: { project: Project }) {
           )}
           {!project.link && project.linkNote && <span className="font-mono text-xs tracking-wide uppercase opacity-80">{project.linkNote}</span>}
         </div>
+        {/* Built with: the project's skills as small tags along the bottom of the poster. */}
+        {skills.length > 0 && (
+          <ul data-meta aria-label={project.kind ? "What it trained" : "Built with"} className="mt-5 flex max-w-[60rem] flex-wrap gap-1.5 md:mt-6 md:gap-2">
+            {skills.map((item, i) => (
+              <li
+                key={item}
+                className={`items-center gap-1.5 rounded-full border border-current/25 bg-current/[0.06] px-2.5 py-1 font-mono text-[10px] tracking-wide uppercase backdrop-blur-sm md:px-3 md:text-[11px] ${i >= 5 ? "hidden md:inline-flex" : "inline-flex"}`}
+              >
+                <span aria-hidden="true" className="h-1 w-1 rounded-full bg-[var(--p-accent)]" />
+                {item}
+              </li>
+            ))}
+            {skills.length > 5 && (
+              <li aria-hidden="true" className="inline-flex items-center rounded-full px-1 py-1 font-mono text-[10px] tracking-wide uppercase opacity-70 md:hidden">
+                +{skills.length - 5}
+              </li>
+            )}
+          </ul>
+        )}
       </div>
 
-      <p data-meta aria-hidden="true" className="absolute right-4 bottom-8 font-mono text-xs uppercase opacity-70 md:right-10 md:bottom-12">
+      <p data-meta aria-hidden="true" className="absolute right-4 bottom-20 font-mono text-xs uppercase opacity-70 md:right-10 md:bottom-24">
         Scroll ↓
       </p>
     </section>
