@@ -192,8 +192,68 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: "corsa-car-audio",
+    slug: "fit-finder",
     number: "01",
+    title: "Fit Finder",
+    subtitle: "Your size at any brand, from a jacket you already own",
+    link: "/fit-finder",
+    linkLabel: "Open the live site",
+    coverMotion: "drift",
+    hero: { src: "/fit-finder/hero.jpg", alt: "A man walking toward the camera in an oversized beige work jacket, in a white studio" },
+    images: [
+      { src: "/projects/ff-cover.jpg", alt: "Fit Finder's homepage: “Your size is a lie.” in a tall serif around a man in a beige work jacket, “a lie” in electric blue" },
+      { src: "/projects/ff-result.jpg", alt: "The result on an electric-blue panel: size L at an 85% fit match, a score per size, a fit map per zone and the two jackets drawn to scale in white" },
+      { src: "/projects/ff-index.jpg", alt: "The M Index: ten brands' size M jackets listed in a tall serif, from The North Face at 66 cm to Levi's at 56.5 cm" },
+    ],
+    year: "2026",
+    role: "Concept, UX/UI Design & Front-end Development",
+    skills: [
+      { label: "Design", items: ["Art direction", "E-commerce UX", "Data visualisation"] },
+      { label: "Code", items: ["Next.js", "TypeScript", "GSAP", "SVG drawn from data"] },
+      { label: "Product", items: ["Sizing engine", "Store widget"] },
+    ],
+    location: "Netherlands",
+    intro:
+      "Every brand has its own M, so shoppers order two sizes and send one back. Fit Finder starts from the jacket you already own and know fits: pick it, pick the one you want, and it recommends your size with a match score, a zone-by-zone fit map and both jackets drawn to scale. I designed and built it as a concept for fashion e-commerce, with a widget a brand can drop next to its size buttons.",
+    theme: { bg: "#ffffff", fg: "#0a0a0a", muted: "#5f5f5f", accent: "#2b1bff", accent2: "#0a0a0a", font: "instrument", heroTone: "light" },
+    signature: { type: "kinetic-type", words: ["Your", "size", "is", "a", "lie"], caption: "M at one brand is L at another. Fit Finder translates sizes using the one jacket you already trust." },
+    gallery: [
+      {
+        kind: "video",
+        src: "/projects/ff-walkthrough.mp4",
+        poster: "/projects/ff-walkthrough.jpg",
+        wide: true,
+        whole: true,
+        alt: "A walk through Fit Finder: the blue tape-measure intro, the hero, picking a Patagonia jacket in L and The North Face as the one to buy, the blue result panel with the size and both jackets drawn to scale, the M Index with a drawing following the cursor, and the product page widget",
+        caption: "The whole site: pick the jacket that fits, pick the one you want, get your size, a match score and both jackets drawn to scale.",
+      },
+      {
+        src: "/projects/ff-index-wide.jpg",
+        wide: true,
+        whole: true,
+        alt: "The M Index: a list of ten brands' size M jackets in a tall serif with chest widths, and a card drawing the hovered jacket next to the cursor",
+        caption: "The M Index: what “medium” really means. Hover a brand and its jacket draws itself next to the cursor.",
+      },
+      {
+        src: "/projects/ff-pdp-wide.jpg",
+        wide: true,
+        whole: true,
+        alt: "A concept store's product page for Chore Jacket 01 with the Fit Finder widget under the size buttons, marking L as “Your fit”",
+        caption: "For brands: the same engine as a widget next to the size buttons, added with one line of code.",
+      },
+      { src: "/projects/ff-phone-1.jpg", tall: true, alt: "Fit Finder on a phone: the hero with “Your size is a lie.”", caption: "Built for phones first, where most fashion is bought." },
+      { src: "/projects/ff-phone-2.jpg", tall: true, alt: "Fit Finder on a phone: size L at 85% on the blue result panel", caption: "The result on a phone: size, match score and fit map." },
+    ],
+    facts: [
+      { value: 10, label: "Jackets in the index" },
+      { value: 9.5, decimals: 1, suffix: " cm", label: "Between the smallest and the biggest M" },
+      { value: 4, label: "Fit zones compared per size" },
+      { value: 6, label: "Sizes scored for every jacket" },
+    ],
+  },
+  {
+    slug: "corsa-car-audio",
+    number: "02",
     title: "Corsa Car Audio",
     subtitle: "A voice-controlled music interface designed for safer driving",
     link: "https://github.com/GeoBalabanov/Corsa",
@@ -282,7 +342,7 @@ export const projects: Project[] = [
   },
   {
     slug: "ai-case-generator",
-    number: "02",
+    number: "03",
     title: "AI Case Generator",
     subtitle: "Turning real social work cases into playable scenarios for the Social Work Game",
     // The repository holds client material, so it stays private.
@@ -345,7 +405,7 @@ export const projects: Project[] = [
   },
   {
     slug: "advantech-internship",
-    number: "03",
+    number: "04",
     title: "Internship at Advantech Europe",
     subtitle: "What it's like to be a Solution Engineer",
     coverMotion: "sky",
@@ -410,7 +470,7 @@ export const projects: Project[] = [
   },
   {
     slug: "bloom",
-    number: "04",
+    number: "05",
     title: "Bloom",
     subtitle: "A collective feedback garden designed for art galleries",
     coverMotion: "bloom",
@@ -468,7 +528,7 @@ export const projects: Project[] = [
   },
   {
     slug: "concorde",
-    number: "05",
+    number: "06",
     title: "Concorde",
     subtitle: "A virtual supersonic flight from London to New York, as a tribute to a design icon",
     link: "https://concordewebsite.vercel.app/",
@@ -582,7 +642,7 @@ export const projects: Project[] = [
   },
   {
     slug: "madrid-exchange",
-    number: "06",
+    number: "07",
     title: "Madrid",
     subtitle: "Minor abroad · Economics for International Relations at URJC",
     coverMotion: "flag",
@@ -686,7 +746,7 @@ export const projects: Project[] = [
   },
   {
     slug: "marathon-running",
-    number: "07",
+    number: "08",
     kind: "For the mind, body & soul",
     title: "Marathon running",
     subtitle: "Athlete · Races & results",
@@ -780,7 +840,7 @@ export const projects: Project[] = [
   },
   {
     slug: "plovdiv-marathon",
-    number: "08",
+    number: "09",
     kind: "Event creator",
     title: "Plovdiv Marathon",
     subtitle: "Organizer · Plovdiv, Bulgaria",
@@ -850,7 +910,7 @@ export const projects: Project[] = [
   },
   {
     slug: "dating-app",
-    number: "09",
+    number: "10",
     title: "Dating App",
     subtitle: "A dating concept built around personality, music and voice",
     link: "https://github.com/GeoBalabanov/Dating-App",

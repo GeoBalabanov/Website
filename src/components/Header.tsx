@@ -13,6 +13,9 @@ export function Header() {
   // Project pages have their own colors: the header floats over them in difference mode.
   const overlay = pathname.startsWith("/projects/");
 
+  // Fit Finder is a standalone concept site with its own top bar.
+  if (pathname.startsWith("/fit-finder")) return null;
+
   const toggle = (active: boolean) =>
     overlay ? "nav-link" : `nav-link ${active ? "text-ink" : "text-ink/80 hover:text-ink"}`;
 
