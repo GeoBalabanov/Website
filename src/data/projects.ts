@@ -201,7 +201,7 @@ export const projects: Project[] = [
     coverMotion: "drift",
     hero: { src: "/fit-finder/hero.jpg", alt: "A man walking toward the camera in an oversized beige work jacket, in a white studio" },
     images: [
-      { src: "/projects/ff-cover.jpg", alt: "Fit Finder's homepage: “Your size is a lie.” in a tall serif around a man in a beige work jacket, “a lie” in electric blue" },
+      { src: "/projects/ff-cover-mm.jpg", alt: "Three jackets laid flat with a yellow tape measure across them, above a huge serif “M ≠ M” with the second M in electric blue and a blue ruler along the bottom" },
       { src: "/projects/ff-result.jpg", alt: "The result on an electric-blue panel: size L at an 85% fit match, a score per size, a fit map per zone and the two jackets drawn to scale in white" },
       { src: "/projects/ff-index.jpg", alt: "The M Index: ten brands' size M jackets listed in a tall serif, from The North Face at 66 cm to Levi's at 56.5 cm" },
     ],
