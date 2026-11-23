@@ -10,6 +10,7 @@ import { Intro } from "./Intro";
 import { Tool } from "./Tool";
 import { MIndex } from "./MIndex";
 import { ForBrands } from "./ForBrands";
+import { Lookbook, Marquee } from "./Lookbook";
 import s from "./ff.module.css";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -74,8 +75,25 @@ export function FitFinder() {
         const img = n.querySelector("img");
         if (img) gsap.fromTo(img, { yPercent: -8, scale: 1.15 }, { yPercent: 8, scale: 1.05, ease: "none", scrollTrigger: { trigger: n, start: "top bottom", end: "bottom top", scrub: true } });
       });
+      // Footer: tape stripes slide away to uncover the big line.
+      gsap.fromTo("[data-foot-bar]", { yPercent: 0 }, { yPercent: -101, duration: 1.1, ease: "expo.inOut", stagger: { each: 0.05, from: "random" }, scrollTrigger: { trigger: "[data-foot]", start: "top 75%" } });
     }, el);
-    return () => ctx.revert();
+
+    // Hero: the two lines drift a little with the pointer, in opposite directions.
+    const lines = el.querySelectorAll<HTMLElement>("[data-hero-drift]");
+    const qx = [...lines].map((n) => gsap.quickTo(n, "x", { duration: 1.2, ease: "power3.out" }));
+    const qy = [...lines].map((n) => gsap.quickTo(n, "y", { duration: 1.2, ease: "power3.out" }));
+    const move = (e: PointerEvent) => {
+      const dx = e.clientX / window.innerWidth - 0.5;
+      const dy = e.clientY / window.innerHeight - 0.5;
+      qx.forEach((f, i) => f(dx * (i ? -26 : 26)));
+      qy.forEach((f, i) => f(dy * (i ? -12 : 12)));
+    };
+    window.addEventListener("pointermove", move);
+    return () => {
+      window.removeEventListener("pointermove", move);
+      ctx.revert();
+    };
   }, []);
 
   return (
@@ -103,10 +121,10 @@ export function FitFinder() {
             <Image src="/fit-finder/hero.jpg" alt="A man walking toward the camera in an oversized beige work jacket, in a white studio" fill priority sizes="100vw" />
           </div>
           <h1 className={s.heroTitle}>
-            <span className={s.hl}>
+            <span className={s.hl} data-hero-drift>
               <span data-hero-line>Your size</span>
             </span>
-            <span className={`${s.hl} ${s.hlR}`}>
+            <span className={`${s.hl} ${s.hlR}`} data-hero-drift>
               <span data-hero-line>
                 is <em>a lie.</em>
               </span>
@@ -184,8 +202,12 @@ export function FitFinder() {
           </figure>
         </section>
 
+        <Lookbook />
+
         <Tool />
         <MIndex />
+
+        <Marquee text="M" />
 
         <section className={s.returns}>
           <figure className={s.returnsImg} data-reveal-img>
@@ -207,9 +229,16 @@ export function FitFinder() {
             </i>
           ))}
         </div>
-        <a href="#tool" className={s.footBig}>
-          Find your size <span aria-hidden="true">↗</span>
-        </a>
+        <div className={s.footReveal} data-foot>
+          <a href="#tool" className={s.footBig}>
+            Find your size <span aria-hidden="true">↗</span>
+          </a>
+          <div className={s.footBars} aria-hidden="true">
+            {Array.from({ length: 12 }).map((_, i) => (
+              <i key={i} data-foot-bar="" />
+            ))}
+          </div>
+        </div>
         <div className={s.footRow}>
           <p>
             A concept by <Link href="/">Georgi Balabanov</Link>

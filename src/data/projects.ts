@@ -143,7 +143,7 @@ export type Signature =
  *   drift  – slow zoom and pan over whatever image is set
  * or leave it out for a still cover.
  */
-export type CoverMotion = "sky" | "concorde" | "concorde-top" | "concorde-route" | "adv-steps" | "adv-network" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
+export type CoverMotion = "ff-mm" | "ff-result" | "ff-index" | "sky" | "concorde" | "concorde-top" | "concorde-route" | "adv-steps" | "adv-network" | "lava" | "tracks" | "typing" | "voice" | "ripple" | "bloom" | "drift" | "head3d" | "route" | "ember" | "night-tracks" | "grid" | "card" | "wave" | "playback" | "rings" | "dusk-bloom" | "flag" | "hills" | "loaded" | "collage" | "hairwave" | "ai-book" | "ai-flow" | "ai-page";
 
 export type Project = {
   slug: string;
@@ -198,14 +198,14 @@ export const projects: Project[] = [
     subtitle: "Your size at any brand, from a jacket you already own",
     link: "/fit-finder",
     linkLabel: "Open the live site",
-    coverMotion: "drift",
+    coverMotion: "ff-mm",
     hero: { src: "/projects/ff-hero-tape.jpg", alt: "A jacket drawn in blue lines with a yellow tailor's tape across the chest, reading the chest width of a size M" },
     heroTall: { src: "/projects/ff-hero-tape-tall.jpg", alt: "A jacket drawn in blue lines with a yellow tailor's tape across the chest, reading the chest width of a size M" },
     heroScene: "tape-measure",
     images: [
-      { src: "/projects/ff-cover-mm.jpg", alt: "Three jackets laid flat with a yellow tape measure across them, above a huge serif “M ≠ M” with the second M in electric blue and a blue ruler along the bottom" },
-      { src: "/projects/ff-result.jpg", alt: "The result on an electric-blue panel: size L at an 85% fit match, a score per size, a fit map per zone and the two jackets drawn to scale in white" },
-      { src: "/projects/ff-index.jpg", alt: "The M Index: ten brands' size M jackets listed in a tall serif, from The North Face at 66 cm to Levi's at 56.5 cm" },
+      { src: "/projects/ff-loop-mm.jpg", alt: "Three jackets laid flat with a yellow tape measure across them, above a huge serif “M ≠ M” with the second M in electric blue and a blue ruler along the bottom" },
+      { src: "/projects/ff-loop-result.jpg", alt: "The result on an electric-blue panel: size L at an 85% fit match, a score per size, a fit map per zone and a jacket drawn in white", motion: "ff-result" },
+      { src: "/projects/ff-loop-index.jpg", alt: "The M Index: ten brands' size M jackets listed in a tall serif with chest widths, The North Face highlighted in blue", motion: "ff-index" },
     ],
     year: "2026",
     role: "Concept, UX/UI Design & Front-end Development",

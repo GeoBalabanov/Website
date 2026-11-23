@@ -256,7 +256,38 @@
 .code li { font: 400 clamp(22px, 2vw, 32px)/1.1 var(--serif); color: var(--mute); border-top: 1px solid var(--line); padding-top: 14px; }
 .code li b { font-weight: 400; color: var(--ink); }
 
+/* ---------- lookbook (pinned, sideways) ---------- */
+.look { position: relative; overflow: hidden; }
+.lookTrack { display: flex; align-items: center; gap: clamp(24px, 3vw, 56px); height: 100svh; padding: 0 var(--pad); width: max-content; }
+.lookIntro { width: clamp(320px, 34vw, 560px); flex: none; }
+.lookTitle { margin: 18px 0 22px; font: 400 clamp(58px, 7vw, 128px)/0.88 var(--serif); letter-spacing: -0.035em; }
+.lookTitle em { color: var(--blue); }
+.lookIntro p { margin: 0; max-width: 34ch; color: var(--mute); }
+.lookCard { flex: none; margin: 0; width: clamp(300px, 34vw, 560px); }
+.lookImg { position: relative; aspect-ratio: 4 / 5; overflow: hidden; background: #f1f1ef; }
+.lookImg img { object-fit: cover; }
+.lookLine { position: absolute; height: 2px; background: var(--blue); transform-origin: left; box-shadow: 0 0 0 1px rgb(255 255 255 / 0.5); }
+.lookLine i { position: absolute; top: -9px; width: 2px; height: 20px; background: var(--blue); }
+.lookLine i:first-child { left: 0; }
+.lookLine i:last-child { right: 0; }
+.lookCard figcaption { display: flex; justify-content: space-between; align-items: flex-end; padding-top: 14px; border-bottom: 1px solid var(--ink); padding-bottom: 12px; }
+.lookCard figcaption span { font: 500 11px var(--sans); font-stretch: 112%; letter-spacing: 0.12em; text-transform: uppercase; }
+.lookCard figcaption b { font: 400 clamp(46px, 4.4vw, 76px)/0.8 var(--serif); color: var(--blue); }
+.lookCard figcaption small { font: 500 12px var(--sans); margin-left: 4px; color: var(--mute); }
+.lookOutro { flex: none; width: clamp(300px, 36vw, 600px); padding-right: 8vw; }
+.lookOutro p { margin: 0; font: 400 clamp(54px, 6.4vw, 120px)/0.9 var(--serif); letter-spacing: -0.035em; }
+.lookOutro em { color: var(--blue); }
+
+/* ---------- marquee ---------- */
+.marquee { overflow: hidden; padding: clamp(80px, 10vw, 160px) 0 0; }
+.marquee > div { display: flex; width: max-content; will-change: transform; }
+.marquee span { white-space: nowrap; font: 400 clamp(140px, 22vw, 400px)/0.9 var(--serif); letter-spacing: -0.04em; }
+.marquee em { color: var(--blue); font-style: italic; }
+
 /* ---------- footer ---------- */
+.footReveal { position: relative; overflow: hidden; }
+.footBars { position: absolute; inset: 0; display: flex; pointer-events: none; }
+.footBars i { flex: 1; background: #fff; margin-right: -1px; }
 .footer { background: var(--blue); color: #fff; padding-bottom: 22px; }
 .footTape { display: flex; justify-content: space-between; align-items: flex-start; height: 64px; padding: 0 var(--pad); overflow: hidden; }
 .footTape i { position: relative; width: 1px; height: 12px; background: rgb(255 255 255 / 0.7); }
@@ -284,6 +315,10 @@
 }
 @media (max-width: 760px) {
   .root { font-size: 14px; }
+  .lookTrack { flex-direction: column; align-items: stretch; height: auto; width: auto; padding: 60px var(--pad); }
+  .lookIntro, .lookCard, .lookOutro { width: auto; }
+  .lookOutro { padding: 0; }
+  .marquee span { font-size: 38vw; }
   .nav { display: none; }
   .heroTitle { font-size: 23vw; }
   .hl:first-child { top: auto; bottom: calc(15vh + 22vw); }
