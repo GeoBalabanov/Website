@@ -12,7 +12,7 @@ export function GradientBackdrop() {
   const gradient = useGradient();
   const pathname = usePathname();
   // Project pages have their own colors.
-  const on = gradient && !pathname.startsWith("/projects/");
+  const on = gradient && !pathname.startsWith("/projects/") && !pathname.startsWith("/fit-finder");
   return (
     <div aria-hidden="true" className={s.root} data-on={on ? "" : undefined} style={{ opacity: on ? 1 : 0 }}>
       <span className={`${s.smudge} ${s.s1}`} />
