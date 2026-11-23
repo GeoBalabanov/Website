@@ -38,7 +38,7 @@ function scoreSize(ref: Measurements, target: Garment, size: Size, pref: Prefere
   return { size, score, m, zones };
 }
 
-const fmt = (n: number) => `${n > 0 ? "+" : ""}${n.toFixed(1).replace(/\.0$/, "")} cm`;
+const fmt = (n: number) => `${n > 0 ? "+" : ""}${n.toFixed(1).replace(/\.0$/, "")}\u00a0cm`;
 
 export function recommend(ref: { garment: Garment; size: Size }, target: Garment, pref: Preference): Recommendation {
   const refM = measure(ref.garment, ref.size);

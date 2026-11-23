@@ -1,215 +1,229 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
+import Image from "next/image";
 import Link from "next/link";
-import { GARMENTS, chestSpread, garment } from "../_lib/garments";
-import { JacketPaths } from "./Jacket";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { GARMENTS, chestSpread } from "../_lib/garments";
+import { Intro } from "./Intro";
 import { Tool } from "./Tool";
 import { MIndex } from "./MIndex";
 import { ForBrands } from "./ForBrands";
 import s from "./ff.module.css";
 
-const HERO_SET = ["levis-trucker", "uniqlo-padded", "arket-chore", "cos-padded", "carhartt-work", "tnf-puffer"].map(garment);
+gsap.registerPlugin(ScrollTrigger);
 
-/** Live Amsterdam time in the top bar. Empty until mounted, so server and client render the same. */
-function Clock() {
-  const [now, setNow] = useState("");
-  useEffect(() => {
-    const f = new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Amsterdam", hour: "2-digit", minute: "2-digit", second: "2-digit" });
-    const tick = () => setNow(f.format(new Date()));
-    tick();
-    const id = setInterval(tick, 1000);
-    return () => clearInterval(id);
-  }, []);
-  return <span className={s.clock}>AMS {now || "--:--:--"}</span>;
+/** A tiny ruler inlaid in a line of type, like a woven tape. */
+function Tape() {
+  return (
+    <span className={s.tape} aria-hidden="true">
+      {Array.from({ length: 22 }).map((_, i) => (
+        <i key={i} className={i % 5 === 0 ? s.tapeL : undefined} />
+      ))}
+    </span>
+  );
 }
 
-/** Adds `data-in` to every [data-reveal] element once it scrolls into view. */
-function useReveal(root: React.RefObject<HTMLElement | null>) {
-  useEffect(() => {
-    const el = root.current;
-    if (!el) return;
-    const items = el.querySelectorAll<HTMLElement>("[data-reveal]");
-    const io = new IntersectionObserver(
-      (entries) =>
-        entries.forEach((e) => {
-          if (e.isIntersecting) {
-            (e.target as HTMLElement).dataset.in = "";
-            io.unobserve(e.target);
-          }
-        }),
-      { rootMargin: "0px 0px -12% 0px" },
-    );
-    items.forEach((i) => io.observe(i));
-    return () => io.disconnect();
-  }, [root]);
+function Chip({ src, alt }: { src: string; alt: string }) {
+  return (
+    <span className={s.chip}>
+      <Image src={src} alt={alt} fill sizes="160px" />
+    </span>
+  );
 }
 
 export function FitFinder() {
   const root = useRef<HTMLDivElement>(null);
-  useReveal(root);
   const spread = chestSpread();
+
+  // Top bar: hides while scrolling down, comes back on a white strip when scrolling up.
+  const bar = useRef<HTMLElement>(null);
+  useEffect(() => {
+    let last = window.scrollY;
+    const on = () => {
+      const y = window.scrollY;
+      const b = bar.current;
+      if (!b) return;
+      b.dataset.solid = y > 40 ? "1" : "0";
+      b.dataset.hidden = y > last && y > 200 ? "1" : "0";
+      last = y;
+    };
+    on();
+    window.addEventListener("scroll", on, { passive: true });
+    return () => window.removeEventListener("scroll", on);
+  }, []);
+
+  useEffect(() => {
+    const el = root.current;
+    if (!el || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    const ctx = gsap.context(() => {
+      // Hero photo drifts and scales as you leave it.
+      gsap.to("[data-hero-img]", { scale: 1.12, yPercent: 8, ease: "none", scrollTrigger: { trigger: "[data-hero]", start: "top top", end: "bottom top", scrub: true } });
+      gsap.fromTo("[data-hero-line]", { yPercent: 110 }, { yPercent: 0, duration: 1.3, ease: "expo.out", stagger: 0.1, delay: 2.2 });
+      // Lines of type rise in.
+      gsap.utils.toArray<HTMLElement>("[data-rise]").forEach((n) => {
+        gsap.fromTo(n, { yPercent: 100, opacity: 0 }, { yPercent: 0, opacity: 1, duration: 1.1, ease: "expo.out", scrollTrigger: { trigger: n, start: "top 88%" } });
+      });
+      gsap.utils.toArray<HTMLElement>("[data-fade]").forEach((n) => {
+        gsap.fromTo(n, { y: 40, opacity: 0 }, { y: 0, opacity: 1, duration: 1.2, ease: "expo.out", scrollTrigger: { trigger: n, start: "top 90%" } });
+      });
+      // Photos open like a curtain.
+      gsap.utils.toArray<HTMLElement>("[data-reveal-img]").forEach((n) => {
+        gsap.fromTo(n, { clipPath: "inset(0 0 100% 0)" }, { clipPath: "inset(0 0 0% 0)", duration: 1.4, ease: "expo.inOut", scrollTrigger: { trigger: n, start: "top 85%" } });
+        const img = n.querySelector("img");
+        if (img) gsap.fromTo(img, { yPercent: -8, scale: 1.15 }, { yPercent: 8, scale: 1.05, ease: "none", scrollTrigger: { trigger: n, start: "top bottom", end: "bottom top", scrub: true } });
+      });
+    }, el);
+    return () => ctx.revert();
+  }, []);
 
   return (
     <div ref={root} className={s.root}>
-      <header className={s.bar}>
+      <Intro />
+
+      <header ref={bar} className={s.bar}>
         <a href="#top" className={s.logo}>
-          FIT<span>/</span>FINDER
+          Fit Finder
         </a>
         <nav className={s.nav} aria-label="Sections">
-          <a href="#tool">
-            <i>01</i>Find your size
-          </a>
-          <a href="#index">
-            <i>02</i>The M Index
-          </a>
-          <a href="#brands">
-            <i>03</i>For brands
-          </a>
-          <a href="#notes">
-            <i>04</i>Notes
-          </a>
+          <a href="#tool">Find your size</a>
+          <a href="#index">The M Index</a>
+          <a href="#brands">For brands</a>
         </nav>
-        <div className={s.barRight}>
-          <Clock />
-          <span className={s.ver}>V0.1 — CONCEPT</span>
-        </div>
+        <a href="#tool" className={s.barCta}>
+          Start <span aria-hidden="true">→</span>
+        </a>
       </header>
 
       <main id="top">
         {/* HERO */}
-        <section className={s.hero}>
-          <div className={s.heroMeta}>
-            <span>[ FF—INDEX / {GARMENTS.length} JACKETS / 6 SIZES ]</span>
-            <span>A sizing engine for fashion e-commerce</span>
+        <section className={s.hero} data-hero>
+          <div className={s.heroImg} data-hero-img>
+            <Image src="/fit-finder/hero.jpg" alt="A man walking toward the camera in an oversized beige work jacket, in a white studio" fill priority sizes="100vw" />
           </div>
           <h1 className={s.heroTitle}>
-            <span className={s.l1}>Your size</span>
-            <span className={s.l2}>
-              is <em>a lie.</em>
+            <span className={s.hl}>
+              <span data-hero-line>Your size</span>
+            </span>
+            <span className={`${s.hl} ${s.hlR}`}>
+              <span data-hero-line>
+                is <em>a lie.</em>
+              </span>
             </span>
           </h1>
-          <div className={s.tag} aria-hidden="true">
-            <div className={s.tagInner}>
-              <span className={s.tagTop}>Size · Taille · Maat</span>
-              <b className={s.tagSize}>
-                M<i>?</i>
-              </b>
-              <span className={s.tagLine}>100% uncertain</span>
-              <span className={s.tagSmall}>Cut to another brand&apos;s idea of medium</span>
-              <svg className={s.care} viewBox="0 0 120 22">
-                <path d="M3 6 L6 19 L22 19 L25 6 M3 9 Q8 6 14 9 Q20 12 25 9" />
-                <path d="M34 19 L45 3 L56 19 Z" />
-                <path d="M66 19 L66 12 Q66 6 74 6 L82 6 Q88 6 88 12 L88 19 Z M70 13 L84 13" />
-                <circle cx="106" cy="11" r="8" />
-                <path d="M100 5 L112 17 M112 5 L100 17" />
-              </svg>
-              <span className={s.tagSmall}>Do not trust the label. Return within 30 days.</span>
-              <span className={s.tagCode}>FF—000 / NL</span>
-            </div>
-          </div>
-
-          <figure className={s.heroFig}>
-            <svg viewBox="-64 -10 128 84" className={s.overlay} role="img" aria-label="Six jackets, all size M, drawn on top of each other to scale. Their outlines don't match.">
-              {HERO_SET.map((g, i) => (
-                <JacketPaths
-                  key={g.id}
-                  m={g.m}
-                  details={i === HERO_SET.length - 1}
-                  draw
-                  className={i === HERO_SET.length - 1 ? s.ovAccent : s.ovInk}
-                  style={{ animationDelay: `${0.5 + i * 0.22}s` } as React.CSSProperties}
-                />
-              ))}
-              <g className={s.ovRule}>
-                <path d="M-60 72 L60 72" />
-                <text x="-60" y="70">0</text>
-                <text x="56" y="70">120 CM</text>
-              </g>
-            </svg>
-            <figcaption className={s.heroCap}>
-              <b>Fig. 01</b> — Six jackets. All labelled M. Drawn to scale, flat, collar on collar.
-            </figcaption>
-            <ol className={s.legend}>
-              {HERO_SET.map((g, i) => (
-                <li key={g.id} className={i === HERO_SET.length - 1 ? s.legAccent : undefined}>
-                  <span>{g.brand}</span>
-                  <b>{g.m.chest.toFixed(1)}</b>
-                </li>
-              ))}
-              <li className={s.legHead}>
-                <span>Brand — size M</span>
-                <b>Chest, cm</b>
-              </li>
-            </ol>
-          </figure>
-
           <div className={s.heroFoot}>
-            <p className={s.heroLead}>
-              Fit is the number one reason clothes bought online go back. Fit Finder starts from the one jacket you already know fits, and tells you your
-              size anywhere else.
+            <p>
+              A sizing concept
+              <br />
+              for fashion e-commerce
             </p>
-            <div className={s.heroStat}>
-              <b>{spread}</b>
-              <span>cm between the smallest and the biggest M in our index. That&apos;s two whole sizes.</span>
-            </div>
-            <a href="#tool" className={s.cta}>
-              Find my size <span aria-hidden="true">↓</span>
-            </a>
+            <p className={s.heroMid}>Scroll</p>
+            <p className={s.heroRight}>
+              Concept, design &amp; code
+              <br />
+              Georgi Balabanov — 2026
+            </p>
           </div>
         </section>
 
-        <div className={s.marquee} aria-hidden="true">
-          <div>
-            {Array.from({ length: 2 }).map((_, k) => (
-              <span key={k}>
-                M ≠ M ≠ M ≠ M ≠ M <i>×</i> ONE JACKET THAT FITS → YOUR SIZE EVERYWHERE <i>×</i> NO TAPE MEASURE <i>×</i> M ≠ M ≠ M ≠ M ≠ M <i>×</i> FEWER RETURNS
-                <i>×</i>{" "}
+        {/* STATS */}
+        <section className={s.stats}>
+          {[
+            [String(GARMENTS.length), "Jackets", "in the index"],
+            [String(spread), "Centimetres", "between the smallest and the biggest M"],
+            ["4", "Zones", "compared for every size"],
+          ].map(([n, a, b]) => (
+            <div key={a} data-fade>
+              <b>{n}</b>
+              <span>
+                {a}
+                <br />
+                {b}
               </span>
-            ))}
+            </div>
+          ))}
+        </section>
+
+        {/* STATEMENTS */}
+        <section className={s.statements} aria-label="The idea">
+          <p className={s.stLine}>
+            <span data-rise>
+              One jacket <Tape /> that fits.
+            </span>
+          </p>
+          <p className={s.stLine}>
+            <span data-rise>Your size everywhere.</span>
+          </p>
+          <p className={s.stLine}>
+            <span data-rise>
+              <Chip src="/fit-finder/label.jpg" alt="" /> No tape measure.
+            </span>
+          </p>
+          <p className={s.stLine}>
+            <span data-rise>
+              Fewer returns. <Tape />
+            </span>
+          </p>
+        </section>
+
+        {/* EDITORIAL PAIR */}
+        <section className={s.pair}>
+          <figure className={s.pairA} data-reveal-img>
+            <Image src="/fit-finder/label.jpg" alt="The inside collar of a jacket with a small woven label reading M" fill sizes="(max-width: 760px) 100vw, 40vw" />
+          </figure>
+          <div className={s.pairText} data-fade>
+            <span className={s.eyebrow}>The problem</span>
+            <p>
+              Every brand has its own M. Size charts ask for measurements nobody knows, so we order two sizes and send one back. Fit Finder starts from the
+              one thing you do know: <b>the jacket in your wardrobe that fits.</b>
+            </p>
           </div>
-        </div>
+          <figure className={s.pairB} data-reveal-img>
+            <Image src="/fit-finder/tape.jpg" alt="Hands stretching a yellow measuring tape across a navy chore jacket" fill sizes="(max-width: 760px) 100vw, 30vw" />
+          </figure>
+        </section>
 
         <Tool />
         <MIndex />
-        <ForBrands />
 
-        {/* NOTES */}
-        <section id="notes" className={s.notes}>
-          <header className={s.secHead} data-reveal>
-            <span className={s.secNo}>04</span>
-            <h2>
-              Notes <em>on the concept</em>
-            </h2>
-          </header>
-          <div className={s.noteGrid}>
-            {[
-              ["Problem", "Every brand has its own M. Size charts ask for body measurements nobody knows, so shoppers order two sizes and send one back. That's shipping, handling and resale cost for the brand, and a bad first impression."],
-              ["Insight", "People don't know their chest in centimetres, but they know which jacket in their wardrobe fits perfectly. That garment is a better measuring tape than any body scan."],
-              ["Solution", "Pick a jacket you own and its size. Fit Finder compares the flat measurements zone by zone, weighted by what decides fit, and recommends a size with a match score and a drawing to scale."],
-              ["Next", "Real garment data from brand partners, more categories (trousers, knitwear), learning from returns, and a one-line widget for any Shopify or headless store."],
-            ].map(([t, d], i) => (
-              <article key={t} data-reveal style={{ transitionDelay: `${i * 80}ms` }}>
-                <span>0{i + 1}</span>
-                <h3>{t}</h3>
-                <p>{d}</p>
-              </article>
-            ))}
-          </div>
+        <section className={s.returns}>
+          <figure className={s.returnsImg} data-reveal-img>
+            <Image src="/fit-finder/returns.jpg" alt="A stack of cardboard return parcels, one open with a folded jacket inside" fill sizes="100vw" />
+          </figure>
+          <p className={s.returnsText} data-fade>
+            Every box that comes back is <em>a size</em> somebody guessed.
+          </p>
         </section>
+
+        <ForBrands />
       </main>
 
       <footer className={s.footer}>
-        <div className={s.footBig} aria-hidden="true">
-          FIT<span>/</span>FINDER
+        <div className={s.footTape} aria-hidden="true">
+          {Array.from({ length: 160 }).map((_, i) => (
+            <i key={i} className={i % 10 === 0 ? s.ftL : i % 5 === 0 ? s.ftM : undefined}>
+              {i % 10 === 0 && <span>{i}</span>}
+            </i>
+          ))}
         </div>
+        <a href="#tool" className={s.footBig}>
+          Find your size <span aria-hidden="true">↗</span>
+        </a>
         <div className={s.footRow}>
           <p>
-            A concept by <Link href="/">Georgi Balabanov</Link> — design &amp; build, 2026.
+            A concept by <Link href="/">Georgi Balabanov</Link>
+            <br />
+            Design &amp; development, 2026
           </p>
-          <p>Next.js · TypeScript · SVG drawn from data, no images.</p>
+          <p>
+            Next.js · TypeScript · GSAP
+            <br />
+            Jacket drawings generated from data
+          </p>
           <p className={s.disclaimer}>
-            Not affiliated with any brand shown. Index measurements are illustrative approximations for this concept, not official size charts.
+            Not affiliated with any brand named. Index measurements are illustrative approximations for this concept, not official size charts. Photography
+            art-directed for the concept.
           </p>
           <Link href="/" className={s.back}>
             ← Portfolio

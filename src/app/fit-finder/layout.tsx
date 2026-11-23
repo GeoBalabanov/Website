@@ -1,9 +1,8 @@
 import type { Metadata, Viewport } from "next";
-import { Archivo, IBM_Plex_Mono, Instrument_Serif } from "next/font/google";
+import { Archivo, Instrument_Serif } from "next/font/google";
 
-const display = Archivo({ subsets: ["latin", "latin-ext"], axes: ["wdth"], variable: "--ff-display", display: "swap" });
-const mono = IBM_Plex_Mono({ subsets: ["latin", "latin-ext"], weight: ["400", "500", "600"], variable: "--ff-mono", display: "swap" });
-const serif = Instrument_Serif({ subsets: ["latin"], weight: "400", style: ["normal", "italic"], variable: "--ff-serif", display: "swap" });
+const sans = Archivo({ subsets: ["latin", "latin-ext"], axes: ["wdth"], variable: "--ff-sans", display: "swap" });
+const serif = Instrument_Serif({ subsets: ["latin", "latin-ext"], weight: "400", style: ["normal", "italic"], variable: "--ff-serif", display: "swap" });
 
 export const metadata: Metadata = {
   title: "Fit Finder — Your size is a lie",
@@ -15,8 +14,8 @@ export const metadata: Metadata = {
   },
 };
 
-export const viewport: Viewport = { themeColor: "#e8e6e0" };
+export const viewport: Viewport = { themeColor: "#ffffff" };
 
 export default function FitFinderLayout({ children }: { children: React.ReactNode }) {
-  return <div className={`${display.variable} ${mono.variable} ${serif.variable}`}>{children}</div>;
+  return <div className={`${sans.variable} ${serif.variable}`}>{children}</div>;
 }
