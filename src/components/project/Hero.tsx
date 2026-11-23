@@ -9,6 +9,7 @@ import { useScene } from "@/lib/use-scene";
 import { useProjectTransition } from "@/components/transition/ProjectTransition";
 import { prefersReducedMotion } from "@/lib/motion";
 import { CorsaStage } from "./hero-scenes/CorsaStage";
+import { TapeMeasure } from "./hero-scenes/TapeMeasure";
 import { FlagWave } from "@/components/living-cover/FlagWave";
 import { HERO_LIVING, HeroLiving } from "@/components/living-cover/HeroLiving";
 
@@ -111,6 +112,7 @@ export function Hero({ project }: { project: Project }) {
             onLoad={() => heroReady(project.slug)}
           />
           {scene.on && project.heroScene === "corsa-head" && <CorsaStage paused={!scene.visible} />}
+          {scene.on && project.heroScene === "tape-measure" && <TapeMeasure paused={!scene.visible} wide={scene.wide} />}
           {scene.on && living && <HeroLiving key={scene.wide ? "wide" : "tall"} motion={living} wide={scene.wide && !!project.hero} running={scene.visible} />}
           {scene.on && project.heroScene === "flag-wind" && (
             <FlagWave key={scene.wide ? "wide" : "tall"} src={scene.wide ? hero.src : cover.src} running={scene.visible} rasterWidth={scene.wide ? 1800 : 1000} />

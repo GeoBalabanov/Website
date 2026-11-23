@@ -166,7 +166,7 @@ export type Project = {
   /** Portrait hero for phones, when the cover carries its own text (defaults to images[0]). */
   heroTall?: ProjectImage;
   /** A live 3D scene that plays over the hero image on the project page. */
-  heroScene?: "corsa-head" | "flag-wind";
+  heroScene?: "corsa-head" | "flag-wind" | "tape-measure";
 
   year: string;
   role: string;
@@ -199,7 +199,9 @@ export const projects: Project[] = [
     link: "/fit-finder",
     linkLabel: "Open the live site",
     coverMotion: "drift",
-    hero: { src: "/fit-finder/hero.jpg", alt: "A man walking toward the camera in an oversized beige work jacket, in a white studio" },
+    hero: { src: "/projects/ff-hero-tape.jpg", alt: "A jacket drawn in blue lines with a yellow tailor's tape across the chest, reading the chest width of a size M" },
+    heroTall: { src: "/projects/ff-hero-tape-tall.jpg", alt: "A jacket drawn in blue lines with a yellow tailor's tape across the chest, reading the chest width of a size M" },
+    heroScene: "tape-measure",
     images: [
       { src: "/projects/ff-cover-mm.jpg", alt: "Three jackets laid flat with a yellow tape measure across them, above a huge serif “M ≠ M” with the second M in electric blue and a blue ruler along the bottom" },
       { src: "/projects/ff-result.jpg", alt: "The result on an electric-blue panel: size L at an 85% fit match, a score per size, a fit map per zone and the two jackets drawn to scale in white" },
