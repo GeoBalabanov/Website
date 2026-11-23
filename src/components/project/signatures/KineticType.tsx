@@ -104,7 +104,7 @@ export function KineticType({ data }: { project: Project; data: Data }) {
                   className="inline-block will-change-transform"
                   style={{ color: (i + j) % 7 === 0 ? "var(--p-accent)" : (i + j) % 11 === 3 ? "var(--p-accent-2)" : undefined }}
                 >
-                  {ch}
+                  {ch === " " ? "\u00a0" : ch}
                 </span>
               ))}
             </div>

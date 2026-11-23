@@ -216,7 +216,7 @@ export const projects: Project[] = [
     intro:
       "Every brand has its own M, so shoppers order two sizes and send one back. Fit Finder starts from the jacket you already own and know fits: pick it, pick the one you want, and it recommends your size with a match score, a zone-by-zone fit map and both jackets drawn to scale. I designed and built it as a concept for fashion e-commerce, with a widget a brand can drop next to its size buttons.",
     theme: { bg: "#ffffff", fg: "#0a0a0a", muted: "#5f5f5f", accent: "#2b1bff", accent2: "#0a0a0a", font: "instrument", heroTone: "light" },
-    signature: { type: "kinetic-type", words: ["Your", "size", "is", "a", "lie"], caption: "M at one brand is L at another. Fit Finder translates sizes using the one jacket you already trust." },
+    signature: { type: "kinetic-type", words: ["Your size", "is a lie."], caption: "M at one brand is L at another. Fit Finder translates sizes using the one jacket you already trust." },
     gallery: [
       {
         kind: "video",
