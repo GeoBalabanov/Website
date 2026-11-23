@@ -80,6 +80,9 @@ export function LivingCover({ motion, src, active }: Props) {
       {motion === "adv-steps" && <AdvantechStepsCover />}
       {motion === "adv-network" && <AdvantechNetworkCover />}
       {/* Concorde: a pre-rendered loop of the poster, the flag waving and the plane riding the air. */}
+      {motion === "ff-mm" && <LoopVideo src="/projects/ff-loop-mm" poster={src} running={running} />}
+      {motion === "ff-result" && <LoopVideo src="/projects/ff-loop-result" poster={src} running={running} />}
+      {motion === "ff-index" && <LoopVideo src="/projects/ff-loop-index" poster={src} running={running} />}
       {motion === "concorde" && <LoopVideo src="/projects/concorde-cover" poster={src} running={running} />}
       {motion === "concorde-top" && <LoopVideo src="/projects/concorde-top" poster={src} running={running} />}
       {motion === "concorde-route" && <LoopVideo src="/projects/concorde-route" poster={src} running={running} />}
